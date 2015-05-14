@@ -1,0 +1,39 @@
+<!DOCTYPE hibernate-configuration PUBLIC
+"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+	<session-factory>
+		<property name="connection.driver_class">com.mysql.jdbc.Driver</property>
+		<property name="connection.url">jdbc:mysql://db4free.net:3306/mediatheque</property>
+		<property name="connection.username">xttmediatheque2</property>
+		<property name="connection.password">bobiwan1</property>
+		
+		<property name="dialect">org.hibernate.dialect.MySQLDialect</property>
+		<!-- Comportement pour la conservation des tables -->
+		<property name="hbm2ddl.auto">update</property>
+					
+		<property name="hibernate.show_sql">false</property>
+		<property name="hibernate.connection.autocommit">true</property>
+		<property name="hibernate.format_sql">true</property>
+		<property name="hibernate.temp.use_jdbc_metadata_defaults">false</property>
+		
+		<property name="hibernate.c3p0.min_size">5</property>
+		<property name="hibernate.c3p0.max_size">20</property>
+		<property name="hibernate.c3p0.timeout">300</property>
+		<property name="hibernate.c3p0.max_statements">50</property>
+		<property name="hibernate.c3p0.idle_test_period">3000</property>
+
+		<!-- Fichiers à mapper -->
+		<mapping class="com.xtt.mediatheque.model.MovieUserEntity" />
+		<mapping class="com.xtt.mediatheque.model.UserEntity" />
+		<mapping class="com.xtt.mediatheque.model.MovieEntity" />
+		<mapping class="com.xtt.mediatheque.model.MovieCountryEntity" />
+		<mapping class="com.xtt.mediatheque.model.MovieActorsEntity" />
+		<mapping class="com.xtt.mediatheque.model.MovieDirectorsEntity" />
+		<mapping class="com.xtt.mediatheque.model.MovieKindsEntity" />
+		<mapping class="com.xtt.mediatheque.model.CountryEmbeddableEntity" />
+		<mapping class="com.xtt.mediatheque.model.SupportEntity" />
+
+	</session-factory>
+</hibernate-configuration>
