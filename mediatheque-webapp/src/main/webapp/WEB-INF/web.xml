@@ -4,9 +4,9 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
          http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
 
-	<display-name>Tutoriel CXF</display-name>
+	<display-name>Mediatheque</display-name>
 
-	<servlet>
+	<!-- <servlet>
 		<servlet-name>jersey-serlvet</servlet-name>
 		<servlet-class>
 			com.sun.jersey.spi.spring.container.servlet.SpringServlet
@@ -36,6 +36,6 @@
 
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-	</listener>
+	</listener>-->
 
 </web-app>
