@@ -13,21 +13,21 @@ import com.xtt.mediatheque.exceptions.TechnicalAccessException;
 
 /**
  * Interface de services pour les films.
- * 
+ *
  * @author Eric Morel
  */
 public interface MovieService {
 
 	/**
 	 * Méthode retournant la liste exhaustive des films.
-	 * 
+	 *
 	 * @return La liste de DTO contenant tous les films.
 	 */
-	List<CatalogItemDTO> getAllMovies() throws MessageException;
+	List<CatalogItemDTO> getAllMovies() throws TechnicalAccessException, MessageException;
 
 	/**
 	 * Méthode récupérant les informations pour un film donné.
-	 * 
+	 *
 	 * @param movieId
 	 *            : l'identifiant du film.
 	 * @return Le DTO contenant les données du film.
@@ -36,19 +36,15 @@ public interface MovieService {
 	 *             correspond à aucun film.
 	 */
 	ContentMovieDTO getContentMovie(String movieId)
-			throws MovieNotFoundException, TechnicalAccessException,
-			FonctionnalException, MessageException;
+			throws MovieNotFoundException, TechnicalAccessException, FonctionnalException, MessageException;
 
-	List<CatalogItemDTO> getMoviesByKind(String kind)
-			throws TechnicalAccessException;
+	List<CatalogItemDTO> getMoviesByKind(String kind) throws TechnicalAccessException;
 
 	String getCoverByNameFromDisk(String name);
 
-	void persistMovie(String movieName, String userName)
-			throws TechnicalAccessException;
+	void persistMovie(String movieName, String userName) throws TechnicalAccessException;
 
 	List<KindsDTO> getKinds() throws TechnicalAccessException;
 
-	List<SearchItemDTO> searchMovieByName(String movieName)
-			throws MessageException, MovieNotFoundException;
+	List<SearchItemDTO> searchMovieByName(String movieName) throws MessageException, MovieNotFoundException;
 }

@@ -3,11 +3,13 @@ package com.xtt.mediatheque.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.xtt.mediatheque.WSMovieDAO;
 import com.xtt.mediatheque.constants.MediathequeConstants;
+import com.xtt.mediatheque.dao.PersistenceDAO;
 import com.xtt.mediatheque.dto.CatalogItemDTO;
 import com.xtt.mediatheque.dto.ContentMovieDTO;
 import com.xtt.mediatheque.dto.KindsDTO;
@@ -19,11 +21,13 @@ import com.xtt.mediatheque.exceptions.MovieNotFoundException;
 import com.xtt.mediatheque.exceptions.TechnicalAccessException;
 import com.xtt.mediatheque.messages.MessageUtils;
 import com.xtt.mediatheque.model.MovieItem;
+import com.xtt.mediatheque.model.MovieSearchItem;
+import com.xtt.mediatheque.model.entity.MovieUserEntityItem;
 import com.xtt.mediatheque.service.MovieService;
 
 /**
  * Implémentation de {@link MovieService}
- * 
+ *
  * @author Eric Morel
  */
 @Service
@@ -35,40 +39,35 @@ public class MovieServiceImpl implements MovieService {
 	@Autowired
 	private MovieDTOFactory dtoFactory;
 
-	// @Autowired
-	// private PersistenceDAO persistenceDAO;
+	@Autowired
+	private PersistenceDAO persistenceDAO;
 
 	@Autowired
 	private MessageUtils messages;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.mediatheque.xtt.service.MovieService#getAllMovies()
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
-	public List<CatalogItemDTO> getAllMovies() throws MessageException {
+	public List<CatalogItemDTO> getAllMovies() throws MessageException, TechnicalAccessException {
 		return loadAllMovies();
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * com.mediatheque.xtt.service.MovieService#getContentMovie(java.lang.String
 	 * )
 	 */
 	@Override
 	public ContentMovieDTO getContentMovie(final String movieId)
-			throws MovieNotFoundException, TechnicalAccessException,
-			FonctionnalException, MessageException {
-		int movie = 0;
-		try {
-			movie = Integer.valueOf(movieId);
-		} catch (NumberFormatException e) {
-			throw new FonctionnalException(
-					messages.getMessage(MediathequeConstants.MOVIE_NUMBER));
-		}
+			throws MovieNotFoundException, TechnicalAccessException, FonctionnalException, MessageException {
+		/*
+		 * int movie = 0; try { movie = Integer.valueOf(movieId); } catch
+		 * (NumberFormatException e) { throw new FonctionnalException(
+		 * messages.getMessage(MediathequeConstants.MOVIE_NUMBER)); }
+		 */
 
 		// MovieUserEntityItem movieEntity = persistenceDAO.getMovieById(movie);
 		// if (movieEntity != null) {
@@ -81,8 +80,8 @@ public class MovieServiceImpl implements MovieService {
 		// return dtoFactory.buildFullMovieDTO(movieEntity);
 		//
 		// } else {
-		throw new MovieNotFoundException(messages.getMessageWithParameters(
-				MediathequeConstants.MOVIE_NOT_FOUND, new String[] { movieId }));
+		throw new MovieNotFoundException(
+				messages.getMessageWithParameters(MediathequeConstants.MOVIE_NOT_FOUND, new String[] { movieId }));
 		// }
 
 	}
@@ -93,32 +92,30 @@ public class MovieServiceImpl implements MovieService {
 		return "";
 	}
 
-	private List<CatalogItemDTO> loadAllMovies() throws MessageException {
+	private List<CatalogItemDTO> loadAllMovies() throws MessageException, TechnicalAccessException {
 		List<CatalogItemDTO> listMoviesDTO = new ArrayList<CatalogItemDTO>();
-		// List<MovieUserEntityItem> moviesList = persistenceDAO.getAllMovies();
-		// for (MovieUserEntityItem item : moviesList) {
-		// if (item.getIdBackend().equals(0)) {
-		// MovieSearchItem movieItem = wsMovieDAO
-		// .getSearchResultsMovie(item.getOriginalName());
-		// if (movieItem != null && movieItem.getResults() > 0) {
-		// if (StringUtils.isNotEmpty(movieItem.getMovieName())
-		// || StringUtils.isNotEmpty(movieItem
-		// .getOriginalTitle())) {
-		// persistenceDAO.updateDatasMovie(item, movieItem);
-		// }
-		// } else {
-		// persistenceDAO.updateIdAllocine(item);
-		// }
-		// }
-		// listMoviesDTO.add(dtoFactory.buildLightMovieDTO(item));
-		// }
+		List<MovieUserEntityItem> moviesList = persistenceDAO.getAllMovies();
+		for (MovieUserEntityItem item : moviesList) {
+			if (item.getIdBackend().equals(0)) {
+				MovieSearchItem movieItem = wsMovieDAO.getSearchResultsMovie(item.getOriginalName());
+				if (movieItem != null && movieItem.getResults() > 0) {
+					if (StringUtils.isNotEmpty(movieItem.getMovieName())
+							|| StringUtils.isNotEmpty(movieItem.getOriginalTitle())) {
+						persistenceDAO.updateDatasMovie(item, movieItem);
+					}
+					/*
+					 * } else { persistenceDAO.updateIdAllocine(item);
+					 */
+				}
+			}
+			listMoviesDTO.add(dtoFactory.buildLightMovieDTO(item));
+		}
 
 		return listMoviesDTO;
 	}
 
 	@Override
-	public void persistMovie(String movieName, String userName)
-			throws TechnicalAccessException {
+	public void persistMovie(String movieName, String userName) throws TechnicalAccessException {
 		// persistenceDAO.persistMovie(movieName, userName);
 	}
 
@@ -133,8 +130,7 @@ public class MovieServiceImpl implements MovieService {
 	}
 
 	@Override
-	public List<CatalogItemDTO> getMoviesByKind(String kind)
-			throws TechnicalAccessException {
+	public List<CatalogItemDTO> getMoviesByKind(String kind) throws TechnicalAccessException {
 		List<CatalogItemDTO> listMoviesDTO = new ArrayList<CatalogItemDTO>();
 		// List<MovieUserEntityItem> moviesList = persistenceDAO
 		// .getMoviesByKind(kind);
@@ -145,13 +141,11 @@ public class MovieServiceImpl implements MovieService {
 	}
 
 	@Override
-	public List<SearchItemDTO> searchMovieByName(String movieName)
-			throws MessageException, MovieNotFoundException {
+	public List<SearchItemDTO> searchMovieByName(String movieName) throws MessageException, MovieNotFoundException {
 		List<SearchItemDTO> listMoviesDTO = new ArrayList<SearchItemDTO>();
 		List<MovieItem> items = wsMovieDAO.getSearchAllResultsMovie(movieName);
 		if (items.size() == 0) {
-			throw new MovieNotFoundException(messages.getMessageWithParameters(
-					MediathequeConstants.MOVIE_NOT_FOUND,
+			throw new MovieNotFoundException(messages.getMessageWithParameters(MediathequeConstants.MOVIE_NOT_FOUND,
 					new String[] { movieName }));
 		} else {
 			for (MovieItem item : items) {

@@ -25,11 +25,11 @@
 			<version>${project.parent.version}</version>
 		</dependency>
 
-		<!-- ><dependency>
+		<dependency>
 			<groupId>com.xtt.mediatheque</groupId>
 			<artifactId>mediatheque-persistence</artifactId>
 			<version>${project.parent.version}</version>
-		</dependency>-->
+		</dependency>
 
 		<dependency>
 			<groupId>com.xtt.mediatheque</groupId>
