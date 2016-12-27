@@ -103,9 +103,9 @@ public class MovieServiceImpl implements MovieService {
 							|| StringUtils.isNotEmpty(movieItem.getOriginalTitle())) {
 						persistenceDAO.updateDatasMovie(item, movieItem);
 					}
-					/*
-					 * } else { persistenceDAO.updateIdAllocine(item);
-					 */
+
+				} else {
+					persistenceDAO.updateIdAllocine(item);
 				}
 			}
 			listMoviesDTO.add(dtoFactory.buildLightMovieDTO(item));
