@@ -12,15 +12,15 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "allocine_media")
 @NamedQueries(value = {
-		@NamedQuery(name = "findSupportByName", query = "from SupportEntity s where s.media = ?")})
+		@NamedQuery(name = "findSupportByName", query = "from SupportEntity s where s.media = :media") })
 public class SupportEntity {
 
 	@Id
-	@Column(name = "ID")
+	@Column(name = "Id")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 
-	@Column(name = "TypeSupport")
+	@Column(name = "Media")
 	private String media;
 
 	public int getId() {

@@ -10,24 +10,22 @@ import com.xtt.mediatheque.model.entity.MovieUserEntityItem;
 
 public interface PersistenceDAO {
 
-	List<MovieUserEntityItem> getAllMovies();
+	List<MovieUserEntityItem> getAllMovies() throws TechnicalAccessException;
 
 	String getCoverByNameFromDisk(String name);
 
-	MovieUserEntityItem getMovieById(Integer movieId)
-			throws TechnicalAccessException;
+	MovieUserEntityItem getMovieById(Integer movieId) throws TechnicalAccessException;
 
 	void updateDatasMovie(MovieUserEntityItem item, MovieSearchItem movieItem);
 
-	void updateFullDatas(MovieUserEntityItem item, MovieItem movieItem)
-			throws TechnicalAccessException;
+	void updateFullDatas(MovieUserEntityItem item, MovieItem movieItem) throws TechnicalAccessException;
 
 	void updateIdAllocine(MovieUserEntityItem item);
-	
-	void persistMovie(String movieName, String userName) throws TechnicalAccessException;
-	
+
+	void persistMovie(String movieName) throws TechnicalAccessException;
+
 	List<KindItem> getKinds() throws TechnicalAccessException;
-	
+
 	List<MovieUserEntityItem> getMoviesByKind(String kind) throws TechnicalAccessException;
 
 }

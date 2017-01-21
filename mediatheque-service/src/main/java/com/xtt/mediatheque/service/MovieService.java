@@ -10,6 +10,8 @@ import com.xtt.mediatheque.exceptions.FonctionnalException;
 import com.xtt.mediatheque.exceptions.MessageException;
 import com.xtt.mediatheque.exceptions.MovieNotFoundException;
 import com.xtt.mediatheque.exceptions.TechnicalAccessException;
+import com.xtt.mediatheque.model.MovieEntity;
+import com.xtt.mediatheque.model.MovieUserEntity;
 
 /**
  * Interface de services pour les films.
@@ -37,6 +39,10 @@ public interface MovieService {
 	 */
 	ContentMovieDTO getContentMovie(String movieId)
 			throws MovieNotFoundException, TechnicalAccessException, FonctionnalException, MessageException;
+
+	void saveMovie(MovieEntity movieEntity) throws TechnicalAccessException;
+
+	void saveUserMovie(MovieUserEntity movieUserEntity) throws TechnicalAccessException;
 
 	List<CatalogItemDTO> getMoviesByKind(String kind) throws TechnicalAccessException;
 

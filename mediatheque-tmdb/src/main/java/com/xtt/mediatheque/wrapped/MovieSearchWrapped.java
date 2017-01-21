@@ -35,8 +35,7 @@ public class MovieSearchWrapped implements MovieSearchItem {
 
 	@Override
 	public String getReleaseYear() {
-		if (moviesList.getResults().get(0) != null
-				&& moviesList.getResults().get(0).getRelease_date() != null) {
+		if (moviesList.getResults().get(0) != null && moviesList.getResults().get(0).getRelease_date() != null) {
 			Date date = moviesList.getResults().get(0).getRelease_date();
 			DateFormat dateFormat = new SimpleDateFormat("yyyy");
 			return dateFormat.format(date);
@@ -62,7 +61,11 @@ public class MovieSearchWrapped implements MovieSearchItem {
 
 	@Override
 	public int getResults() {
-		return moviesList.getTotal_results();
+		if (moviesList != null) {
+			return moviesList.getTotal_results();
+		} else {
+			return 0;
+		}
 	}
 
 	@Override
@@ -70,8 +73,7 @@ public class MovieSearchWrapped implements MovieSearchItem {
 		List<String> movies = new ArrayList<String>();
 		if (moviesList.getResults().get(0) != null
 				&& moviesList.getResults().get(0).getProduction_countries() != null) {
-			for (ProductionCountry country : moviesList.getResults().get(0)
-					.getProduction_countries()) {
+			for (ProductionCountry country : moviesList.getResults().get(0).getProduction_countries()) {
 				movies.add(country.getName());
 			}
 			return movies;

@@ -4,14 +4,14 @@
 
 <hibernate-configuration>
 	<session-factory>
-		<property name="connection.driver_class">com.mysql.jdbc.Driver</property>
-		<property name="connection.url">jdbc:mysql://db4free.net:3306/mediatheque</property>
-		<property name="connection.username">xttmediatheque2</property>
-		<property name="connection.password">bobiwan1</property>
+		<property name="connection.driver_class">org.postgresql.Driver</property>
+		<property name="connection.url">jdbc:postgresql://localhost:5432/mediatheque</property>
+		<property name="connection.username">postgres</property>
+		<property name="connection.password">root</property>
 		
-		<property name="dialect">org.hibernate.dialect.MySQLDialect</property>
+		<property name="dialect">org.hibernate.dialect.PostgreSQLDialect</property>
 		<!-- Comportement pour la conservation des tables -->
-		<property name="hbm2ddl.auto">update</property>
+		<property name="hbm2ddl.auto">create</property>
 					
 		<property name="hibernate.show_sql">false</property>
 		<property name="hibernate.connection.autocommit">true</property>

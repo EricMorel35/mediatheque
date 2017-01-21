@@ -4,23 +4,30 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.xtt.mediatheque.dao.PersistenceDAO;
+import com.xtt.mediatheque.exceptions.TechnicalAccessException;
+import com.xtt.mediatheque.manager.MovieManager;
 
 public class MoviesScan {
 
 	private String blacklist;
 	private final List<String> movies = new ArrayList<String>();
+
+	@Autowired
+	private MovieManager movieManager;
+
+	@Autowired
+	private PersistenceDAO persistenceDAO;
+
+	@Autowired
+	private WSMovieDAO wsMovieDAO;
 
 	public void searchMovies(final String path, final List<String> listBlackList) {
 		File root = new File(path);
@@ -39,8 +46,7 @@ public class MoviesScan {
 				} else if (!file.isHidden()) {
 					for (String searchedString : listBlackList) {
 						if (fileName.contains(searchedString)) {
-							fileName = fileName.replace(searchedString,
-									StringUtils.EMPTY);
+							fileName = fileName.replace(searchedString, StringUtils.EMPTY);
 						}
 					}
 					System.out.println("File:" + fileName);
@@ -76,41 +82,13 @@ public class MoviesScan {
 		}
 	}
 
-	public void persistMovies() {
-		Connection con = null;
-		try {
-			Class.forName("org.postgresql.Driver");
-			con = DriverManager.getConnection(
-					"jdbc:postgresql://192.168.1.20:5432/mediatheque",
-					"postgres", "bobiwan1");
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-		if (con != null) {
-			for (String movieName : movies) {
-				try {
-					Statement s = con.createStatement();
-					ResultSet rs = s
-							.executeQuery("select max(id) from allocine_liste");
-					int nextId = 0;
-					while (rs.next()) {
-						nextId = rs.getInt(1);
-						nextId++;
-					}
-					PreparedStatement statement = con
-							.prepareStatement("insert into allocine_liste (id,datecrea,nomclean,idallocine,typesupport,idutil,nomorigine) values(?,?,?,0,1,1,?)");
-					statement.setInt(1, nextId);
-					statement.setDate(2,
-							new Date(new java.util.Date().getTime()));
-					statement.setString(3, "");
-					statement.setString(4, movieName);
-					statement.executeUpdate();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
+	public void persistMovies() throws TechnicalAccessException {
+		for (String movieName : movies) {
+			movieManager.saveMovie(movieName);
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Log
 			}
 		}
 	}

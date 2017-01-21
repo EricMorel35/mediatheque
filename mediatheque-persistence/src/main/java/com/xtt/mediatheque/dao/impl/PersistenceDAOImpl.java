@@ -1,8 +1,16 @@
 package com.xtt.mediatheque.dao.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import javax.transaction.Transactional;
+
+import org.hibernate.HibernateException;
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.xtt.mediatheque.dao.PersistenceDAO;
@@ -22,18 +30,26 @@ import com.xtt.mediatheque.model.ProductionCountryItem;
 import com.xtt.mediatheque.model.SupportEntity;
 import com.xtt.mediatheque.model.UserEntity;
 import com.xtt.mediatheque.model.entity.MovieUserEntityItem;
+import com.xtt.mediatheque.model.wrapped.MovieUserEntityWrapped;
 
 @Repository
+@Transactional
 public class PersistenceDAOImpl implements PersistenceDAO {
 
 	private String urlCover;
 
-	@SuppressWarnings("unchecked")
-	private List<MovieEntity> findMovieById(final Object id) {
-		// List<MovieEntity> entities = super.getHibernateTemplate()
-		// .findByNamedQuery("findMovieById", id);
-		// return entities;
-		return null;
+	@Autowired
+	private SessionFactory sessionFactory;
+
+	private Session getSession() {
+		return sessionFactory.getCurrentSession();
+	}
+
+	private List<MovieEntity> findMovieById(final Integer id) {
+		List<MovieEntity> entities = null;
+		Query query = getSession().getNamedQuery("findMovieById").setInteger("id", id);
+		entities = query.list();
+		return entities;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -46,19 +62,19 @@ public class PersistenceDAOImpl implements PersistenceDAO {
 
 	@SuppressWarnings("unchecked")
 	private List<SupportEntity> findSupportByName(final String support) {
-		// List<SupportEntity> entities = super.getHibernateTemplate()
-		// .findByNamedQuery("findSupportByName", support);
-		// return entities;
-		return null;
+		List<SupportEntity> entities = null;
+		Query query = getSession().getNamedQuery("findSupportByName").setString("media", support);
+		entities = query.list();
+		return entities;
 	}
 
 	@Override
-	public List<MovieUserEntityItem> getAllMovies() {
+	public List<MovieUserEntityItem> getAllMovies() throws TechnicalAccessException {
 		List<MovieUserEntityItem> moviesList = new ArrayList<MovieUserEntityItem>();
-		// List<MovieUserEntity> list = loadAllMovies();
-		// for (MovieUserEntity movie : list) {
-		// moviesList.add(new MovieUserEntityWrapped(movie));
-		// }
+		List<MovieUserEntity> list = loadAllMovies();
+		for (MovieUserEntity movie : list) {
+			moviesList.add(new MovieUserEntityWrapped(movie));
+		}
 		return moviesList;
 	}
 
@@ -98,8 +114,7 @@ public class PersistenceDAOImpl implements PersistenceDAO {
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public MovieUserEntityItem getMovieById(final Integer movieId)
-			throws TechnicalAccessException {
+	public MovieUserEntityItem getMovieById(final Integer movieId) throws TechnicalAccessException {
 		// try {
 		// List<MovieUserEntity> entities = super.getHibernateTemplate()
 		// .findByNamedQuery("findById", movieId);
@@ -114,8 +129,8 @@ public class PersistenceDAOImpl implements PersistenceDAO {
 		return null;
 	}
 
-	private List<MovieActorsEntity> insertActorsToMovie(
-			final List<ActorsItem> listToConvert, final MovieEntity movieEntity) {
+	private List<MovieActorsEntity> insertActorsToMovie(final List<ActorsItem> listToConvert,
+			final MovieEntity movieEntity) {
 		// if (listToConvert.size() > 0) {
 		// List<MovieActorsEntity> list = new ArrayList<MovieActorsEntity>();
 		// for (ActorsItem actor : listToConvert) {
@@ -137,8 +152,7 @@ public class PersistenceDAOImpl implements PersistenceDAO {
 		return null;
 	}
 
-	private List<MovieCountryEntity> insertCountriesToMovie(
-			final List<ProductionCountryItem> listToConvert,
+	private List<MovieCountryEntity> insertCountriesToMovie(final List<ProductionCountryItem> listToConvert,
 			final MovieEntity movieEntity) {
 		// if (listToConvert.size() > 0) {
 		// List<MovieCountryEntity> list = new ArrayList<MovieCountryEntity>();
@@ -161,8 +175,7 @@ public class PersistenceDAOImpl implements PersistenceDAO {
 		return null;
 	}
 
-	private List<MovieDirectorsEntity> insertDirectorsToMovie(
-			final List<DirectorsItem> listToConvert,
+	private List<MovieDirectorsEntity> insertDirectorsToMovie(final List<DirectorsItem> listToConvert,
 			final MovieEntity movieEntity) {
 		// if (listToConvert.size() > 0) {
 		// List<MovieDirectorsEntity> list = new
@@ -186,8 +199,8 @@ public class PersistenceDAOImpl implements PersistenceDAO {
 		return null;
 	}
 
-	private List<MovieKindsEntity> insertKindsToMovie(
-			final List<KindItem> listToConvert, final MovieEntity movieEntity) {
+	private List<MovieKindsEntity> insertKindsToMovie(final List<KindItem> listToConvert,
+			final MovieEntity movieEntity) {
 		// if (listToConvert.size() > 0) {
 		// List<MovieKindsEntity> list = new ArrayList<MovieKindsEntity>();
 		// for (KindItem kind : listToConvert) {
@@ -209,24 +222,26 @@ public class PersistenceDAOImpl implements PersistenceDAO {
 		return null;
 	}
 
-	private List<MovieUserEntity> loadAllMovies() {
-		// List<MovieUserEntity> list = super.getHibernateTemplate().loadAll(
-		// MovieUserEntity.class);
-		// return list;
-		return null;
+	private List<MovieUserEntity> loadAllMovies() throws TechnicalAccessException {
+		List<MovieUserEntity> list = null;
+		try {
+			list = getSession().createCriteria(MovieUserEntity.class).list();
+		} catch (HibernateException e) {
+			throw new TechnicalAccessException("DATA_ACCESS", e.getMessage());
+		}
+		return list;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void updateDatasMovie(final MovieUserEntityItem item,
-			final MovieSearchItem movieItem) {
-		// List<MovieEntity> entities = super.getHibernateTemplate()
-		// .findByNamedQuery("findMovieByName", movieItem.getMovieName());
+	public void updateDatasMovie(final MovieUserEntityItem item, final MovieSearchItem movieItem) {
+		// List<MovieEntity> entities =
+		// super.getHibernateTemplate().findByNamedQuery("findMovieByName",
+		// movieItem.getMovieName());
 		// MovieUserEntity movie = this.getMovie(item.getMovieName());
 		// if (entities.size() == 0) {
 		// MovieEntity movieEntity = new MovieEntity();
-		// movieEntity
-		// .setIdAllocine(Integer.valueOf(movieItem.getIdBackend()));
+		// movieEntity.setBackendId(Integer.valueOf(movieItem.getIdBackend()));
 		//
 		// if (StringUtils.isNotEmpty(movieItem.getTitle())) {
 		// movieEntity.setMovieTitle(movieItem.getTitle());
@@ -234,8 +249,7 @@ public class PersistenceDAOImpl implements PersistenceDAO {
 		// movieEntity.setMovieTitle(movieItem.getOriginalTitle());
 		// }
 		// if (StringUtils.isNotEmpty(movieItem.getReleaseYear())) {
-		// movieEntity.setReleaseYear(Integer.valueOf(movieItem
-		// .getReleaseYear()));
+		// movieEntity.setReleaseYear(Integer.valueOf(movieItem.getReleaseYear()));
 		// } else {
 		// movieEntity.setReleaseYear(0);
 		// }
@@ -246,16 +260,16 @@ public class PersistenceDAOImpl implements PersistenceDAO {
 		// directory.mkdir();
 		// }
 		//
-		// String remoteUrlCover = new StringBuffer().append(urlCover)
-		// .append(movieItem.getURLPoster()).toString();
+		// String remoteUrlCover = new
+		// StringBuffer().append(urlCover).append(movieItem.getURLPoster()).toString();
 		//
 		// URL url;
 		// File file = null;
 		// try {
 		// url = new URL(remoteUrlCover);
 		// BufferedImage img = ImageIO.read(url);
-		// file = new File(new StringBuffer()
-		// .append(directory.getAbsolutePath())
+		// file = new File(new
+		// StringBuffer().append(directory.getAbsolutePath())
 		// .append(movieItem.getURLPoster()).toString());
 		// ImageIO.write(img, "jpg", file);
 		// } catch (MalformedURLException e) {
@@ -287,8 +301,8 @@ public class PersistenceDAOImpl implements PersistenceDAO {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void updateFullDatas(final MovieUserEntityItem item,
-			final MovieItem movieItem) throws TechnicalAccessException {
+	public void updateFullDatas(final MovieUserEntityItem item, final MovieItem movieItem)
+			throws TechnicalAccessException {
 		// try {
 		// List<MovieEntity> entities = super.getHibernateTemplate()
 		// .findByNamedQuery("findMovieById",
@@ -333,48 +347,34 @@ public class PersistenceDAOImpl implements PersistenceDAO {
 	}
 
 	@Override
-	public void persistMovie(String movieName, String userName)
-			throws TechnicalAccessException {
-		// MovieUserEntity entity = new MovieUserEntity();
-		// entity.setMovieName(movieName);
-		//
-		// List<UserEntity> userList = this.findUserByName(userName);
-		// UserEntity user = null;
-		// if (userList.size() > 0) {
-		// user = userList.get(0);
-		// } else {
-		// user = new UserEntity();
-		// user.setNom(userName);
-		// super.getHibernateTemplate().save(user);
-		// }
-		// entity.setUser(user);
-		// entity.setCreationDate(new Date());
-		//
-		// List<MovieEntity> list = this.findMovieById(0);
-		// MovieEntity movieEntity = null;
-		// if (list.size() > 0) {
-		// movieEntity = list.get(0);
-		// } else {
-		// movieEntity = new MovieEntity();
-		// movieEntity.setIdAllocine(0);
-		// super.getHibernateTemplate().save(movieEntity);
-		// }
-		//
-		// entity.setIdAllocine(movieEntity);
-		//
-		// List<SupportEntity> supportList = this.findSupportByName("NAS");
-		// SupportEntity support = null;
-		// if (supportList.size() > 0) {
-		// support = supportList.get(0);
-		// } else {
-		// support = new SupportEntity();
-		// support.setMedia("NAS");
-		// super.getHibernateTemplate().save(support);
-		// }
-		// entity.setSupport(support);
-		//
-		// super.getHibernateTemplate().save(entity);
-		// super.getHibernateTemplate().flush();
+	public void persistMovie(String movieName) throws TechnicalAccessException {
+		MovieUserEntity entity = new MovieUserEntity();
+		entity.setOriginalName(movieName);
+		entity.setCreationDate(new Date());
+
+		List<MovieEntity> list = this.findMovieById(0);
+		MovieEntity movieEntity = null;
+		if (list.size() > 0) {
+			movieEntity = list.get(0);
+		} else {
+			movieEntity = new MovieEntity();
+			movieEntity.setBackendId(0);
+			getSession().save(movieEntity);
+		}
+
+		entity.setIdAllocine(movieEntity);
+		List<SupportEntity> supportList = this.findSupportByName("NAS");
+		SupportEntity support = null;
+		if (supportList.size() > 0) {
+			support = supportList.get(0);
+		} else {
+			support = new SupportEntity();
+			support.setMedia("NAS");
+			getSession().save(support);
+		}
+		entity.setSupport(support);
+
+		getSession().save(entity);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -391,8 +391,7 @@ public class PersistenceDAOImpl implements PersistenceDAO {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<MovieUserEntityItem> getMoviesByKind(String kind)
-			throws TechnicalAccessException {
+	public List<MovieUserEntityItem> getMoviesByKind(String kind) throws TechnicalAccessException {
 		// List<MovieUserEntityItem> moviesList = new
 		// ArrayList<MovieUserEntityItem>();
 		// List<Object[]> superObjectLists = super.getHibernateTemplate()

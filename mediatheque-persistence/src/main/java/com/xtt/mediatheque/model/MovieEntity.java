@@ -7,8 +7,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -19,13 +17,14 @@ import org.hibernate.annotations.NotFoundAction;
 
 @Entity
 @Table(name = "allocine_films")
-@NamedQueries(value = {
-		@NamedQuery(name = "findMovieById", query = "from MovieEntity m where m.idAllocine = ?"),
-		@NamedQuery(name = "findMovieByName", query = "from MovieEntity m where m.movieTitle = ?") })
+// @NamedQueries(value = { @NamedQuery(name = "findMovieById", query = "from
+// MovieEntity m where m.idAllocine = :id"),
+// @NamedQuery(name = "findMovieByName", query = "from MovieEntity m where
+// m.movieTitle = ?") })
 public class MovieEntity {
 	@Id
-	@Column(name = "ID")
-	private Integer idAllocine;
+	@Column(name = "Id")
+	private Integer backendId;
 
 	@Column(name = "Synopsis")
 	private String synopsis;
@@ -79,14 +78,6 @@ public class MovieEntity {
 		return directors;
 	}
 
-	public Integer getIdAllocine() {
-		return idAllocine;
-	}
-
-	public Integer getIdBackend() {
-		return idAllocine;
-	}
-
 	public List<MovieKindsEntity> getKinds() {
 		return kinds;
 	}
@@ -127,10 +118,6 @@ public class MovieEntity {
 		this.directors = directors;
 	}
 
-	public void setIdAllocine(final Integer idAllocine) {
-		this.idAllocine = idAllocine;
-	}
-
 	public void setKinds(final List<MovieKindsEntity> kinds) {
 		this.kinds = kinds;
 	}
@@ -157,6 +144,14 @@ public class MovieEntity {
 
 	public void setUrlYoutube(final String urlYoutube) {
 		this.urlYoutube = urlYoutube;
+	}
+
+	public Integer getBackendId() {
+		return backendId;
+	}
+
+	public void setBackendId(Integer backendId) {
+		this.backendId = backendId;
 	}
 
 }

@@ -28,7 +28,7 @@
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
 		</dependency>
-		<!-- <dependency>
+		<dependency>
 			<groupId>com.xtt.mediatheque</groupId>
 			<artifactId>mediatheque-utils</artifactId>
 			<version>${plateforme.version}</version>
@@ -42,7 +42,7 @@
 			<groupId>com.xtt.mediatheque</groupId>
 			<artifactId>mediatheque-service</artifactId>
 			<version>${plateforme.version}</version>
-		</dependency>-->
+		</dependency>
 	</dependencies>
 
 	<build>

@@ -31,8 +31,7 @@ public class MovieUserEntityWrapped implements MovieUserEntityItem {
 	@Override
 	public List<String> getCountries() {
 		List<String> countriesList = new ArrayList<String>();
-		for (MovieCountryEntity country : movieEntity.getIdBackend()
-				.getCountries()) {
+		for (MovieCountryEntity country : movieEntity.getIdBackend().getCountries()) {
 			countriesList.add(country.getPk().getCountry());
 		}
 		return countriesList;
@@ -46,8 +45,7 @@ public class MovieUserEntityWrapped implements MovieUserEntityItem {
 	@Override
 	public List<String> getDirectors() {
 		List<String> directorsList = new ArrayList<String>();
-		for (MovieDirectorsEntity director : movieEntity.getIdBackend()
-				.getDirectors()) {
+		for (MovieDirectorsEntity director : movieEntity.getIdBackend().getDirectors()) {
 			directorsList.add(director.getPk().getDirector());
 		}
 		return directorsList;
@@ -64,7 +62,7 @@ public class MovieUserEntityWrapped implements MovieUserEntityItem {
 
 	@Override
 	public Integer getIdBackend() {
-		return movieEntity.getIdBackend().getIdBackend();
+		return movieEntity.getIdBackend().getBackendId();
 	}
 
 	@Override
@@ -104,7 +102,8 @@ public class MovieUserEntityWrapped implements MovieUserEntityItem {
 
 	@Override
 	public String getUserName() {
-		return movieEntity.getUser().getNom();
+		// return movieEntity.getUser().getNom();
+		return "";
 	}
 
 	@Override
