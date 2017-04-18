@@ -63,29 +63,25 @@ public class MovieServiceImpl implements MovieService {
 		return loadAllMovies();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see
-	 * com.mediatheque.xtt.service.MovieService#getContentMovie(java.lang.String
-	 * )
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public ContentMovieDTO getContentMovie(final String movieId)
 			throws MovieNotFoundException, TechnicalAccessException, FonctionnalException, MessageException {
 
-		int movie = 0;
+		long movie = 0;
 		try {
-			movie = Integer.valueOf(movieId);
+			movie = Long.valueOf(movieId);
 		} catch (NumberFormatException e) {
 			throw new FonctionnalException(messages.getMessage(MediathequeConstants.MOVIE_NUMBER));
 		}
 
-		MovieUserEntityItem movieEntity = movieDAO.getMovieById(movie);
+		MovieUserEntityItem movieEntity = movieDAO.getMovieByExternalId(movie);
 		if (movieEntity != null) {
 			if (StringUtils.isEmpty(movieEntity.getReleaseYear()) || StringUtils.isEmpty(movieEntity.getSynopsis())) {
 				MovieItem movieItem = wsMovieDAO.getContentMovie(movieId);
-				persistenceDAO.updateFullDatas(movieEntity, movieItem);
+				movieDAO.updateFullDatas(movieEntity, movieItem);
 			}
 
 			return dtoFactory.buildFullMovieDTO(movieEntity);
