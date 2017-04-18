@@ -24,7 +24,7 @@ import org.hibernate.annotations.NotFoundAction;
 public class MovieEntity {
 	@Id
 	@Column(name = "Id")
-	private Integer backendId;
+	private long backendId;
 
 	@Column(name = "Synopsis")
 	private String synopsis;
@@ -59,7 +59,7 @@ public class MovieEntity {
 	private List<MovieKindsEntity> kinds;
 
 	@LazyCollection(LazyCollectionOption.FALSE)
-	@OneToMany(mappedBy = "idAllocine", fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
+	@OneToMany(mappedBy = "idBackend", fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
 	@NotFound(action = NotFoundAction.IGNORE)
 	private List<MovieUserEntity> movies;
 
@@ -146,11 +146,11 @@ public class MovieEntity {
 		this.urlYoutube = urlYoutube;
 	}
 
-	public Integer getBackendId() {
+	public long getBackendId() {
 		return backendId;
 	}
 
-	public void setBackendId(Integer backendId) {
+	public void setBackendId(long backendId) {
 		this.backendId = backendId;
 	}
 

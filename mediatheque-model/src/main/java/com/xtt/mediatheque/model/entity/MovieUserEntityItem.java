@@ -15,10 +15,10 @@ public interface MovieUserEntityItem {
 
 	List<String> getGenres();
 
-	Integer getIdBackend();
+	long getIdBackend();
 
 	String getMovieName();
-	
+
 	String getOriginalName();
 
 	String getMovieTitle();
@@ -34,7 +34,7 @@ public interface MovieUserEntityItem {
 	String getURLYoutube();
 
 	String getUserName();
-	
+
 	String getSupport();
 
 }

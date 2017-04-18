@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.xtt.mediatheque.exceptions.TechnicalAccessException;
 import com.xtt.mediatheque.model.KindItem;
-import com.xtt.mediatheque.model.MovieItem;
 import com.xtt.mediatheque.model.MovieSearchItem;
 import com.xtt.mediatheque.model.entity.MovieUserEntityItem;
 
@@ -17,8 +16,6 @@ public interface PersistenceDAO {
 	MovieUserEntityItem getMovieById(Integer movieId) throws TechnicalAccessException;
 
 	void updateDatasMovie(MovieUserEntityItem item, MovieSearchItem movieItem);
-
-	void updateFullDatas(MovieUserEntityItem item, MovieItem movieItem) throws TechnicalAccessException;
 
 	void updateIdAllocine(MovieUserEntityItem item);
 

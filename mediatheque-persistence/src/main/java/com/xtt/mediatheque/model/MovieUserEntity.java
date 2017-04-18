@@ -51,7 +51,7 @@ public class MovieUserEntity {
 	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH })
 	@JoinColumn(name = "backendId")
 	@NotFound(action = NotFoundAction.IGNORE)
-	private MovieEntity idAllocine;
+	private MovieEntity idBackend;
 
 	@OneToOne
 	@JoinColumn(name = "Media", referencedColumnName = "Id")
@@ -67,7 +67,11 @@ public class MovieUserEntity {
 	}
 
 	public MovieEntity getIdBackend() {
-		return idAllocine;
+		return idBackend;
+	}
+
+	public void setIdBackend(MovieEntity idBackend) {
+		this.idBackend = idBackend;
 	}
 
 	public String getMovieName() {
@@ -84,10 +88,6 @@ public class MovieUserEntity {
 
 	public void setId(final int id) {
 		this.id = id;
-	}
-
-	public void setIdAllocine(final MovieEntity idAllocine) {
-		this.idAllocine = idAllocine;
 	}
 
 	public void setMovieName(final String movieName) {

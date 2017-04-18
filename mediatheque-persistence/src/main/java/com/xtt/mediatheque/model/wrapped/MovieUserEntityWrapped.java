@@ -108,7 +108,7 @@ public class MovieUserEntityWrapped implements MovieUserEntityItem {
 
 	@Override
 	public String getSupport() {
-		return movieEntity.getSupport().getMedia();
+		return movieEntity.getSupport() != null ? movieEntity.getSupport().getMedia() : "";
 	}
 
 	@Override

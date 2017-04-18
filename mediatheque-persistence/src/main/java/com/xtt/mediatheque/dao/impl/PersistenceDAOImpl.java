@@ -1,7 +1,6 @@
 package com.xtt.mediatheque.dao.impl;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -22,7 +21,6 @@ import com.xtt.mediatheque.model.MovieActorsEntity;
 import com.xtt.mediatheque.model.MovieCountryEntity;
 import com.xtt.mediatheque.model.MovieDirectorsEntity;
 import com.xtt.mediatheque.model.MovieEntity;
-import com.xtt.mediatheque.model.MovieItem;
 import com.xtt.mediatheque.model.MovieKindsEntity;
 import com.xtt.mediatheque.model.MovieSearchItem;
 import com.xtt.mediatheque.model.MovieUserEntity;
@@ -299,30 +297,6 @@ public class PersistenceDAOImpl implements PersistenceDAO {
 		// super.getHibernateTemplate().update(movie);
 	}
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public void updateFullDatas(final MovieUserEntityItem item, final MovieItem movieItem)
-			throws TechnicalAccessException {
-		// try {
-		// List<MovieEntity> entities = super.getHibernateTemplate()
-		// .findByNamedQuery("findMovieById",
-		// Integer.valueOf(movieItem.getIdBackend()));
-		// if (entities.size() > 0) {
-		// entities.get(0).setSynopsis(movieItem.getSynopsis());
-		// entities.get(0).setUrlYoutube(movieItem.getURLYoutube());
-		// this.insertCountriesToMovie(movieItem.getCountries(),
-		// entities.get(0));
-		// this.insertActorsToMovie(movieItem.getActors(), entities.get(0));
-		// this.insertDirectorsToMovie(movieItem.getDirectors(),
-		// entities.get(0));
-		// this.insertKindsToMovie(movieItem.getGenres(), entities.get(0));
-		// super.getHibernateTemplate().update(entities.get(0));
-		// }
-		// } catch (DataAccessException e) {
-		// throw new TechnicalAccessException(e.getMessage());
-		// }
-	}
-
 	@Override
 	public void updateIdAllocine(final MovieUserEntityItem item) {
 		// List<MovieEntity> entities = findMovieById(-1);
@@ -348,33 +322,33 @@ public class PersistenceDAOImpl implements PersistenceDAO {
 
 	@Override
 	public void persistMovie(String movieName) throws TechnicalAccessException {
-		MovieUserEntity entity = new MovieUserEntity();
-		entity.setOriginalName(movieName);
-		entity.setCreationDate(new Date());
-
-		List<MovieEntity> list = this.findMovieById(0);
-		MovieEntity movieEntity = null;
-		if (list.size() > 0) {
-			movieEntity = list.get(0);
-		} else {
-			movieEntity = new MovieEntity();
-			movieEntity.setBackendId(0);
-			getSession().save(movieEntity);
-		}
-
-		entity.setIdAllocine(movieEntity);
-		List<SupportEntity> supportList = this.findSupportByName("NAS");
-		SupportEntity support = null;
-		if (supportList.size() > 0) {
-			support = supportList.get(0);
-		} else {
-			support = new SupportEntity();
-			support.setMedia("NAS");
-			getSession().save(support);
-		}
-		entity.setSupport(support);
-
-		getSession().save(entity);
+		// MovieUserEntity entity = new MovieUserEntity();
+		// entity.setOriginalName(movieName);
+		// entity.setCreationDate(new Date());
+		//
+		// List<MovieEntity> list = this.findMovieById(0);
+		// MovieEntity movieEntity = null;
+		// if (list.size() > 0) {
+		// movieEntity = list.get(0);
+		// } else {
+		// movieEntity = new MovieEntity();
+		// movieEntity.setBackendId(0);
+		// getSession().save(movieEntity);
+		// }
+		//
+		// entity.setIdAllocine(movieEntity);
+		// List<SupportEntity> supportList = this.findSupportByName("NAS");
+		// SupportEntity support = null;
+		// if (supportList.size() > 0) {
+		// support = supportList.get(0);
+		// } else {
+		// support = new SupportEntity();
+		// support.setMedia("NAS");
+		// getSession().save(support);
+		// }
+		// entity.setSupport(support);
+		//
+		// getSession().save(entity);
 	}
 
 	@SuppressWarnings("unchecked")
