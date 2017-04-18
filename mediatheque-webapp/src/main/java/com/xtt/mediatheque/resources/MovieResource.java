@@ -28,9 +28,9 @@ public class MovieResource {
 	private MovieService movieService;
 
 	@GetMapping("/getContentMovie/{movieId}")
-	public ContentMovieDTO getContentMovie(@PathVariable("movieId") final String movieId)
-			throws TechnicalAccessException, MovieNotFoundException, FonctionnalException, MessageException { // =
-		return movieService.getContentMovie(movieId);
+	public ResponseEntity<ContentMovieDTO> getContentMovie(@PathVariable("movieId") final String movieId)
+			throws TechnicalAccessException, MovieNotFoundException, FonctionnalException, MessageException {
+		return new ResponseEntity<ContentMovieDTO>(movieService.getContentMovie(movieId), HttpStatus.OK);
 	}
 
 	@GetMapping("/getAllMovies")
