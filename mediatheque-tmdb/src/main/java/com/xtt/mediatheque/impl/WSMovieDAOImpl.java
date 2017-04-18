@@ -51,7 +51,7 @@ public class WSMovieDAOImpl implements WSMovieDAO {
 	public MovieItem getContentMovie(final String movieId) {
 		Map<String, String> uriParams = new HashMap<String, String>();
 		uriParams.put("movie", movieId);
-		ResponseEntity<Movie> movie = restTemplate.getForEntity(movieUrl, Movie.class);
+		ResponseEntity<Movie> movie = restTemplate.getForEntity(movieUrl, Movie.class, movieId);
 		return new MovieWrapped(movie.getBody());
 	}
 
