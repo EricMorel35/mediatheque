@@ -1,5 +1,6 @@
 package com.xtt.mediatheque.config;
 
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -15,10 +16,10 @@ import com.xtt.mediatheque.dao.AppDAOConfiguration;
 public class AppConfiguration {
 
 	@Bean
-	public ReloadableResourceBundleMessageSource reloadableResourceBundleMessageSource() {
+	public MessageSource messageSource() {
 		ReloadableResourceBundleMessageSource source = new ReloadableResourceBundleMessageSource();
 		source.setDefaultEncoding("UTF-8");
-		source.setBasenames("messages");
+		source.setBasenames("classpath:messages");
 
 		return source;
 	}
