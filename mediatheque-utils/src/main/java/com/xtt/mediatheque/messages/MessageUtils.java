@@ -15,8 +15,7 @@ public class MessageUtils {
 	@Autowired
 	private MessageSource messageSource;
 
-	public String getMessageWithParameters(String key, String[] args)
-			throws MessageException {
+	public String getMessageWithParameters(String key, String[] args) throws MessageException {
 		String message = "";
 		try {
 			message = messageSource.getMessage(key, args, Locale.FRENCH);
@@ -29,9 +28,5 @@ public class MessageUtils {
 	public String getMessage(String key) throws MessageException {
 		return this.getMessageWithParameters(key, null);
 	}
-
-	// public void setMessageSource(MessageSource messageSource) {
-	// this.messageSource = messageSource;
-	// }
 
 }
