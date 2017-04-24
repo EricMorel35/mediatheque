@@ -48,9 +48,9 @@ public class WSMovieDAOImpl implements WSMovieDAO {
 	 * @throws MessageException
 	 */
 	@Override
-	public MovieItem getContentMovie(final String movieId) {
+	public MovieItem getContentMovie(final long movieId) {
 		Map<String, String> uriParams = new HashMap<String, String>();
-		uriParams.put("movie", movieId);
+		uriParams.put("movie", String.valueOf(movieId));
 		ResponseEntity<Movie> movie = restTemplate.getForEntity(movieUrl, Movie.class, movieId);
 		return new MovieWrapped(movie.getBody());
 	}

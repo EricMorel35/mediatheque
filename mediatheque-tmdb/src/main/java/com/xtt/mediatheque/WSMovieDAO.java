@@ -7,7 +7,7 @@ import com.xtt.mediatheque.model.MovieSearchItem;
 
 public interface WSMovieDAO {
 
-	MovieItem getContentMovie(String movieId);
+	MovieItem getContentMovie(long movieId);
 
 	MovieSearchItem getSearchResultsMovie(String movieName);
 
