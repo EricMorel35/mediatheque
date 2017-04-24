@@ -48,7 +48,7 @@ public class MovieManager {
 			MovieUserEntity movieUserEntity = new MovieUserEntity();
 			movieUserEntity.setOriginalName(movieName);
 			movieUserEntity.setCreationDate(new Date());
-			movieUserEntity.setIdAllocine(movieEntity);
+			movieUserEntity.setIdBackend(movieEntity);
 
 			try {
 				movieService.saveUserMovie(movieUserEntity);

@@ -5,19 +5,28 @@ import org.springframework.stereotype.Component;
 
 import com.xtt.mediatheque.dto.CatalogItemDTO;
 import com.xtt.mediatheque.dto.ContentMovieDTO;
-import com.xtt.mediatheque.dto.KindsDTO;
 import com.xtt.mediatheque.dto.SearchItemDTO;
 import com.xtt.mediatheque.dto.factory.MovieDTOFactory;
-import com.xtt.mediatheque.model.KindItem;
 import com.xtt.mediatheque.model.MovieItem;
 import com.xtt.mediatheque.model.entity.MovieUserEntityItem;
 
 @Component
 public class MovieDTOFactoryImpl implements MovieDTOFactory {
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	public ContentMovieDTO buildFullMovieDTO(
-			final MovieUserEntityItem movieEntityItem) {
+	public SearchItemDTO buildLightMovieDTO(MovieItem movieItem) {
+		SearchItemDTO dto = new SearchItemDTO();
+		dto.setReleaseYear(movieItem.getReleaseYear());
+		dto.setTitle(movieItem.getMovieName());
+		dto.setUrlCover(movieItem.getURLPoster());
+		return dto;
+	}
+
+	@Override
+	public ContentMovieDTO buildFullMovieDTO(final MovieUserEntityItem movieEntityItem) {
 		ContentMovieDTO movieDTO = new ContentMovieDTO();
 		movieDTO.setMovieName(movieEntityItem.getMovieTitle());
 		movieDTO.setReleaseYear(movieEntityItem.getReleaseYear());
@@ -25,12 +34,10 @@ public class MovieDTOFactoryImpl implements MovieDTOFactory {
 		movieDTO.setActors(movieEntityItem.getActors());
 		movieDTO.setDirectors(movieEntityItem.getDirectors());
 		if (StringUtils.isNotBlank(movieEntityItem.getUrlPoster())) {
-			String title = movieEntityItem.getMovieTitle().replaceAll(" ",
-					"%20");
+			String title = movieEntityItem.getMovieTitle().replaceAll(" ", "%20");
 			title = title.replace('?', '/');
 			StringBuffer url = new StringBuffer();
-			String urlCover = url.append("/mediatheque-webapp/movie/cover/")
-					.append(title).append(".do").toString();
+			String urlCover = url.append("/mediatheque-webapp/movie/cover/").append(title).append(".do").toString();
 			movieDTO.setPoster(urlCover);
 		} else {
 			movieDTO.setPoster("/mediatheque-webapp/images/mistery.png");
@@ -38,16 +45,14 @@ public class MovieDTOFactoryImpl implements MovieDTOFactory {
 		movieDTO.setCountries(movieEntityItem.getCountries());
 		movieDTO.setGenres(movieEntityItem.getGenres());
 		movieDTO.setUserName(movieEntityItem.getUserName());
-		movieDTO.setCreationDate(movieEntityItem.getTimestampCreationDate()
-				.getTime());
+		movieDTO.setCreationDate(movieEntityItem.getTimestampCreationDate().getTime());
 		movieDTO.setUrlYoutube(movieEntityItem.getURLYoutube());
 		movieDTO.setMedia(movieEntityItem.getSupport());
 		return movieDTO;
 	}
 
 	@Override
-	public CatalogItemDTO buildLightMovieDTO(
-			final MovieUserEntityItem movieEntity) {
+	public CatalogItemDTO buildLightMovieDTO(final MovieUserEntityItem movieEntity) {
 		CatalogItemDTO dto = new CatalogItemDTO();
 		if (StringUtils.isNotBlank(movieEntity.getMovieName())) {
 			dto.setTitle(movieEntity.getMovieName());
@@ -62,28 +67,11 @@ public class MovieDTOFactoryImpl implements MovieDTOFactory {
 			String title = movieEntity.getMovieTitle().replaceAll(" ", "%20");
 			title = title.replace('?', '/');
 			StringBuffer url = new StringBuffer();
-			String urlCover = url.append("/mediatheque-webapp/movie/cover/")
-					.append(title).append(".do").toString();
+			String urlCover = url.append("/mediatheque-webapp/movie/cover/").append(title).append(".do").toString();
 			dto.setUrlCover(urlCover);
 		} else {
 			dto.setUrlCover("/mediatheque-webapp/images/mistery.png");
 		}
-		return dto;
-	}
-
-	@Override
-	public KindsDTO buildKindsDTO(KindItem movieEntity) {
-		KindsDTO dto = new KindsDTO();
-		dto.setName(movieEntity.getName());
-		return dto;
-	}
-
-	@Override
-	public SearchItemDTO buildLightMovieDTO(MovieItem movieItem) {
-		SearchItemDTO dto = new SearchItemDTO();
-		dto.setReleaseYear(movieItem.getReleaseYear());
-		dto.setTitle(movieItem.getMovieName());
-		dto.setUrlCover(movieItem.getURLPoster());
 		return dto;
 	}
 

@@ -4,9 +4,7 @@ import java.util.List;
 
 import com.xtt.mediatheque.dto.CatalogItemDTO;
 import com.xtt.mediatheque.dto.ContentMovieDTO;
-import com.xtt.mediatheque.dto.KindsDTO;
 import com.xtt.mediatheque.dto.SearchItemDTO;
-import com.xtt.mediatheque.exceptions.FonctionnalException;
 import com.xtt.mediatheque.exceptions.MessageException;
 import com.xtt.mediatheque.exceptions.MovieNotFoundException;
 import com.xtt.mediatheque.exceptions.TechnicalAccessException;
@@ -37,8 +35,8 @@ public interface MovieService {
 	 *             : l'exception est levée si l'identifiant du film ne
 	 *             correspond à aucun film.
 	 */
-	ContentMovieDTO getContentMovie(String movieId)
-			throws MovieNotFoundException, TechnicalAccessException, FonctionnalException, MessageException;
+	ContentMovieDTO getContentMovie(long movieId)
+			throws MovieNotFoundException, TechnicalAccessException, MessageException;
 
 	void saveMovie(MovieEntity movieEntity) throws TechnicalAccessException;
 
@@ -49,8 +47,6 @@ public interface MovieService {
 	String getCoverByNameFromDisk(String name);
 
 	void persistMovie(String movieName, String userName) throws TechnicalAccessException;
-
-	List<KindsDTO> getKinds() throws TechnicalAccessException;
 
 	List<SearchItemDTO> searchMovieByName(String movieName) throws MessageException, MovieNotFoundException;
 }
