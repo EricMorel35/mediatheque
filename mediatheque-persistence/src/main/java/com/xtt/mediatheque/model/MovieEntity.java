@@ -12,15 +12,15 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
+import org.hibernate.annotations.NamedQueries;
+import org.hibernate.annotations.NamedQuery;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
 @Entity
 @Table(name = "allocine_films")
-// @NamedQueries(value = { @NamedQuery(name = "findMovieById", query = "from
-// MovieEntity m where m.idAllocine = :id"),
-// @NamedQuery(name = "findMovieByName", query = "from MovieEntity m where
-// m.movieTitle = ?") })
+@NamedQueries(value = { @NamedQuery(name = "findMovieById", query = "from  MovieEntity m where m.backendId = :id"),
+		@NamedQuery(name = "findMovieByName", query = "from MovieEntity m where  m.movieTitle = ?") })
 public class MovieEntity {
 	@Id
 	@Column(name = "Id")

@@ -5,6 +5,7 @@ import java.util.List;
 import com.xtt.mediatheque.exceptions.TechnicalAccessException;
 import com.xtt.mediatheque.model.MovieEntity;
 import com.xtt.mediatheque.model.MovieItem;
+import com.xtt.mediatheque.model.MovieSearchItem;
 import com.xtt.mediatheque.model.MovieUserEntity;
 import com.xtt.mediatheque.model.entity.MovieUserEntityItem;
 
@@ -19,5 +20,11 @@ public interface MovieDAO {
 	MovieUserEntityItem getMovieByExternalId(long movieId) throws TechnicalAccessException;
 
 	void updateFullDatas(MovieUserEntityItem item, MovieItem movieItem) throws TechnicalAccessException;
+
+	void updateDatasMovie(MovieUserEntityItem item, MovieSearchItem movieItem);
+
+	void updateIdBackend(MovieUserEntityItem item);
+
+	List<MovieUserEntityItem> getMoviesByKind(String kind) throws TechnicalAccessException;
 
 }

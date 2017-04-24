@@ -16,21 +16,18 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.NamedQueries;
+import org.hibernate.annotations.NamedQuery;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
 @Entity
 @Table(name = "allocine_liste")
-// @NamedQueries(value = {
-// @NamedQuery(name = "findById", query = "from MovieUserEntity m where
-// m.idAllocine.idAllocine = ?"),
-// @NamedQuery(name = "findByName", query = "from MovieUserEntity m where
-// UPPER(m.movieName) = ?"),
-// @NamedQuery(name = "findByNameWithNoUpper", query = "from MovieUserEntity m
-// where m.movieName like ?"),
-// @NamedQuery(name = "findByKind", query = "from MovieUserEntity m,
-// MovieKindsEntity k where m.idAllocine.idAllocine = k.pk.idBackend.idAllocine
-// and k.pk.kind = ?") })
+@NamedQueries(value = {
+		@NamedQuery(name = "findById", query = "from MovieUserEntity m where m.idBackend.backendId = ?"),
+		@NamedQuery(name = "findByName", query = "from MovieUserEntity m where UPPER(m.movieName) = ?"),
+		@NamedQuery(name = "findByNameWithNoUpper", query = "from MovieUserEntity m  where m.movieName like ?"),
+		@NamedQuery(name = "findByKind", query = "from MovieUserEntity m, MovieKindsEntity k where m.idBackend.backendId = k.pk.idBackend.backendId and k.pk.kind = ?") })
 public class MovieUserEntity {
 
 	@Id

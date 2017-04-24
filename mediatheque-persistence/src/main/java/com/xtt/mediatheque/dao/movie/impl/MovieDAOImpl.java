@@ -1,11 +1,19 @@
 package com.xtt.mediatheque.dao.movie.impl;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+import javax.imageio.ImageIO;
 import javax.transaction.Transactional;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -29,6 +37,7 @@ import com.xtt.mediatheque.model.MovieEntity;
 import com.xtt.mediatheque.model.MovieItem;
 import com.xtt.mediatheque.model.MovieKindsEntity;
 import com.xtt.mediatheque.model.MovieKindsEntity.KindsEmbeddableEntity;
+import com.xtt.mediatheque.model.MovieSearchItem;
 import com.xtt.mediatheque.model.MovieUserEntity;
 import com.xtt.mediatheque.model.ProductionCountryItem;
 import com.xtt.mediatheque.model.entity.MovieUserEntityItem;
@@ -64,6 +73,7 @@ public class MovieDAOImpl implements MovieDAO {
 	/**
 	 * {@inheritDoc}
 	 */
+	@SuppressWarnings("unchecked")
 	private List<MovieUserEntity> loadAllMovies() throws TechnicalAccessException {
 		List<MovieUserEntity> list = null;
 		try {
@@ -122,9 +132,6 @@ public class MovieDAOImpl implements MovieDAO {
 	public void updateFullDatas(final MovieUserEntityItem item, final MovieItem movieItem)
 			throws TechnicalAccessException {
 		try {
-			// List<MovieEntity> entities =
-			// super.getHibernateTemplate().findByNamedQuery("findMovieById",
-			// Integer.valueOf(movieItem.getIdBackend()));
 			Query query = getSession().createQuery("from MovieEntity m where m.backendId = ?").setInteger(0,
 					Integer.valueOf(movieItem.getIdBackend()));
 			List<MovieEntity> list = query.list();
@@ -228,6 +235,130 @@ public class MovieDAOImpl implements MovieDAO {
 		} else {
 			return null;
 		}
+	}
+
+	@SuppressWarnings("unchecked")
+	private MovieUserEntity getMovie(final String movieName) {
+		Query query = getSession().getNamedQuery("findByName");
+		query.setString(0, StringUtils.upperCase(movieName));
+		List<MovieUserEntity> entities = query.list();
+		if (!entities.isEmpty()) {
+			return entities.get(0);
+		} else {
+			return null;
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public void updateDatasMovie(final MovieUserEntityItem item, final MovieSearchItem movieItem) {
+		Query query = getSession().getNamedQuery("findMovieByName");
+		query.setString(0, movieItem.getMovieName());
+
+		List<MovieEntity> entities = query.list();
+		MovieUserEntity movie = this.getMovie(item.getMovieName());
+		if (entities.size() == 0) {
+			MovieEntity movieEntity = new MovieEntity();
+			movieEntity.setBackendId(Integer.valueOf(movieItem.getIdBackend()));
+
+			if (StringUtils.isNotEmpty(movieItem.getTitle())) {
+				movieEntity.setMovieTitle(movieItem.getTitle());
+			} else {
+				movieEntity.setMovieTitle(movieItem.getOriginalTitle());
+			}
+			if (StringUtils.isNotEmpty(movieItem.getReleaseYear())) {
+				movieEntity.setReleaseYear(Integer.valueOf(movieItem.getReleaseYear()));
+			} else {
+				movieEntity.setReleaseYear(0);
+			}
+
+			if (StringUtils.isNotEmpty(movieItem.getURLPoster())) {
+				File directory = new File("/data/movies/covers");
+				if (!directory.exists()) {
+					directory.mkdir();
+				}
+
+				String remoteUrlCover = new StringBuffer().append("").append(movieItem.getURLPoster()).toString();
+
+				URL url;
+				File file = null;
+				try {
+					url = new URL(remoteUrlCover);
+					BufferedImage img = ImageIO.read(url);
+					file = new File(new StringBuffer().append(directory.getAbsolutePath())
+							.append(movieItem.getURLPoster()).toString());
+					ImageIO.write(img, "jpg", file);
+				} catch (MalformedURLException e) {
+					// TODO Log.
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+
+				if (file != null) {
+					movieEntity.setUrlCover(file.toString());
+				} else {
+					movieEntity.setUrlCover(StringUtils.EMPTY);
+				}
+			}
+			movieEntity.setCountries(new ArrayList<MovieCountryEntity>());
+			movieEntity.setActors(new ArrayList<MovieActorsEntity>());
+			movieEntity.setDirectors(new ArrayList<MovieDirectorsEntity>());
+			movieEntity.setKinds(new ArrayList<MovieKindsEntity>());
+			movieEntity.setUrlYoutube(StringUtils.EMPTY);
+
+			movieEntity.setSynopsis(StringUtils.EMPTY);
+			movie.setIdBackend(movieEntity);
+			movie.setMovieName(movieItem.getMovieName());
+			getSession().save(movieEntity);
+		}
+		getSession().update(movie);
+	}
+
+	private List<MovieEntity> findMovieById(final Integer id) {
+		List<MovieEntity> entities = null;
+		Query query = getSession().getNamedQuery("findMovieById").setInteger("id", id);
+		entities = query.list();
+		return entities;
+	}
+
+	@Override
+	public void updateIdBackend(final MovieUserEntityItem item) {
+		List<MovieEntity> entities = findMovieById(-1);
+		MovieUserEntity movie = this.getMovie(item.getMovieName());
+		if (entities.size() == 0) {
+			MovieEntity movieEntity = new MovieEntity();
+			movieEntity.setBackendId(-1L);
+			movieEntity.setSynopsis(StringUtils.EMPTY);
+			movieEntity.setActors(new ArrayList<MovieActorsEntity>());
+			movieEntity.setCountries(new ArrayList<MovieCountryEntity>());
+			movieEntity.setKinds(new ArrayList<MovieKindsEntity>());
+			movieEntity.setDirectors(new ArrayList<MovieDirectorsEntity>());
+			movieEntity.setMovieTitle(StringUtils.EMPTY);
+			movieEntity.setUrlCover(StringUtils.EMPTY);
+			movieEntity.setReleaseYear(0);
+			movie.setIdBackend(movieEntity);
+			getSession().save(movieEntity);
+		} else {
+			movie.setIdBackend(entities.get(0));
+		}
+		getSession().update(movie);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<MovieUserEntityItem> getMoviesByKind(String kind) throws TechnicalAccessException {
+		List<MovieUserEntityItem> moviesList = new ArrayList<MovieUserEntityItem>();
+		List<Object[]> superObjectLists = getSession().getNamedQuery("findByKind").setString(0, kind).list();
+		for (Object[] objectList : superObjectLists) {
+			for (Object obj : Arrays.asList(objectList)) {
+				if (obj instanceof MovieUserEntity) {
+					MovieUserEntity entity = ((MovieUserEntity) obj);
+					moviesList.add(new MovieUserEntityWrapped(entity));
+				}
+			}
+		}
+		return moviesList;
 	}
 
 }

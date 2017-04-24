@@ -61,7 +61,7 @@ public class MovieUserEntityWrapped implements MovieUserEntityItem {
 	}
 
 	@Override
-	public Integer getIdBackend() {
+	public long getIdBackend() {
 		return movieEntity.getIdBackend().getBackendId();
 	}
 
