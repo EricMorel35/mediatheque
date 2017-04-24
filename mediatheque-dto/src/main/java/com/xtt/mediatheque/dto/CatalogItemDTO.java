@@ -12,7 +12,7 @@ public class CatalogItemDTO {
 
 	private Date addingDate;
 
-	private Integer idAllocine;
+	private long idAllocine;
 
 	private String userName;
 
@@ -48,11 +48,11 @@ public class CatalogItemDTO {
 		this.addingDate = addingDate;
 	}
 
-	public Integer getIdAllocine() {
+	public long getIdAllocine() {
 		return idAllocine;
 	}
 
-	public void setIdAllocine(Integer idAllocine) {
+	public void setIdAllocine(long idAllocine) {
 		this.idAllocine = idAllocine;
 	}
 
