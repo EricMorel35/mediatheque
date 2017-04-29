@@ -64,7 +64,6 @@ public class MovieResource {
 
 	@PostMapping(value = "/getContentMovie/{movieId}")
 	public void addMovie(@RequestParam("movieName") final String movieName,
-
 			@RequestParam("userName") final String userName, @RequestParam("supportName") final String supportName)
 			throws FonctionnalException, TechnicalAccessException {
 
