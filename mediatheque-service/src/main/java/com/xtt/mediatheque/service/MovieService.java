@@ -4,12 +4,12 @@ import java.util.List;
 
 import com.xtt.mediatheque.dto.CatalogItemDTO;
 import com.xtt.mediatheque.dto.ContentMovieDTO;
-import com.xtt.mediatheque.dto.SearchItemDTO;
+//import com.xtt.mediatheque.dto.SearchItemDTO;
 import com.xtt.mediatheque.exceptions.MessageException;
 import com.xtt.mediatheque.exceptions.MovieNotFoundException;
 import com.xtt.mediatheque.exceptions.TechnicalAccessException;
-import com.xtt.mediatheque.model.MovieEntity;
-import com.xtt.mediatheque.model.MovieUserEntity;
+//import com.xtt.mediatheque.model.MovieEntity;
+//import com.xtt.mediatheque.model.MovieUserEntity;
 
 /**
  * Interface de services pour les films.
@@ -38,15 +38,15 @@ public interface MovieService {
 	ContentMovieDTO getContentMovie(long movieId)
 			throws MovieNotFoundException, TechnicalAccessException, MessageException;
 
-	void saveMovie(MovieEntity movieEntity) throws TechnicalAccessException;
-
-	void saveUserMovie(MovieUserEntity movieUserEntity) throws TechnicalAccessException;
-
-	List<CatalogItemDTO> getMoviesByKind(String kind) throws TechnicalAccessException;
-
-	String getCoverByNameFromDisk(String name);
-
-	void persistMovie(String movieName, String userName) throws TechnicalAccessException;
-
-	List<SearchItemDTO> searchMovieByName(String movieName) throws MessageException, MovieNotFoundException;
+//	void saveMovie(MovieEntity movieEntity) throws TechnicalAccessException;
+//
+//	void saveUserMovie(MovieUserEntity movieUserEntity) throws TechnicalAccessException;
+//
+//	List<CatalogItemDTO> getMoviesByKind(String kind) throws TechnicalAccessException;
+//
+//	String getCoverByNameFromDisk(String name);
+//
+//	void persistMovie(String movieName, String userName) throws TechnicalAccessException;
+//
+//	List<SearchItemDTO> searchMovieByName(String movieName) throws MessageException, MovieNotFoundException;
 }
