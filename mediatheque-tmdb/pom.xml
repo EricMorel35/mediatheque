@@ -2,28 +2,38 @@
 <project
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
 	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<artifactId>mediatheque-parent</artifactId>
-		<groupId>com.xtt.mediatheque</groupId>
-		<version>1.0.0-SNAPSHOT</version>
-		<relativePath>../mediatheque-parent</relativePath>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.0.3.RELEASE</version>
 	</parent>
 
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.xtt.mediatheque</groupId>
 	<artifactId>mediatheque-tmdb</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
 	<name>mediatheque-tmdb</name>
 	<url>http://maven.apache.org</url>
+	
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<plateforme.version>1.0.0-SNAPSHOT</plateforme.version>
+	</properties>
 
 	<dependencies>
 		<dependency>
-			<groupId>com.xtt.mediatheque</groupId>
+			<groupId>${project.groupId}</groupId>
 			<artifactId>mediatheque-model</artifactId>
-			<version>${project.parent.version}</version>
+			<version>${plateforme.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>com.xtt.mediatheque</groupId>
+			<groupId>${project.groupId}</groupId>
 			<artifactId>mediatheque-utils</artifactId>
-			<version>${project.parent.version}</version>
+			<version>${plateforme.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
@@ -71,6 +81,7 @@
 		<dependency>
 			<groupId>commons-collections</groupId>
 			<artifactId>commons-collections</artifactId>
+			<version>3.2.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.codehaus.jackson</groupId>
