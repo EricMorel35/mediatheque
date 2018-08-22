@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.xtt.mediatheque</groupId>
 	<artifactId>mediatheque-parent</artifactId>
@@ -12,18 +14,21 @@
 		<module>../mediatheque-utils</module>
 		<module>../mediatheque-model</module>
 		<module>../mediatheque-tmdb</module>
-		<module>../mediatheque-persistence</module>
+		<!-- <module>../mediatheque-persistence</module>-->
 		<module>../mediatheque-dto</module>
-		<module>../mediatheque-service</module>
-		<module>../mediatheque-scan</module>
+		<!-- <module>../mediatheque-service</module>
+		<module>../mediatheque-scan</module>-->
 		<module>../mediatheque-webapp</module>
 	</modules>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<java.version>1.8</java.version>
 		<spring.version>4.3.5.RELEASE</spring.version>
 		<servlet.version>3.0.1</servlet.version>
 		<commons.collections.version>3.2.1</commons.collections.version>
+		<lombok.version>1.16.16</lombok.version>
+		<h2.version>1.4.197</h2.version>
 	</properties>
 
 	<dependencyManagement>
@@ -80,9 +85,15 @@
 			</dependency>
 
 			<dependency>
-				<groupId>commons-lang</groupId>
-				<artifactId>commons-lang</artifactId>
-				<version>1.0</version>
+				<groupId>org.projectlombok</groupId>
+				<artifactId>lombok</artifactId>
+				<version>${lombok.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.h2database</groupId>
+				<artifactId>h2</artifactId>
+				<version>${h2.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
