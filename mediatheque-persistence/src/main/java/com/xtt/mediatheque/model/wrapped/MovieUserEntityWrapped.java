@@ -62,7 +62,7 @@ public class MovieUserEntityWrapped implements MovieUserEntityItem {
 
 	@Override
 	public long getIdBackend() {
-		return movieEntity.getIdBackend().getBackendId();
+		return movieEntity.getIdBackend().getId();
 	}
 
 	@Override
@@ -108,7 +108,7 @@ public class MovieUserEntityWrapped implements MovieUserEntityItem {
 
 	@Override
 	public String getSupport() {
-		return movieEntity.getSupport() != null ? movieEntity.getSupport().getMedia() : "";
+		return "";
 	}
 
 	@Override

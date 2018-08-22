@@ -2,9 +2,7 @@ package com.xtt.mediatheque.model;
 
 import java.io.Serializable;
 
-import javax.persistence.Embeddable;
-
-@Embeddable
+//@Embeddable
 public class CountryEmbeddableEntity implements Serializable {
 
 	/** Serial Version UID. */

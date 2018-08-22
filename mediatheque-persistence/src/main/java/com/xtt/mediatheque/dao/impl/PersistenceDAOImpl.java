@@ -1,27 +1,14 @@
 package com.xtt.mediatheque.dao.impl;
 
-import javax.transaction.Transactional;
-
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.xtt.mediatheque.dao.PersistenceDAO;
 import com.xtt.mediatheque.exceptions.TechnicalAccessException;
 
 @Repository
-@Transactional
 public class PersistenceDAOImpl implements PersistenceDAO {
 
 	private String urlCover;
-
-	@Autowired
-	private SessionFactory sessionFactory;
-
-	private Session getSession() {
-		return sessionFactory.getCurrentSession();
-	}
 
 	@SuppressWarnings("unchecked")
 	@Override
