@@ -5,13 +5,22 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>com.xtt.mediatheque</groupId>
-		<artifactId>mediatheque-parent</artifactId>
-		<version>1.0.0-SNAPSHOT</version>
-		<relativePath>../mediatheque-parent</relativePath>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.0.3.RELEASE</version>
 	</parent>
 	
+	<groupId>com.xtt.mediatheque</groupId>
 	<artifactId>mediatheque-model</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+
 	<name>mediatheque-model</name>
 	<url>http://maven.apache.org</url>
+	
+	<dependencies>		
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter</artifactId>
+		</dependency>
+	</dependencies>
 </project>
