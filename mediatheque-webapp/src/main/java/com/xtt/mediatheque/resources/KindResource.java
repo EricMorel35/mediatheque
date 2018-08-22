@@ -10,17 +10,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.xtt.mediatheque.dto.KindsDTO;
 import com.xtt.mediatheque.exceptions.TechnicalAccessException;
-import com.xtt.mediatheque.service.KindService;
 
 @RestController
 public class KindResource {
 
-	@Autowired
-	private KindService kindService;
+//	@Autowired
+//	private KindService kindService;
 
 	@GetMapping("/getKinds")
 	public ResponseEntity<List<KindsDTO>> getKinds() throws TechnicalAccessException {
-		return new ResponseEntity<List<KindsDTO>>(kindService.getKinds(), HttpStatus.OK);
+//		return new ResponseEntity<List<KindsDTO>>(kindService.getKinds(), HttpStatus.OK);
+		return null;
 	}
 
 }

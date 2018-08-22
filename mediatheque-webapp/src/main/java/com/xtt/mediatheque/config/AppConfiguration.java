@@ -7,12 +7,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 
-import com.xtt.mediatheque.AppServiceConfiguration;
-import com.xtt.mediatheque.dao.AppDAOConfiguration;
-
 @Configuration
 @ComponentScan("com.xtt.mediatheque")
-@Import(value = { AppServiceConfiguration.class, AppDAOConfiguration.class })
+//@Import(value = { AppServiceConfiguration.class })
 public class AppConfiguration {
 
 	@Bean
