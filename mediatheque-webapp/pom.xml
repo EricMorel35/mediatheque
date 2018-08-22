@@ -15,6 +15,8 @@
 	<name>Mediatheque</name>
 	<url>http://maven.apache.org</url>
 	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<java.version>1.8</java.version>
 		<json.version>1.8</json.version>
 		<plateforme.version>1.0.0-SNAPSHOT</plateforme.version>
 	</properties>
@@ -30,15 +32,18 @@
 			<artifactId>mediatheque-dto</artifactId>
 			<version>${plateforme.version}</version>
 		</dependency>
-		<!-- <dependency>
-			<groupId>com.xtt.mediatheque</groupId>
-			<artifactId>mediatheque-service</artifactId>
-			<version>${plateforme.version}</version>
-		</dependency>-->
+		<!-- <dependency> <groupId>com.xtt.mediatheque</groupId> <artifactId>mediatheque-service</artifactId> 
+			<version>${plateforme.version}</version> </dependency> -->
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<scope>runtime</scope>
 		</dependency>
 	</dependencies>
 
@@ -48,8 +53,8 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
-					<source>1.8</source>
-					<target>1.8</target>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
 				</configuration>
 			</plugin>
 			<plugin>
