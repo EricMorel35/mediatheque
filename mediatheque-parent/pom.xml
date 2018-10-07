@@ -14,10 +14,10 @@
 		<module>../mediatheque-utils</module>
 		<module>../mediatheque-model</module>
 		<module>../mediatheque-tmdb</module>
-		<!-- <module>../mediatheque-persistence</module>-->
+		<module>../mediatheque-persistence</module>
 		<module>../mediatheque-dto</module>
-		<!-- <module>../mediatheque-service</module>
-		<module>../mediatheque-scan</module>-->
+		<module>../mediatheque-service</module>
+		<!-- <module>../mediatheque-scan</module>-->
 		<module>../mediatheque-webapp</module>
 	</modules>
 
