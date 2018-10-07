@@ -55,8 +55,8 @@ public class MovieSearchWrapped implements MovieSearchItem {
 	}
 
 	@Override
-	public String getIdBackend() {
-		return String.valueOf(moviesList.getResults().get(0).getId());
+	public Long getIdBackend() {
+		return Long.valueOf(moviesList.getResults().get(0).getId());
 	}
 
 	@Override
