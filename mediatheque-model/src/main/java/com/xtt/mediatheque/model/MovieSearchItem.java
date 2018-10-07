@@ -15,7 +15,7 @@ public interface MovieSearchItem {
 
 	float getUserRatings();
 
-	String getIdBackend();
+	Long getIdBackend();
 
 	int getResults();
 

@@ -1,19 +1,18 @@
 package com.xtt.mediatheque.model.entity;
 
 import java.util.Date;
-import java.util.List;
 
 public interface MovieUserEntityItem {
 
-	List<String> getActors();
-
-	List<String> getCountries();
+//	List<String> getActors();
+//
+//	List<String> getCountries();
 
 	String getCover();
 
-	List<String> getDirectors();
-
-	List<String> getGenres();
+//	List<String> getDirectors();
+//
+//	List<String> getGenres();
 
 	long getIdBackend();
 
@@ -33,8 +32,8 @@ public interface MovieUserEntityItem {
 
 	String getURLYoutube();
 
-	String getUserName();
+//	String getUserName();
 
-	String getSupport();
+//	String getSupport();
 
 }
