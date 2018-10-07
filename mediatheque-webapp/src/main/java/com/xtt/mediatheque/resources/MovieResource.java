@@ -1,6 +1,5 @@
 package com.xtt.mediatheque.resources;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,12 +20,13 @@ import com.xtt.mediatheque.exceptions.MessageException;
 import com.xtt.mediatheque.exceptions.MovieNotFoundException;
 import com.xtt.mediatheque.exceptions.TechnicalAccessException;
 import com.xtt.mediatheque.messages.MessageUtils;
+import com.xtt.mediatheque.service.MovieService;
 
 @RestController
 public class MovieResource {
 
-//	@Autowired
-//	private MovieService movieService;
+	@Autowired
+	private MovieService movieService;
 
 	@Autowired
 	private MessageUtils messages;
@@ -46,8 +46,7 @@ public class MovieResource {
 
 	@GetMapping("getAllMovies")
 	public ResponseEntity<List<CatalogItemDTO>> getAllMovies() throws MessageException, TechnicalAccessException {
-//		List<CatalogItemDTO> movies = movieService.getAllMovies();
-		List<CatalogItemDTO> movies = new ArrayList<>();
+		List<CatalogItemDTO> movies = movieService.getAllMovies();
 		return new ResponseEntity<List<CatalogItemDTO>>(movies, HttpStatus.OK);
 	}
 
