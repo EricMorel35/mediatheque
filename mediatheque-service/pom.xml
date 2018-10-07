@@ -17,6 +17,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.xtt.mediatheque</groupId>
 	<artifactId>mediatheque-service</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>mediatheque-service</name>
 	<url>http://maven.apache.org</url>
@@ -31,11 +32,11 @@
 			<artifactId>mediatheque-tmdb</artifactId>
 			<version>${plateforme.version}</version>
 		</dependency>
-		<!-- <dependency>
+		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>mediatheque-persistence</artifactId>
 			<version>${plateforme.version}</version>
-		</dependency>-->
+		</dependency>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>mediatheque-model</artifactId>
@@ -45,6 +46,14 @@
 			<groupId>${project.groupId}</groupId>
 			<artifactId>mediatheque-utils</artifactId>
 			<version>${plateforme.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
 		</dependency>
 		
 		<dependency>

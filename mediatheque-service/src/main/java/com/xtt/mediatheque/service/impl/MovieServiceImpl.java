@@ -2,39 +2,107 @@ package com.xtt.mediatheque.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import com.xtt.mediatheque.WSMovieDAO;
-import com.xtt.mediatheque.constants.MediathequeConstants;
-import com.xtt.mediatheque.dao.PersistenceDAO;
 import com.xtt.mediatheque.dao.movie.MovieDAO;
+import com.xtt.mediatheque.dao.movie.MovieUserDAO;
 import com.xtt.mediatheque.dto.CatalogItemDTO;
 import com.xtt.mediatheque.dto.ContentMovieDTO;
-import com.xtt.mediatheque.dto.SearchItemDTO;
 import com.xtt.mediatheque.dto.factory.MovieDTOFactory;
 import com.xtt.mediatheque.exceptions.MessageException;
 import com.xtt.mediatheque.exceptions.MovieNotFoundException;
 import com.xtt.mediatheque.exceptions.TechnicalAccessException;
-import com.xtt.mediatheque.messages.MessageUtils;
 import com.xtt.mediatheque.model.MovieEntity;
-import com.xtt.mediatheque.model.MovieItem;
+import com.xtt.mediatheque.model.MovieSearchItem;
 import com.xtt.mediatheque.model.MovieUserEntity;
-import com.xtt.mediatheque.model.entity.MovieUserEntityItem;
 import com.xtt.mediatheque.service.MovieService;
 
 /**
- * Implémentation de {@link MovieService}
+ * Implementation of {@link MovieService}
  *
  * @author Eric Morel
  */
 @Service
 public class MovieServiceImpl implements MovieService {
 
+	@Autowired
+	private WSMovieDAO wsMovieDAO;
+
+	@Autowired
+	private MovieUserDAO movieUserDAO;
+
+	@Autowired
+	private MovieDAO movieDAO;
+
+	@Autowired
+	private MovieDTOFactory dtoFactory;
+
 //	@Autowired
-//	private WSMovieDAO wsMovieDAO;
+//	private MovieManager movieManager;
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.xtt.mediatheque.service.MovieService#getAllMovies()
+	 */
+	@Override
+	public List<CatalogItemDTO> getAllMovies() throws TechnicalAccessException, MessageException {
+		List<CatalogItemDTO> listMoviesDTO = new ArrayList<>();
+		List<MovieUserEntity> movies = movieUserDAO.findAll();
+
+		for (MovieUserEntity item : movies) {
+			if (item.getMovie() == 0) {
+				MovieSearchItem movieItem = wsMovieDAO.getSearchResultsMovie(item.getOriginalName());
+				if (movieItem != null && movieItem.getResults() > 0) {
+					if (!StringUtils.isEmpty(movieItem.getMovieName())
+							|| !StringUtils.isEmpty(movieItem.getOriginalTitle())) {
+						this.updateDatasMovie(item, movieItem);
+					}
+
+				} else {
+//					movieDAO.updateIdBackend(item);
+				}
+			}
+			listMoviesDTO.add(dtoFactory.buildLightMovieDTO(item));
+		}
+
+		return listMoviesDTO;
+	}
+
+	@Override
+	public ContentMovieDTO getContentMovie(long movieId)
+			throws MovieNotFoundException, TechnicalAccessException, MessageException {
+		return null;
+	}
+
+	private void updateDatasMovie(MovieUserEntity item, MovieSearchItem movieItem) {
+		MovieEntity movieEntity = new MovieEntity();
+		movieEntity.setMovieId(movieItem.getIdBackend());
+
+		if (!StringUtils.isEmpty(movieItem.getTitle())) {
+			movieEntity.setMovieTitle(movieItem.getTitle());
+		} else {
+			movieEntity.setMovieTitle(movieItem.getOriginalTitle());
+		}
+		if (!StringUtils.isEmpty(movieItem.getReleaseYear())) {
+			movieEntity.setReleaseYear(Integer.valueOf(movieItem.getReleaseYear()));
+		} else {
+			movieEntity.setReleaseYear(0);
+		}
+
+		movieEntity.setSynopsis("");
+		movieEntity.setUrlYoutube("");
+		movieEntity.setUrlCover("");
+
+		movieDAO.save(movieEntity);
+
+		item.setMovie(movieEntity.getMovieId());
+		movieUserDAO.save(item);
+	}
+
 //
 //	@Autowired
 //	private MovieDTOFactory dtoFactory;

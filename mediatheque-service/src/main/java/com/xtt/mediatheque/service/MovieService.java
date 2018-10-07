@@ -12,28 +12,26 @@ import com.xtt.mediatheque.exceptions.TechnicalAccessException;
 //import com.xtt.mediatheque.model.MovieUserEntity;
 
 /**
- * Interface de services pour les films.
+ * Service interface for movies.
  *
  * @author Eric Morel
  */
 public interface MovieService {
 
 	/**
-	 * Méthode retournant la liste exhaustive des films.
+	 * Finds all movies.
 	 *
-	 * @return La liste de DTO contenant tous les films.
+	 * @return a DTO list which contains movies.
 	 */
 	List<CatalogItemDTO> getAllMovies() throws TechnicalAccessException, MessageException;
 
 	/**
 	 * Méthode récupérant les informations pour un film donné.
 	 *
-	 * @param movieId
-	 *            : l'identifiant du film.
+	 * @param movieId : l'identifiant du film.
 	 * @return Le DTO contenant les données du film.
-	 * @throws MovieNotFoundException
-	 *             : l'exception est levée si l'identifiant du film ne
-	 *             correspond à aucun film.
+	 * @throws MovieNotFoundException : l'exception est levée si l'identifiant du
+	 *                                film ne correspond à aucun film.
 	 */
 	ContentMovieDTO getContentMovie(long movieId)
 			throws MovieNotFoundException, TechnicalAccessException, MessageException;
