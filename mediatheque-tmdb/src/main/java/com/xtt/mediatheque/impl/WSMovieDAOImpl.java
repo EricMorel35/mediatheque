@@ -12,7 +12,6 @@ import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import com.xtt.mediatheque.WSMovieDAO;
-import com.xtt.mediatheque.exceptions.MessageException;
 import com.xtt.mediatheque.model.Movie;
 import com.xtt.mediatheque.model.MovieItem;
 import com.xtt.mediatheque.model.MovieSearchItem;
@@ -42,21 +41,21 @@ public class WSMovieDAOImpl implements WSMovieDAO {
 		this.apiKey = apiKey;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @throws MessageException
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.xtt.mediatheque.WSMovieDAO#getContentMovie(long)
 	 */
 	@Override
 	public MovieItem getContentMovie(final long movieId) {
-		Map<String, String> uriParams = new HashMap<String, String>();
+		Map<String, String> uriParams = new HashMap<>();
 		uriParams.put("movie", String.valueOf(movieId));
 		ResponseEntity<Movie> movie = restTemplate.getForEntity(movieUrl, Movie.class, movieId);
 		return new MovieWrapped(movie.getBody());
 	}
 
 	private MoviesList getMovieSearchResults(final String movieName) {
-		Map<String, String> uriParams = new HashMap<String, String>();
+		Map<String, String> uriParams = new HashMap<>();
 		uriParams.put("key", apiKey);
 		uriParams.put("query", movieName);
 		uriParams.put("language", "fr");
@@ -65,6 +64,7 @@ public class WSMovieDAOImpl implements WSMovieDAO {
 		try {
 			movies = restTemplate.getForObject(searchUrl, MoviesList.class, uriParams);
 		} catch (RestClientException e) {
+			// TODO Logger
 			System.out.println(movieName);
 			System.out.println(e);
 		}
@@ -72,10 +72,10 @@ public class WSMovieDAOImpl implements WSMovieDAO {
 		return movies;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @throws MessageException
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.xtt.mediatheque.WSMovieDAO#getSearchResultsMovie(java.lang.String)
 	 */
 	@Override
 	public MovieSearchItem getSearchResultsMovie(final String movieName) {
@@ -83,9 +83,15 @@ public class WSMovieDAOImpl implements WSMovieDAO {
 		return new MovieSearchWrapped(movie);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.xtt.mediatheque.WSMovieDAO#getSearchAllResultsMovie(java.lang.String)
+	 */
 	@Override
 	public List<MovieItem> getSearchAllResultsMovie(String movieName) {
-		List<MovieItem> items = new ArrayList<MovieItem>();
+		List<MovieItem> items = new ArrayList<>();
 		MoviesList movies = getMovieSearchResults(movieName);
 		for (Movie movie : movies.getResults()) {
 			items.add(new MovieWrapped(movie));
