@@ -32,8 +32,11 @@
 			<artifactId>mediatheque-dto</artifactId>
 			<version>${plateforme.version}</version>
 		</dependency>
-		<!-- <dependency> <groupId>com.xtt.mediatheque</groupId> <artifactId>mediatheque-service</artifactId> 
-			<version>${plateforme.version}</version> </dependency> -->
+		<dependency>
+			<groupId>com.xtt.mediatheque</groupId>
+			<artifactId>mediatheque-service</artifactId>
+			<version>${plateforme.version}</version>
+		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
