@@ -33,7 +33,7 @@ public class MovieResource {
 
 	@GetMapping("getContentMovie/{movieId}")
 	public ResponseEntity<ContentMovieDTO> getContentMovie(@PathVariable("movieId") final String movieId)
-			throws TechnicalAccessException, MovieNotFoundException, FonctionnalException, MessageException {
+			throws MovieNotFoundException, FonctionnalException {
 		long movie = 0;
 		try {
 			movie = Long.valueOf(movieId);
@@ -44,9 +44,9 @@ public class MovieResource {
 	}
 
 	@GetMapping("getAllMovies")
-	public ResponseEntity<List<CatalogItemDTO>> getAllMovies() throws MessageException, TechnicalAccessException {
+	public ResponseEntity<List<CatalogItemDTO>> getAllMovies() {
 		List<CatalogItemDTO> movies = movieService.getAllMovies();
-		return new ResponseEntity<List<CatalogItemDTO>>(movies, HttpStatus.OK);
+		return new ResponseEntity<>(movies, HttpStatus.OK);
 	}
 
 	@GetMapping("searchMovie/{movieName}")
