@@ -18,3 +18,4 @@ create table if not exists Movies (
 );
 
 INSERT INTO Movies_User (id,movie_name,original_name,movie) VALUES (1,'Iron Man','Iron Man',0);
+INSERT INTO Movies_User (id,movie_name,original_name,movie) VALUES (2,'Taxi','Taxi',0);
