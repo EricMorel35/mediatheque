@@ -9,7 +9,7 @@ import com.xtt.mediatheque.model.entity.MovieUserEntityItem;
 
 public interface MovieDTOFactory {
 
-	ContentMovieDTO buildFullMovieDTO(MovieUserEntityItem movieEntityItem);
+	ContentMovieDTO buildFullMovieDTO(MovieItem movieEntityItem);
 
 	CatalogItemDTO buildLightMovieDTO(MovieUserEntity movieEntity);
 

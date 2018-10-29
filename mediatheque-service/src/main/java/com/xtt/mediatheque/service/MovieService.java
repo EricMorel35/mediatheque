@@ -4,12 +4,7 @@ import java.util.List;
 
 import com.xtt.mediatheque.dto.CatalogItemDTO;
 import com.xtt.mediatheque.dto.ContentMovieDTO;
-//import com.xtt.mediatheque.dto.SearchItemDTO;
-import com.xtt.mediatheque.exceptions.MessageException;
 import com.xtt.mediatheque.exceptions.MovieNotFoundException;
-import com.xtt.mediatheque.exceptions.TechnicalAccessException;
-//import com.xtt.mediatheque.model.MovieEntity;
-//import com.xtt.mediatheque.model.MovieUserEntity;
 
 /**
  * Service interface for movies.
@@ -23,7 +18,7 @@ public interface MovieService {
 	 *
 	 * @return a DTO list which contains movies.
 	 */
-	List<CatalogItemDTO> getAllMovies() throws TechnicalAccessException;
+	List<CatalogItemDTO> getAllMovies();
 
 	/**
 	 * Méthode récupérant les informations pour un film donné.
@@ -33,8 +28,7 @@ public interface MovieService {
 	 * @throws MovieNotFoundException : l'exception est levée si l'identifiant du
 	 *                                film ne correspond à aucun film.
 	 */
-	ContentMovieDTO getContentMovie(long movieId)
-			throws MovieNotFoundException, TechnicalAccessException;
+	ContentMovieDTO getContentMovie(long movieId) throws MovieNotFoundException;
 
 //	void saveMovie(MovieEntity movieEntity) throws TechnicalAccessException;
 //

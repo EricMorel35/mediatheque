@@ -30,11 +30,11 @@ public class MovieDTOFactoryImpl implements MovieDTOFactory {
 	}
 
 	@Override
-	public ContentMovieDTO buildFullMovieDTO(final MovieUserEntityItem movieEntityItem) {
+	public ContentMovieDTO buildFullMovieDTO(final MovieItem movieEntityItem) {
 		ContentMovieDTO movieDTO = new ContentMovieDTO();
-//		movieDTO.setMovieName(movieEntityItem.getMovieTitle());
-//		movieDTO.setReleaseYear(movieEntityItem.getReleaseYear());
-//		movieDTO.setSynopsis(movieEntityItem.getSynopsis());
+		movieDTO.setMovieName(movieEntityItem.getMovieName());
+		movieDTO.setReleaseYear(movieEntityItem.getReleaseYear());
+		movieDTO.setSynopsis(movieEntityItem.getSynopsis());
 //		movieDTO.setActors(movieEntityItem.getActors());
 //		movieDTO.setDirectors(movieEntityItem.getDirectors());
 //		if (!StringUtils.isEmpty(movieEntityItem.getUrlPoster())) {
@@ -50,33 +50,18 @@ public class MovieDTOFactoryImpl implements MovieDTOFactory {
 //		movieDTO.setGenres(movieEntityItem.getGenres());
 //		movieDTO.setUserName(movieEntityItem.getUserName());
 //		movieDTO.setCreationDate(movieEntityItem.getTimestampCreationDate().getTime());
-//		movieDTO.setUrlYoutube(movieEntityItem.getURLYoutube());
+		movieDTO.setUrlYoutube(movieEntityItem.getURLYoutube());
 //		movieDTO.setMedia(movieEntityItem.getSupport());
 		return movieDTO;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.xtt.mediatheque.dto.factory.MovieDTOFactory#buildLightMovieDTO(com.xtt.
-	 * mediatheque.model.MovieEntity)
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public CatalogItemDTO buildLightMovieDTO(final MovieUserEntity movieEntity) {
-		CatalogItemDTO dto = CatalogItemDTO.builder().title(movieEntity.getMovieName()).addingDate(new Date())
+		return CatalogItemDTO.builder().title(movieEntity.getMovieName()).addingDate(new Date())
 				.id(movieEntity.getId()).build();
-		
-//		if (!StringUtils.isEmpty(movieEntity.getIdBackend().getUrlCover())) {
-//			String title = movieEntity.getMovieName().replaceAll(" ", "%20");
-//			title = title.replace('?', '/');
-//			StringBuffer url = new StringBuffer();
-//			String urlCover = url.append("/mediatheque-webapp/movie/cover/").append(title).append(".do").toString();
-//			dto.setUrlCover(urlCover);
-//		} else {
-//			dto.setUrlCover("/mediatheque-webapp/images/mistery.png");
-//		}
-		return dto;
 	}
 
 }
