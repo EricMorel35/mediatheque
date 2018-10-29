@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
@@ -19,8 +21,11 @@ import com.xtt.mediatheque.model.MoviesList;
 import com.xtt.mediatheque.wrapped.MovieSearchWrapped;
 import com.xtt.mediatheque.wrapped.MovieWrapped;
 
+
 @Repository
 public class WSMovieDAOImpl implements WSMovieDAO {
+	
+	private static final Logger LOG = LoggerFactory.getLogger(WSMovieDAOImpl.class);
 
 	@Autowired
 	private RestTemplate restTemplate;
@@ -60,13 +65,11 @@ public class WSMovieDAOImpl implements WSMovieDAO {
 		uriParams.put("query", movieName);
 		uriParams.put("language", "fr");
 
-		MoviesList movies = null;
+		MoviesList movies = new MoviesList();
 		try {
 			movies = restTemplate.getForObject(searchUrl, MoviesList.class, uriParams);
 		} catch (RestClientException e) {
-			// TODO Logger
-			System.out.println(movieName);
-			System.out.println(e);
+			LOG.error(new StringBuilder("[Error] - Error when call MovieDB API ").append(movieName).toString());
 		}
 
 		return movies;
@@ -96,6 +99,7 @@ public class WSMovieDAOImpl implements WSMovieDAO {
 		for (Movie movie : movies.getResults()) {
 			items.add(new MovieWrapped(movie));
 		}
+
 		return items;
 	}
 
