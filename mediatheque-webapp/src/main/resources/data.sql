@@ -9,7 +9,7 @@ create table if not exists Movies_User (
 create table if not exists Movies (
    movie_id integer not null,
    movie_title varchar(255) not null,
-   synopsis varchar(255) not null,
+   synopsis clob not null,
    release_year integer not null,
    url_cover varchar(255) not null,
    url_youtube varchar(255) not null,
