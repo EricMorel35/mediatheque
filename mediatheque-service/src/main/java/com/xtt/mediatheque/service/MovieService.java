@@ -23,7 +23,7 @@ public interface MovieService {
 	 *
 	 * @return a DTO list which contains movies.
 	 */
-	List<CatalogItemDTO> getAllMovies() throws TechnicalAccessException, MessageException;
+	List<CatalogItemDTO> getAllMovies() throws TechnicalAccessException;
 
 	/**
 	 * Méthode récupérant les informations pour un film donné.
@@ -34,7 +34,7 @@ public interface MovieService {
 	 *                                film ne correspond à aucun film.
 	 */
 	ContentMovieDTO getContentMovie(long movieId)
-			throws MovieNotFoundException, TechnicalAccessException, MessageException;
+			throws MovieNotFoundException, TechnicalAccessException;
 
 //	void saveMovie(MovieEntity movieEntity) throws TechnicalAccessException;
 //
