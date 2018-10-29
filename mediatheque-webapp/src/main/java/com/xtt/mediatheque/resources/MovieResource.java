@@ -40,8 +40,7 @@ public class MovieResource {
 		} catch (NumberFormatException e) {
 			throw new FonctionnalException(messages.getMessage(MediathequeConstants.MOVIE_NUMBER));
 		}
-		return null;
-//		return new ResponseEntity<ContentMovieDTO>(movieService.getContentMovie(movie), HttpStatus.OK);
+		return new ResponseEntity<>(movieService.getContentMovie(movie), HttpStatus.OK);
 	}
 
 	@GetMapping("getAllMovies")

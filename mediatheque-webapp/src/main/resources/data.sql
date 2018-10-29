@@ -1,4 +1,4 @@
-create table Movies_User (
+create table if not exists Movies_User (
    id integer not null,
    movie_name varchar(255) not null,
    original_name varchar(255) not null,
@@ -6,7 +6,7 @@ create table Movies_User (
    primary key(id)
 );
 
-create table Movies (
+create table if not exists Movies (
    movie_id integer not null,
    movie_title varchar(255) not null,
    synopsis varchar(255) not null,
@@ -17,4 +17,4 @@ create table Movies (
    primary key(movie_id)
 );
 
-INSERT INTO Movies_User VALUES (1,'Iron Man', 'Iron Man',0);
+INSERT INTO Movies_User (id,movie_name,original_name,movie) VALUES (1,'Iron Man','Iron Man',0);

@@ -7,5 +7,7 @@ import com.xtt.mediatheque.model.MovieEntity;
 
 @Repository
 public interface MovieDAO extends JpaRepository<MovieEntity, Long> {
+	
+	
 
 }

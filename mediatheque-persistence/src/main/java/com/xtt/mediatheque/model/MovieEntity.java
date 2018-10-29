@@ -17,7 +17,7 @@ public class MovieEntity {
 	public static final String TABLE_NAME = "Movies";
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+//	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name = "movie_id")
 	private Long movieId;
 

@@ -2,11 +2,17 @@ package com.xtt.mediatheque.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.function.BiConsumer;
+import java.util.function.BiPredicate;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import com.xtt.mediatheque.WSMovieDAO;
+import com.xtt.mediatheque.constants.MediathequeConstants;
 import com.xtt.mediatheque.dao.movie.MovieDAO;
 import com.xtt.mediatheque.dao.movie.MovieUserDAO;
 import com.xtt.mediatheque.dto.CatalogItemDTO;
@@ -15,9 +21,13 @@ import com.xtt.mediatheque.dto.factory.MovieDTOFactory;
 import com.xtt.mediatheque.exceptions.MessageException;
 import com.xtt.mediatheque.exceptions.MovieNotFoundException;
 import com.xtt.mediatheque.exceptions.TechnicalAccessException;
+import com.xtt.mediatheque.manager.MovieManager;
+import com.xtt.mediatheque.messages.MessageUtils;
 import com.xtt.mediatheque.model.MovieEntity;
+import com.xtt.mediatheque.model.MovieItem;
 import com.xtt.mediatheque.model.MovieSearchItem;
 import com.xtt.mediatheque.model.MovieUserEntity;
+import com.xtt.mediatheque.model.entity.MovieUserEntityItem;
 import com.xtt.mediatheque.service.MovieService;
 
 /**
@@ -40,8 +50,10 @@ public class MovieServiceImpl implements MovieService {
 	@Autowired
 	private MovieDTOFactory dtoFactory;
 
-//	@Autowired
-//	private MovieManager movieManager;
+	@Autowired
+	private MovieManager movieManager;
+	
+	private MessageUtils messages;
 
 	/*
 	 * (non-Javadoc)
@@ -75,7 +87,22 @@ public class MovieServiceImpl implements MovieService {
 	@Override
 	public ContentMovieDTO getContentMovie(long movieId)
 			throws MovieNotFoundException, TechnicalAccessException, MessageException {
+		Optional<MovieEntity> optMovie = movieDAO.findById(movieId);
+		MovieItem movieItem = optMovie.filter(movie -> StringUtils.isEmpty(movie.getReleaseYear()) || StringUtils.isEmpty(movie.getSynopsis()))
+			                          .map(movie -> wsMovieDAO.getContentMovie(movieId))
+			                          .orElseThrow(() -> new MovieNotFoundException(messages.getMessageWithParameters(MediathequeConstants.MOVIE_NOT_FOUND, new String[] { String.valueOf(movieId) })));
+		movieManager.updateFullDatas(optMovie, movieItem);
+		
 		return null;
+//			if (StringUtils.isEmpty(movieEntity.getReleaseYear()) || StringUtils.isEmpty(movieEntity.getSynopsis())) {
+//				MovieItem movieItem = wsMovieDAO.getContentMovie(movieId);
+//				movieDAO.updateFullDatas(movieEntity, movieItem);
+//			}
+//			return dtoFactory.buildFullMovieDTO(movieEntity);
+//		} else {
+//			throw new MovieNotFoundException(messages.getMessageWithParameters(MediathequeConstants.MOVIE_NOT_FOUND,
+//					new String[] { String.valueOf(movieId) }));
+//		}
 	}
 
 	private void updateDatasMovie(MovieUserEntity item, MovieSearchItem movieItem) {

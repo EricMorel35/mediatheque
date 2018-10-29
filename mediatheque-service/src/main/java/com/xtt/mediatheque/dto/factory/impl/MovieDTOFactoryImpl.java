@@ -66,6 +66,7 @@ public class MovieDTOFactoryImpl implements MovieDTOFactory {
 	public CatalogItemDTO buildLightMovieDTO(final MovieUserEntity movieEntity) {
 		CatalogItemDTO dto = CatalogItemDTO.builder().title(movieEntity.getMovieName()).addingDate(new Date())
 				.id(movieEntity.getId()).build();
+		
 //		if (!StringUtils.isEmpty(movieEntity.getIdBackend().getUrlCover())) {
 //			String title = movieEntity.getMovieName().replaceAll(" ", "%20");
 //			title = title.replace('?', '/');
