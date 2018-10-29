@@ -38,7 +38,7 @@ public class AppTMDBConfiguration {
 	}
 
 	private List<HttpMessageConverter<?>> getMessageConverters() {
-		List<HttpMessageConverter<?>> converters = new ArrayList<HttpMessageConverter<?>>();
+		List<HttpMessageConverter<?>> converters = new ArrayList<>();
 		converters.add(new MappingJackson2HttpMessageConverter());
 		return converters;
 	}
