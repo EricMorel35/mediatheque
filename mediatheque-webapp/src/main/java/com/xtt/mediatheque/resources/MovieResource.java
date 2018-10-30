@@ -7,8 +7,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.xtt.mediatheque.constants.MediathequeConstants;
@@ -16,7 +14,6 @@ import com.xtt.mediatheque.dto.CatalogItemDTO;
 import com.xtt.mediatheque.dto.ContentMovieDTO;
 import com.xtt.mediatheque.dto.SearchItemDTO;
 import com.xtt.mediatheque.exceptions.FonctionnalException;
-import com.xtt.mediatheque.exceptions.MessageException;
 import com.xtt.mediatheque.exceptions.MovieNotFoundException;
 import com.xtt.mediatheque.exceptions.TechnicalAccessException;
 import com.xtt.mediatheque.messages.MessageUtils;
@@ -51,7 +48,7 @@ public class MovieResource {
 
 	@GetMapping("searchMovie/{movieName}")
 	public ResponseEntity<List<SearchItemDTO>> searchMovieByName(@PathVariable("movieName") final String movieName)
-			throws MessageException, MovieNotFoundException {
+			throws MovieNotFoundException {
 //		return new ResponseEntity<>(movieService.searchMovieByName(movieName), HttpStatus.OK);
 		return null;
 	}
@@ -63,10 +60,4 @@ public class MovieResource {
 		return null;
 	}
 
-	@PostMapping("getContentMovie/{movieId}")
-	public void addMovie(@RequestParam("movieName") final String movieName,
-			@RequestParam("userName") final String userName, @RequestParam("supportName") final String supportName)
-			throws FonctionnalException, TechnicalAccessException {
-
-	}
 }
