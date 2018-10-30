@@ -10,12 +10,10 @@ public class ContentMovieDTO {
 	private List<String> actors;
 	private List<String> directors;
 	private long creationDate;
-	private String userName;
-	private String poster;
+	private String cover;
 	private List<String> countries;
 	private List<String> genres;
 	private String urlYoutube;
-	private String media;
 
 	public List<String> getCountries() {
 		return countries;
@@ -81,20 +79,12 @@ public class ContentMovieDTO {
 		this.creationDate = creationDate;
 	}
 
-	public String getUserName() {
-		return userName;
+	public String getCover() {
+		return cover;
 	}
 
-	public void setUserName(final String userName) {
-		this.userName = userName;
-	}
-
-	public String getPoster() {
-		return poster;
-	}
-
-	public void setPoster(final String poster) {
-		this.poster = poster;
+	public void setCover(final String cover) {
+		this.cover = cover;
 	}
 
 	public String getUrlYoutube() {
@@ -103,14 +93,6 @@ public class ContentMovieDTO {
 
 	public void setUrlYoutube(final String urlYoutube) {
 		this.urlYoutube = urlYoutube;
-	}
-
-	public String getMedia() {
-		return media;
-	}
-
-	public void setMedia(String media) {
-		this.media = media;
 	}
 
 }

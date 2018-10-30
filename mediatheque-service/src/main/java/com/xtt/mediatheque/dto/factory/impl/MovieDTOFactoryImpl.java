@@ -1,15 +1,16 @@
 package com.xtt.mediatheque.dto.factory.impl;
 
 import java.util.Date;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 import com.xtt.mediatheque.dto.CatalogItemDTO;
 import com.xtt.mediatheque.dto.ContentMovieDTO;
 import com.xtt.mediatheque.dto.SearchItemDTO;
 import com.xtt.mediatheque.dto.factory.MovieDTOFactory;
+import com.xtt.mediatheque.model.KindItem;
 import com.xtt.mediatheque.model.MovieItem;
 import com.xtt.mediatheque.model.MovieUserEntity;
-import com.xtt.mediatheque.model.entity.MovieUserEntityItem;
 
 /**
  * Implementation of {@link MovieDTOFactory}
@@ -29,6 +30,9 @@ public class MovieDTOFactoryImpl implements MovieDTOFactory {
 		return dto;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public ContentMovieDTO buildFullMovieDTO(final MovieItem movieEntityItem) {
 		ContentMovieDTO movieDTO = new ContentMovieDTO();
@@ -47,11 +51,13 @@ public class MovieDTOFactoryImpl implements MovieDTOFactory {
 //			movieDTO.setPoster("/mediatheque-webapp/images/mistery.png");
 //		}
 //		movieDTO.setCountries(movieEntityItem.getCountries());
-//		movieDTO.setGenres(movieEntityItem.getGenres());
-//		movieDTO.setUserName(movieEntityItem.getUserName());
+
+		movieDTO.setGenres(movieEntityItem.getGenres()
+				                          .stream()
+				                          .map(KindItem::getName)
+				                          .collect(Collectors.toList()));
 //		movieDTO.setCreationDate(movieEntityItem.getTimestampCreationDate().getTime());
 		movieDTO.setUrlYoutube(movieEntityItem.getURLYoutube());
-//		movieDTO.setMedia(movieEntityItem.getSupport());
 		return movieDTO;
 	}
 

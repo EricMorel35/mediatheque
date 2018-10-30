@@ -6,10 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import com.xtt.mediatheque.dao.KindDAO;
 import com.xtt.mediatheque.dao.movie.MovieDAO;
 import com.xtt.mediatheque.dao.movie.MovieUserDAO;
 import com.xtt.mediatheque.model.MovieEntity;
 import com.xtt.mediatheque.model.MovieItem;
+import com.xtt.mediatheque.model.MovieKindsEntity;
+import com.xtt.mediatheque.model.MovieKindsEntity.KindsEmbeddableEntity;
 import com.xtt.mediatheque.model.MovieSearchItem;
 import com.xtt.mediatheque.model.MovieUserEntity;
 
@@ -22,11 +25,23 @@ public class MovieManager {
 	@Autowired
 	private MovieUserDAO movieUserDAO;
 	
-	public void updateFullDatas(Optional<MovieEntity> optMovie, MovieItem optMovieItem) {
+	@Autowired
+	private KindDAO kindDAO;
+	
+	public void updateFullDatas(Optional<MovieEntity> optMovie, MovieItem movieItem) {
 		optMovie.ifPresent(movie -> { 
-			movie.setUrlYoutube(optMovieItem.getURLYoutube());
-			movie.setUrlCover(optMovieItem.getURLPoster());
-			movie.setSynopsis(optMovieItem.getSynopsis().substring(0, 255));
+			movie.setUrlYoutube(movieItem.getURLYoutube());
+			movie.setUrlCover(movieItem.getURLPoster());
+			movie.setSynopsis(movieItem.getSynopsis().substring(0, 255));
+			movieItem.getGenres().forEach(genre -> {
+				MovieKindsEntity mke = new MovieKindsEntity();
+				KindsEmbeddableEntity pk = new KindsEmbeddableEntity();
+				pk.setKind(genre.getName());
+				pk.setIdBackend(movie);
+				mke.setPk(pk);
+				kindDAO.save(mke);
+			});
+			
 			movieDAO.save(movie);
 		});
 	}

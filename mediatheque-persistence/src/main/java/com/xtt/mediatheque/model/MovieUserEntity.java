@@ -13,7 +13,7 @@ import lombok.Data;
 @Data
 public class MovieUserEntity {
 
-	public static final String TABLE_NAME = "Movies_User";
+	public static final String TABLE_NAME = "MovieUser";
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

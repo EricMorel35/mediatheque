@@ -5,7 +5,6 @@ import com.xtt.mediatheque.dto.ContentMovieDTO;
 import com.xtt.mediatheque.dto.SearchItemDTO;
 import com.xtt.mediatheque.model.MovieItem;
 import com.xtt.mediatheque.model.MovieUserEntity;
-import com.xtt.mediatheque.model.entity.MovieUserEntityItem;
 
 public interface MovieDTOFactory {
 
