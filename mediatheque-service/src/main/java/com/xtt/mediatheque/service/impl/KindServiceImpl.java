@@ -13,14 +13,22 @@ import com.xtt.mediatheque.exceptions.TechnicalAccessException;
 import com.xtt.mediatheque.model.MovieKindsEntity;
 import com.xtt.mediatheque.service.KindService;
 
+/**
+ * Implementation of {@link KindService}
+ * 
+ * @author Eric Morel
+ */
 @Service
 public class KindServiceImpl implements KindService {
 
-	@Autowired
 	private KindDAO kindDAO;
+	private KindDTOFactory dtoFactory;
 
 	@Autowired
-	private KindDTOFactory dtoFactory;
+	public KindServiceImpl(KindDAO kindDAO, KindDTOFactory dtoFactory) {
+		this.kindDAO = kindDAO;
+		this.dtoFactory = dtoFactory;
+	}
 
 	/**
 	 * {@inheritDoc}

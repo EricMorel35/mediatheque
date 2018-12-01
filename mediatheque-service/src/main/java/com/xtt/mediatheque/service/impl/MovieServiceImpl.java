@@ -32,23 +32,23 @@ import com.xtt.mediatheque.service.MovieService;
 @Service
 public class MovieServiceImpl implements MovieService {
 
-	@Autowired
 	private WSMovieDAO wsMovieDAO;
-
-	@Autowired
 	private MovieUserDAO movieUserDAO;
-
-	@Autowired
 	private MovieDAO movieDAO;
-
-	@Autowired
 	private MovieDTOFactory dtoFactory;
+	private MovieManager movieManager;
+	private MessageUtils messages;
 
 	@Autowired
-	private MovieManager movieManager;
-	
-	@Autowired
-	private MessageUtils messages;
+	public MovieServiceImpl(WSMovieDAO wsMovieDAO, MovieUserDAO movieUserDAO, MovieDAO movieDAO,
+			MovieDTOFactory dtoFactory, MovieManager movieManager, MessageUtils messages) {
+		this.wsMovieDAO = wsMovieDAO;
+		this.movieUserDAO = movieUserDAO;
+		this.movieDAO = movieDAO;
+		this.dtoFactory = dtoFactory;
+		this.movieManager = movieManager;
+		this.messages = messages;
+	}
 
 	/**
 	 * {@inheritDoc}
@@ -61,7 +61,8 @@ public class MovieServiceImpl implements MovieService {
 		for (MovieUserEntity item : movies) {
 			if (item.getMovie() == 0) {
 				MovieSearchItem movieItem = wsMovieDAO.getSearchResultsMovie(item.getOriginalName());
-				if (movieItem != null && movieItem.getResults() > 0 && (!StringUtils.isEmpty(movieItem.getMovieName()) || !StringUtils.isEmpty(movieItem.getOriginalTitle()))) {
+				if (movieItem != null && movieItem.getResults() > 0 && (!StringUtils.isEmpty(movieItem.getMovieName())
+						|| !StringUtils.isEmpty(movieItem.getOriginalTitle()))) {
 					movieManager.updateDatasMovie(item, movieItem);
 				}
 			}
@@ -77,9 +78,12 @@ public class MovieServiceImpl implements MovieService {
 	@Override
 	public ContentMovieDTO getContentMovie(long movieId) throws MovieNotFoundException {
 		Optional<MovieEntity> optMovie = movieDAO.findById(movieId);
-		MovieItem movieItem = optMovie.filter(movie -> StringUtils.isEmpty(movie.getReleaseYear()) || StringUtils.isEmpty(movie.getSynopsis()))
-			                          .map(movie -> wsMovieDAO.getContentMovie(movieId))
-			                          .orElseThrow(() -> new MovieNotFoundException(messages.getMessageWithParameters(MediathequeConstants.MOVIE_NOT_FOUND, new String[] { String.valueOf(movieId) })));
+		MovieItem movieItem = optMovie
+				.filter(movie -> StringUtils.isEmpty(movie.getReleaseYear())
+						|| StringUtils.isEmpty(movie.getSynopsis()))
+				.map(movie -> wsMovieDAO.getContentMovie(movieId))
+				.orElseThrow(() -> new MovieNotFoundException(messages.getMessageWithParameters(
+						MediathequeConstants.MOVIE_NOT_FOUND, new String[] { String.valueOf(movieId) })));
 		movieManager.updateFullDatas(optMovie, movieItem);
 		return dtoFactory.buildFullMovieDTO(movieItem);
 	}
