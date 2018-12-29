@@ -1,39 +1,61 @@
 package com.xtt.mediatheque;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
-import com.xtt.mediatheque.dao.PersistenceDAO;
-import com.xtt.mediatheque.exceptions.TechnicalAccessException;
-import com.xtt.mediatheque.manager.MovieManager;
+import com.xtt.mediatheque.service.MovieService;
 
+@Component
 public class MoviesScan {
 
+	private final List<String> movies = new ArrayList<>();
+	private MovieService movieService;
+
+	@Value("${movies.words}")
 	private String blacklist;
-	private final List<String> movies = new ArrayList<String>();
+
+	private List<String> blacklistList;
 
 	@Autowired
-	private MovieManager movieManager;
+	public MoviesScan(MovieService movieService) {
+		this.movieService = movieService;
+	}
 
-	@Autowired
-	private PersistenceDAO persistenceDAO;
+	/**
+	 * Main entry point of logic implemented for movie scanner. First step : it's a
+	 * technical task to convert a String who contains a blacklist of words to erase
+	 * from movies name. Second step : scan the directory from <code>path</code>
+	 * Third step : when the scan is finished, persist movies found.
+	 * 
+	 * @param path : base path
+	 */
+	public void searchMovies(final String path) {
+		blacklistList = convertStringIntoList(blacklist);
+		scanDirectory(path);
+		persistMovies();
+	}
 
-	@Autowired
-	private WSMovieDAO wsMovieDAO;
-
-	public void searchMovies(final String path, final List<String> listBlackList) {
+	/**
+	 * Scan directory recursively from <code>path</code>. If a directory is found,
+	 * <code>scanDirectory</code> method is called from the last directory found. If
+	 * a file is found, a search is made with the goal to find forbidden words and
+	 * if this case happens, forbidden words are deleted from movie name.
+	 * 
+	 * @param path : base path
+	 */
+	private void scanDirectory(final String path) {
 		File root = new File(path);
 		List<File> filesList = Arrays.asList(root.listFiles());
 
-		if (filesList != null) {
+		if (!CollectionUtils.isEmpty(filesList)) {
 			for (File file : filesList) {
 				String fileName = StringUtils.EMPTY;
 				if (StringUtils.isBlank(fileName)) {
@@ -41,63 +63,28 @@ public class MoviesScan {
 				}
 
 				if (file.isDirectory()) {
-					this.searchMovies(file.getAbsolutePath(), listBlackList);
-					System.out.println("Dir:" + file.getAbsoluteFile());
+					this.scanDirectory(file.getAbsolutePath());
 				} else if (!file.isHidden()) {
-					for (String searchedString : listBlackList) {
+					for (String searchedString : blacklistList) {
 						if (fileName.contains(searchedString)) {
 							fileName = fileName.replace(searchedString, StringUtils.EMPTY);
 						}
 					}
-					System.out.println("File:" + fileName);
 					movies.add(fileName);
 				}
 			}
 		}
-
 	}
 
-	public List<String> convertStringIntoList(final String blacklist) {
+	private List<String> convertStringIntoList(final String blacklist) {
 		return Arrays.asList(blacklist.split(";"));
 	}
 
-	public void writeFile() {
-		try {
-			File file = new File("movies.txt");
-
-			if (!file.exists()) {
-				file.delete();
-				file.createNewFile();
-			}
-
-			FileWriter fw = new FileWriter(file.getAbsoluteFile());
-			BufferedWriter bw = new BufferedWriter(fw);
-			for (String content : movies) {
-				bw.write(content);
-				bw.write("\n");
-			}
-			bw.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	/**
+	 * Calls Service layer of mediatheque to persist movie name found by scanner.
+	 */
+	private void persistMovies() {
+		movies.stream().forEach(movie -> movieService.saveMovie(movie));
 	}
 
-	public void persistMovies() throws TechnicalAccessException {
-		for (String movieName : movies) {
-			movieManager.saveMovie(movieName);
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				// TODO Log
-			}
-		}
-	}
-
-	public void setBlacklist(final String blacklist) {
-		this.blacklist = blacklist;
-	}
-
-	public String getBlacklist() {
-		return blacklist;
-	}
 }

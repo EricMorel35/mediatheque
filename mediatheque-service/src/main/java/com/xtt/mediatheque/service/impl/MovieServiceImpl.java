@@ -88,10 +88,15 @@ public class MovieServiceImpl implements MovieService {
 		return dtoFactory.buildFullMovieDTO(movieItem);
 	}
 
-//	@Override
-//	public void persistMovie(String movieName, String userName) throws TechnicalAccessException {
-//		// persistenceDAO.persistMovie(movieName, userName);
-//	}
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void saveMovie(String movieName) {
+		MovieUserEntity movie = new MovieUserEntity();
+		movie.setMovieName(movieName);
+		movieUserDAO.save(movie);
+	}
 //
 //	/**
 //	 * {@inheritDoc}
@@ -122,16 +127,6 @@ public class MovieServiceImpl implements MovieService {
 //			}
 //		}
 //		return listMoviesDTO;
-//	}
-//
-//	@Override
-//	public void saveUserMovie(MovieUserEntity movieUserEntity) throws TechnicalAccessException {
-//		movieDAO.saveUserMovie(movieUserEntity);
-//	}
-//
-//	@Override
-//	public void saveMovie(MovieEntity movieEntity) throws TechnicalAccessException {
-//		movieDAO.saveMovie(movieEntity);
 //	}
 
 }

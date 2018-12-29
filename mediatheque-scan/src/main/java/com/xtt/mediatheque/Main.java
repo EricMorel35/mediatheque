@@ -1,34 +1,28 @@
 package com.xtt.mediatheque;
 
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import static java.lang.System.exit;
 
-import com.xtt.mediatheque.config.AppConfiguration;
-import com.xtt.mediatheque.exceptions.TechnicalAccessException;
+@SpringBootApplication
+public class Main implements CommandLineRunner {
 
-public class Main {
+	@Autowired
+	private MoviesScan moviesScan;
 
 	/**
 	 * @param args
 	 */
 	public static void main(final String[] args) {
-		ApplicationContext context = new AnnotationConfigApplicationContext(AppConfiguration.class);
-		MoviesScan moviesScan = context.getBean(MoviesScan.class);
-		String directory = "Y:\\Films";
+		SpringApplication.run(Main.class, args);
+	}
 
-		if (!StringUtils.EMPTY.equalsIgnoreCase(directory)) {
-			moviesScan.searchMovies(directory, moviesScan.convertStringIntoList(moviesScan.getBlacklist()));
-			// t.writeFile();
-			try {
-				moviesScan.persistMovies();
-			} catch (TechnicalAccessException e) {
-				e.printStackTrace();
-			}
-		}
-
-		((ConfigurableApplicationContext) context).close();
+	@Override
+	public void run(String... args) throws Exception {
+		moviesScan.searchMovies(args[0]);
+		exit(0);
 	}
 
 }

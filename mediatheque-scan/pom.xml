@@ -7,95 +7,55 @@
 		<version>2.0.3.RELEASE</version>
 	</parent>
 
+	<groupId>com.xtt.mediatheque</groupId>
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>mediatheque-scan</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>mediatheque-scan</name>
 	<url>http://maven.apache.org</url>
 
 	<properties>
-		<spring.version>4.3.5.RELEASE</spring.version>
 		<commons.version>3.1</commons.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<plateforme.version>1.0.0-SNAPSHOT</plateforme.version>
+		<java.version>1.8</java.version>
 	</properties>
 
 	<dependencies>
 		<!-- Spring framework -->
 		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-context</artifactId>
-			<version>${spring.version}</version>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter</artifactId>
 		</dependency>
-
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-webmvc</artifactId>
-		</dependency>
-
 		<!-- Apache Commons -->
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
 		</dependency>
 
-		<dependency>
-			<groupId>${project.parent.groupId}</groupId>
-			<artifactId>mediatheque-persistence</artifactId>
-			<version>${project.parent.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>${project.parent.groupId}</groupId>
+		 <dependency>
+			<groupId>${project.groupId}</groupId>
 			<artifactId>mediatheque-service</artifactId>
-			<version>${project.parent.version}</version>
+			<version>${plateforme.version}</version>
 		</dependency>
+		
 		<dependency>
-			<groupId>${project.parent.groupId}</groupId>
-			<artifactId>mediatheque-tmdb</artifactId>
-			<version>${project.parent.version}</version>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<scope>runtime</scope>
 		</dependency>
-
-		<dependency>
-			<groupId>postgresql</groupId>
-			<artifactId>postgresql</artifactId>
-			<version>9.0-801.jdbc4</version>
-		</dependency>
+		
 	</dependencies>
 
 	<build>
 		<finalName>MoviesSearch</finalName>
 		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.3.1</version>
-				<configuration>
-					<source>1.8</source>
-					<target>1.8</target>
-				</configuration>
-			</plugin>
-			<plugin>
-				<artifactId>maven-assembly-plugin</artifactId>
-				<version>2.2-beta-2</version>
-				<executions>
-					<execution>
-						<id>create-executable-jar</id>
-						<phase>package</phase>
-						<goals>
-							<goal>single</goal>
-						</goals>
-						<configuration>
-							<descriptors>
-								<descriptor>src/main/assembly/assembly.xml</descriptor>
-							</descriptors>
-							<archive>
-								<manifest>
-									<mainClass>com.xtt.mediatheque.MoviesScan</mainClass>
-								</manifest>
-							</archive>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
+            <!-- Package as an executable jar/war -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
 		</plugins>
 	</build>
 </project>

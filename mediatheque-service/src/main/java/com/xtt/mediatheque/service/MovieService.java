@@ -21,24 +21,26 @@ public interface MovieService {
 	List<CatalogItemDTO> getAllMovies();
 
 	/**
-	 * Méthode récupérant les informations pour un film donné.
+	 * Gets metadata such as title, synopsis, actors, kind of movie for a given
+	 * movie.
 	 *
-	 * @param movieId : l'identifiant du film.
-	 * @return Le DTO contenant les données du film.
-	 * @throws MovieNotFoundException : l'exception est levée si l'identifiant du
-	 *                                film ne correspond à aucun film.
+	 * @param movieId : the id of movie.
+	 * @return The DTO object which contains movie's metadata.
+	 * @throws MovieNotFoundException : This exception is thrown if no movie is
+	 *                                found for the given id.
 	 */
 	ContentMovieDTO getContentMovie(long movieId) throws MovieNotFoundException;
 
-//	void saveMovie(MovieEntity movieEntity) throws TechnicalAccessException;
-//
-//	void saveUserMovie(MovieUserEntity movieUserEntity) throws TechnicalAccessException;
+	/**
+	 * Save current movie.
+	 * 
+	 * @param movieName : the movie to save.
+	 */
+	void saveMovie(String movieName);
 //
 //	List<CatalogItemDTO> getMoviesByKind(String kind) throws TechnicalAccessException;
 //
 //	String getCoverByNameFromDisk(String name);
-//
-//	void persistMovie(String movieName, String userName) throws TechnicalAccessException;
 //
 //	List<SearchItemDTO> searchMovieByName(String movieName) throws MessageException, MovieNotFoundException;
 }
