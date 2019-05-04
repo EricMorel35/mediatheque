@@ -52,7 +52,10 @@ public class MovieDTOFactoryImpl implements MovieDTOFactory {
 //		}
 //		movieDTO.setCountries(movieEntityItem.getCountries());
 
-		movieDTO.setGenres(movieEntityItem.getGenres().stream().map(KindItem::getName).collect(Collectors.toList()));
+		movieDTO.setGenres(movieEntityItem.getGenres()
+				                          .stream()
+				                          .map(KindItem::getName)
+				                          .collect(Collectors.toList()));
 //		movieDTO.setCreationDate(movieEntityItem.getTimestampCreationDate().getTime());
 		movieDTO.setUrlYoutube(movieEntityItem.getURLYoutube());
 		return movieDTO;
@@ -64,7 +67,7 @@ public class MovieDTOFactoryImpl implements MovieDTOFactory {
 	@Override
 	public CatalogItemDTO buildLightMovieDTO(final MovieUserEntity movieEntity) {
 		return CatalogItemDTO.builder().title(movieEntity.getMovieName()).addingDate(new Date())
-				.id(movieEntity.getMovie()).build();
+				.id(movieEntity.getId()).build();
 	}
 
 }

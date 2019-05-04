@@ -1,15 +1,10 @@
 package com.xtt.mediatheque.service.impl;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Function;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -19,9 +14,7 @@ import com.xtt.mediatheque.dao.movie.MovieDAO;
 import com.xtt.mediatheque.dao.movie.MovieUserDAO;
 import com.xtt.mediatheque.dto.CatalogItemDTO;
 import com.xtt.mediatheque.dto.ContentMovieDTO;
-import com.xtt.mediatheque.dto.SearchItemDTO;
 import com.xtt.mediatheque.dto.factory.MovieDTOFactory;
-import com.xtt.mediatheque.exceptions.MessageException;
 import com.xtt.mediatheque.exceptions.MovieNotFoundException;
 import com.xtt.mediatheque.manager.MovieManager;
 import com.xtt.mediatheque.messages.MessageUtils;
@@ -61,18 +54,22 @@ public class MovieServiceImpl implements MovieService {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Page<CatalogItemDTO> getAllMovies(Pageable pageable) {
-		Page<MovieUserEntity> movies = movieUserDAO.findAll(pageable);
+	public List<CatalogItemDTO> getAllMovies() {
+		List<CatalogItemDTO> listMoviesDTO = new ArrayList<>();
+		List<MovieUserEntity> movies = movieUserDAO.findAll();
 
-		return movies.map(new Function<MovieUserEntity, CatalogItemDTO>() {
-			@Override
-			public CatalogItemDTO apply(MovieUserEntity entity) {
-				CatalogItemDTO dto = CatalogItemDTO.builder().title(entity.getMovieName()).addingDate(new Date())
-						.id(entity.getMovie()).build();
-
-				return dto;
+		for (MovieUserEntity item : movies) {
+			if (item.getMovie() == 0) {
+				MovieSearchItem movieItem = wsMovieDAO.getSearchResultsMovie(item.getOriginalName());
+				if (movieItem != null && movieItem.getResults() > 0 && (!StringUtils.isEmpty(movieItem.getMovieName())
+						|| !StringUtils.isEmpty(movieItem.getOriginalTitle()))) {
+					movieManager.updateDatasMovie(item, movieItem);
+				}
 			}
-		});
+			listMoviesDTO.add(dtoFactory.buildLightMovieDTO(item));
+		}
+
+		return listMoviesDTO;
 	}
 
 	/**
@@ -95,14 +92,11 @@ public class MovieServiceImpl implements MovieService {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void saveMovie(MovieSearchItem movie) {
-		MovieUserEntity movieUserEntity = new MovieUserEntity();
-		movieUserEntity.setMovieName(movie.getMovieName());
-		movieUserEntity.setMovie(movie.getIdBackend());
-		movieUserEntity.setOriginalName(movie.getOriginalTitle());
-		movieUserDAO.save(movieUserEntity);
+	public void saveMovie(String movieName) {
+		MovieUserEntity movie = new MovieUserEntity();
+		movie.setMovieName(movieName);
+		movieUserDAO.save(movie);
 	}
-
 //
 //	/**
 //	 * {@inheritDoc}
@@ -117,22 +111,22 @@ public class MovieServiceImpl implements MovieService {
 //		return listMoviesDTO;
 //	}
 //
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public List<SearchItemDTO> searchMovieByName(String movieName) throws MessageException, MovieNotFoundException {
-		List<SearchItemDTO> listMoviesDTO = new ArrayList<>();
-		List<MovieItem> items = wsMovieDAO.getSearchAllResultsMovie(movieName);
-		if (CollectionUtils.isEmpty(items)) {
-			throw new MovieNotFoundException(messages.getMessageWithParameters(MediathequeConstants.MOVIE_NOT_FOUND,
-					new String[] { movieName }));
-		} else {
-			for (MovieItem item : items) {
-				listMoviesDTO.add(dtoFactory.buildLightMovieDTO(item));
-			}
-		}
-		return listMoviesDTO;
-	}
+//	/**
+//	 * {@inheritDoc}
+//	 */
+//	@Override
+//	public List<SearchItemDTO> searchMovieByName(String movieName) throws MessageException, MovieNotFoundException {
+//		List<SearchItemDTO> listMoviesDTO = new ArrayList<SearchItemDTO>();
+//		List<MovieItem> items = wsMovieDAO.getSearchAllResultsMovie(movieName);
+//		if (items.size() == 0) {
+//			throw new MovieNotFoundException(messages.getMessageWithParameters(MediathequeConstants.MOVIE_NOT_FOUND,
+//					new String[] { movieName }));
+//		} else {
+//			for (MovieItem item : items) {
+//				listMoviesDTO.add(dtoFactory.buildLightMovieDTO(item));
+//			}
+//		}
+//		return listMoviesDTO;
+//	}
 
 }

@@ -21,6 +21,5 @@ create table if not exists Movie_Kind (
    kind varchar(50) not null,
 );
 
-INSERT INTO Movie_User (id,movie_name,original_name,movie) VALUES (1,'Iron Man','Iron Man',1726);
-INSERT INTO Movie_User (id,movie_name,original_name,movie) VALUES (2,'Taxi','Taxi',2330);
-INSERT INTO Movie_User (id,movie_name,original_name,movie) VALUES (3,'Inglorious Basterds','Inglorious Basterds',16869);
+INSERT INTO Movie_User (id,movie_name,original_name,movie) VALUES (1,'Iron Man','Iron Man',0);
+INSERT INTO Movie_User (id,movie_name,original_name,movie) VALUES (2,'Taxi','Taxi',0);

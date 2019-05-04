@@ -3,8 +3,6 @@ package com.xtt.mediatheque.resources;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -43,14 +41,16 @@ public class MovieResource {
 	}
 
 	@GetMapping("getAllMovies")
-	public Page<CatalogItemDTO> getAllMovies(Pageable pageable) {
-		return movieService.getAllMovies(pageable);
+	public ResponseEntity<List<CatalogItemDTO>> getAllMovies() {
+		List<CatalogItemDTO> movies = movieService.getAllMovies();
+		return new ResponseEntity<>(movies, HttpStatus.OK);
 	}
 
 	@GetMapping("searchMovie/{movieName}")
 	public ResponseEntity<List<SearchItemDTO>> searchMovieByName(@PathVariable("movieName") final String movieName)
 			throws MovieNotFoundException {
-		return new ResponseEntity<>(movieService.searchMovieByName(movieName), HttpStatus.OK);
+//		return new ResponseEntity<>(movieService.searchMovieByName(movieName), HttpStatus.OK);
+		return null;
 	}
 
 	@GetMapping("getMoviesByKind/{kind}")
