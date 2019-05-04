@@ -105,7 +105,6 @@ public class MovieServiceImpl implements MovieService {
 		movieEntity.setReleaseYear(Integer.valueOf(movie.getReleaseYear()));
 		movieEntity.setMovieUser(movieUserEntity);
 
-		// movieUserEntity.setMovie(movieEntity);
 		movieUserDAO.save(movieUserEntity);
 	}
 
