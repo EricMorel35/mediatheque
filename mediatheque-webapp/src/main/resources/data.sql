@@ -1,4 +1,4 @@
-create table if not exists Movie_User (
+/*create table if not exists Movie_User (
    id integer not null,
    movie_name varchar(255) not null,
    original_name varchar(255) not null,
@@ -23,4 +23,4 @@ create table if not exists Movie_Kind (
 
 INSERT INTO Movie_User (id,movie_name,original_name,movie) VALUES (1,'Iron Man','Iron Man',1726);
 INSERT INTO Movie_User (id,movie_name,original_name,movie) VALUES (2,'Taxi','Taxi',2330);
-INSERT INTO Movie_User (id,movie_name,original_name,movie) VALUES (3,'Inglorious Basterds','Inglorious Basterds',16869);
+INSERT INTO Movie_User (id,movie_name,original_name,movie) VALUES (3,'Inglorious Basterds','Inglorious Basterds',16869);*/
