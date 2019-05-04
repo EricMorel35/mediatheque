@@ -18,18 +18,18 @@ import com.xtt.mediatheque.model.MovieUserEntity;
 
 @Service
 public class MovieManager {
-	
+
 	@Autowired
 	private MovieDAO movieDAO;
-	
+
 	@Autowired
 	private MovieUserDAO movieUserDAO;
-	
+
 	@Autowired
 	private KindDAO kindDAO;
-	
+
 	public void updateFullDatas(Optional<MovieEntity> optMovie, MovieItem movieItem) {
-		optMovie.ifPresent(movie -> { 
+		optMovie.ifPresent(movie -> {
 			movie.setUrlYoutube(movieItem.getURLYoutube());
 			movie.setUrlCover(movieItem.getURLPoster());
 			movie.setSynopsis(movieItem.getSynopsis().substring(0, 255));
@@ -41,11 +41,11 @@ public class MovieManager {
 				mke.setPk(pk);
 				kindDAO.save(mke);
 			});
-			
+
 			movieDAO.save(movie);
 		});
 	}
-	
+
 	public void updateDatasMovie(MovieUserEntity item, MovieSearchItem movieItem) {
 		MovieEntity movieEntity = new MovieEntity();
 		movieEntity.setMovieId(movieItem.getIdBackend());
@@ -67,7 +67,7 @@ public class MovieManager {
 
 		movieDAO.save(movieEntity);
 
-		item.setMovie(movieEntity.getMovieId());
+		// item.setMovie(movieEntity.getMovieId());
 		movieUserDAO.save(item);
 	}
 

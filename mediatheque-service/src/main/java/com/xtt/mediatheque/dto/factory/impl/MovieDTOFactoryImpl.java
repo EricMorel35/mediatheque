@@ -64,7 +64,7 @@ public class MovieDTOFactoryImpl implements MovieDTOFactory {
 	@Override
 	public CatalogItemDTO buildLightMovieDTO(final MovieUserEntity movieEntity) {
 		return CatalogItemDTO.builder().title(movieEntity.getMovieName()).addingDate(new Date())
-				.id(movieEntity.getMovie()).build();
+				.id(movieEntity.getMovie().getMovieId()).build();
 	}
 
 }

@@ -67,10 +67,9 @@ public class MovieServiceImpl implements MovieService {
 		return movies.map(new Function<MovieUserEntity, CatalogItemDTO>() {
 			@Override
 			public CatalogItemDTO apply(MovieUserEntity entity) {
-				CatalogItemDTO dto = CatalogItemDTO.builder().title(entity.getMovieName()).addingDate(new Date())
-						.id(entity.getMovie()).build();
-
-				return dto;
+				return CatalogItemDTO.builder().title(entity.getMovieName()).addingDate(new Date())
+						.id(entity.getMovie().getMovieId()).urlCover(entity.getMovie().getUrlCover())
+						.releaseYear(entity.getMovie().getReleaseYear()).build();
 			}
 		});
 	}
@@ -98,8 +97,15 @@ public class MovieServiceImpl implements MovieService {
 	public void saveMovie(MovieSearchItem movie) {
 		MovieUserEntity movieUserEntity = new MovieUserEntity();
 		movieUserEntity.setMovieName(movie.getMovieName());
-		movieUserEntity.setMovie(movie.getIdBackend());
 		movieUserEntity.setOriginalName(movie.getOriginalTitle());
+
+		MovieEntity movieEntity = new MovieEntity();
+		movieEntity.setMovieTitle(movie.getMovieName());
+		movieEntity.setMovieId(movie.getIdBackend());
+		movieEntity.setReleaseYear(Integer.valueOf(movie.getReleaseYear()));
+		movieEntity.setMovieUser(movieUserEntity);
+
+		// movieUserEntity.setMovie(movieEntity);
 		movieUserDAO.save(movieUserEntity);
 	}
 

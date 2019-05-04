@@ -6,7 +6,9 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import lombok.Data;
@@ -19,7 +21,6 @@ public class MovieEntity {
 	public static final String TABLE_NAME = "Movie";
 
 	@Id
-//	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name = "movie_id")
 	private Long movieId;
 
@@ -37,9 +38,9 @@ public class MovieEntity {
 	@Column(name = "url_youtube")
 	private String urlYoutube;
 
-//	@OneToOne
-//	@JoinColumn(name = "movie_user_id")
-//	private MovieUserEntity movieUser;
+	@OneToOne
+	@JoinColumn(name = "movie_user_id")
+	private MovieUserEntity movieUser;
 
 //	@OneToMany(mappedBy = "pk.idBackend", cascade = { CascadeType.ALL })
 //	private List<MovieActorsEntity> actors;
@@ -52,8 +53,5 @@ public class MovieEntity {
 //
 	@OneToMany(mappedBy = "pk.idBackend", cascade = { CascadeType.ALL })
 	private List<MovieKindsEntity> kinds;
-//
-//	@OneToMany(mappedBy = "idBackend", fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
-//	private List<MovieUserEntity> movies;
 
 }
