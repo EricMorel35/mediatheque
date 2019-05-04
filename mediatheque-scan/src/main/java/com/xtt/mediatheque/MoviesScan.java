@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import com.xtt.mediatheque.model.MovieSearchItem;
 import com.xtt.mediatheque.service.MovieService;
 
 @Component
@@ -18,6 +19,7 @@ public class MoviesScan {
 
 	private final List<String> movies = new ArrayList<>();
 	private MovieService movieService;
+	private WSMovieDAO wsMovieDAO;
 
 	@Value("${movies.words}")
 	private String blacklist;
@@ -25,8 +27,9 @@ public class MoviesScan {
 	private List<String> blacklistList;
 
 	@Autowired
-	public MoviesScan(MovieService movieService) {
+	public MoviesScan(MovieService movieService, WSMovieDAO wsMovieDAO) {
 		this.movieService = movieService;
+		this.wsMovieDAO = wsMovieDAO;
 	}
 
 	/**
@@ -84,7 +87,13 @@ public class MoviesScan {
 	 * Calls Service layer of mediatheque to persist movie name found by scanner.
 	 */
 	private void persistMovies() {
-		movies.stream().forEach(movie -> movieService.saveMovie(movie));
+		movies.stream().forEach(movie -> {
+			MovieSearchItem movieItem = wsMovieDAO.getSearchResultsMovie(movie);
+			if (movieItem != null && movieItem.getResults() > 0 && (!StringUtils.isEmpty(movieItem.getMovieName())
+					|| !StringUtils.isEmpty(movieItem.getOriginalTitle()))) {
+				movieService.saveMovie(movieItem);
+			}
+		});
 	}
 
 }

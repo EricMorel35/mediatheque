@@ -2,9 +2,15 @@ package com.xtt.mediatheque.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import com.xtt.mediatheque.dto.CatalogItemDTO;
 import com.xtt.mediatheque.dto.ContentMovieDTO;
+import com.xtt.mediatheque.dto.SearchItemDTO;
+import com.xtt.mediatheque.exceptions.MessageException;
 import com.xtt.mediatheque.exceptions.MovieNotFoundException;
+import com.xtt.mediatheque.model.MovieSearchItem;
 
 /**
  * Service interface for movies.
@@ -18,7 +24,7 @@ public interface MovieService {
 	 *
 	 * @return a DTO list which contains movies.
 	 */
-	List<CatalogItemDTO> getAllMovies();
+	Page<CatalogItemDTO> getAllMovies(Pageable pageable);
 
 	/**
 	 * Gets metadata such as title, synopsis, actors, kind of movie for a given
@@ -34,13 +40,11 @@ public interface MovieService {
 	/**
 	 * Save current movie.
 	 * 
-	 * @param movieName : the movie to save.
+	 * @param movie : the movie to save.
 	 */
-	void saveMovie(String movieName);
-//
+	void saveMovie(MovieSearchItem movie);
+
 //	List<CatalogItemDTO> getMoviesByKind(String kind) throws TechnicalAccessException;
-//
-//	String getCoverByNameFromDisk(String name);
-//
-//	List<SearchItemDTO> searchMovieByName(String movieName) throws MessageException, MovieNotFoundException;
+
+	List<SearchItemDTO> searchMovieByName(String movieName) throws MessageException, MovieNotFoundException;
 }
