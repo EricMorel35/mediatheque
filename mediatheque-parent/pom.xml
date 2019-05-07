@@ -17,7 +17,7 @@
 		<module>../mediatheque-persistence</module>
 		<module>../mediatheque-dto</module>
 		<module>../mediatheque-service</module>
-		<!-- <module>../mediatheque-scan</module> -->
+		<module>../mediatheque-scan</module>
 		<module>../mediatheque-webapp</module>
 	</modules>
 
