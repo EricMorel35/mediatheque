@@ -36,14 +36,6 @@ public class MovieKindsEntity {
 	}
 
 	@EmbeddedId
-	private KindsEmbeddableEntity pk;
-
-	public KindsEmbeddableEntity getPk() {
-		return pk;
-	}
-
-	public void setPk(final KindsEmbeddableEntity pk) {
-		this.pk = pk;
-	}
+	private KindsEmbeddableEntity kindPk;
 
 }

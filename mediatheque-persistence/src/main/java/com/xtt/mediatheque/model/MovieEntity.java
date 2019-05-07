@@ -1,5 +1,6 @@
 package com.xtt.mediatheque.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -16,7 +17,9 @@ import lombok.Data;
 @Entity
 @Table(name = MovieEntity.TABLE_NAME)
 @Data
-public class MovieEntity {
+public class MovieEntity implements Serializable {
+
+	private static final long serialVersionUID = -5452769843167032131L;
 
 	public static final String TABLE_NAME = "Movie";
 
@@ -42,16 +45,16 @@ public class MovieEntity {
 	@JoinColumn(name = "movie_user_id")
 	private MovieUserEntity movieUser;
 
-//	@OneToMany(mappedBy = "pk.idBackend", cascade = { CascadeType.ALL })
-//	private List<MovieActorsEntity> actors;
-//
-//	@OneToMany(mappedBy = "pk.idBackend", cascade = { CascadeType.ALL })
-//	private List<MovieDirectorsEntity> directors;
-//
-//	@OneToMany(mappedBy = "pk.idBackend", cascade = { CascadeType.ALL })
-//	private List<MovieCountryEntity> countries;
-//
-	@OneToMany(mappedBy = "pk.idBackend", cascade = { CascadeType.ALL })
+	@OneToMany(mappedBy = "actorsPk.idBackend", cascade = { CascadeType.ALL })
+	private List<MovieActorsEntity> actors;
+
+	@OneToMany(mappedBy = "directorsPk.idBackend", cascade = { CascadeType.ALL })
+	private List<MovieDirectorsEntity> directors;
+
+	@OneToMany(mappedBy = "countryPk.idBackend", cascade = { CascadeType.ALL })
+	private List<MovieCountryEntity> countries;
+
+	@OneToMany(mappedBy = "kindPk.idBackend", cascade = { CascadeType.ALL })
 	private List<MovieKindsEntity> kinds;
 
 }

@@ -46,6 +46,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 		MessageDTO error = new MessageDTO();
 		error.setMessage(ex.getMessage());
 
-		return handleExceptionInternal(ex, error, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+		return handleExceptionInternal(ex, error, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
 	}
 }

@@ -23,12 +23,14 @@ import com.xtt.mediatheque.dto.SearchItemDTO;
 import com.xtt.mediatheque.dto.factory.MovieDTOFactory;
 import com.xtt.mediatheque.exceptions.MessageException;
 import com.xtt.mediatheque.exceptions.MovieNotFoundException;
+import com.xtt.mediatheque.exceptions.TechnicalAccessException;
 import com.xtt.mediatheque.manager.MovieManager;
 import com.xtt.mediatheque.messages.MessageUtils;
 import com.xtt.mediatheque.model.MovieEntity;
 import com.xtt.mediatheque.model.MovieItem;
 import com.xtt.mediatheque.model.MovieSearchItem;
 import com.xtt.mediatheque.model.MovieUserEntity;
+import com.xtt.mediatheque.model.entity.MovieUserEntityItem;
 import com.xtt.mediatheque.service.MovieService;
 
 /**
@@ -61,7 +63,7 @@ public class MovieServiceImpl implements MovieService {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Page<CatalogItemDTO> getAllMovies(Pageable pageable) {
+	public Page<CatalogItemDTO> movies(Pageable pageable) {
 		Page<MovieUserEntity> movies = movieUserDAO.findAll(pageable);
 
 		return movies.map(new Function<MovieUserEntity, CatalogItemDTO>() {
@@ -78,7 +80,7 @@ public class MovieServiceImpl implements MovieService {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public ContentMovieDTO getContentMovie(long movieId) throws MovieNotFoundException {
+	public ContentMovieDTO movie(long movieId) throws MovieNotFoundException {
 		Optional<MovieEntity> optMovie = movieDAO.findById(movieId);
 		MovieItem movieItem = optMovie
 				.filter(movie -> StringUtils.isEmpty(movie.getReleaseYear())
@@ -104,24 +106,24 @@ public class MovieServiceImpl implements MovieService {
 		movieEntity.setMovieId(movie.getIdBackend());
 		movieEntity.setReleaseYear(Integer.valueOf(movie.getReleaseYear()));
 		movieEntity.setMovieUser(movieUserEntity);
+		movieEntity.setUrlCover(movie.getURLPoster());
 
 		movieUserDAO.save(movieUserEntity);
 	}
 
-//
-//	/**
-//	 * {@inheritDoc}
-//	 */
-//	@Override
-//	public List<CatalogItemDTO> getMoviesByKind(String kind) throws TechnicalAccessException {
-//		List<CatalogItemDTO> listMoviesDTO = new ArrayList<CatalogItemDTO>();
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public List<CatalogItemDTO> getMoviesByKind(String kind) throws TechnicalAccessException {
+		List<CatalogItemDTO> listMoviesDTO = new ArrayList<>();
 //		List<MovieUserEntityItem> moviesList = movieDAO.getMoviesByKind(kind);
 //		for (MovieUserEntityItem item : moviesList) {
 //			listMoviesDTO.add(dtoFactory.buildLightMovieDTO(item));
 //		}
-//		return listMoviesDTO;
-//	}
-//
+		return listMoviesDTO;
+	}
+
 	/**
 	 * {@inheritDoc}
 	 */

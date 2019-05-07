@@ -8,6 +8,8 @@ import com.xtt.mediatheque.dto.CatalogItemDTO;
 import com.xtt.mediatheque.dto.ContentMovieDTO;
 import com.xtt.mediatheque.dto.SearchItemDTO;
 import com.xtt.mediatheque.dto.factory.MovieDTOFactory;
+import com.xtt.mediatheque.model.ActorsItem;
+import com.xtt.mediatheque.model.DirectorsItem;
 import com.xtt.mediatheque.model.KindItem;
 import com.xtt.mediatheque.model.MovieItem;
 import com.xtt.mediatheque.model.MovieUserEntity;
@@ -39,19 +41,9 @@ public class MovieDTOFactoryImpl implements MovieDTOFactory {
 		movieDTO.setMovieName(movieEntityItem.getMovieName());
 		movieDTO.setReleaseYear(movieEntityItem.getReleaseYear());
 		movieDTO.setSynopsis(movieEntityItem.getSynopsis());
-//		movieDTO.setActors(movieEntityItem.getActors());
-//		movieDTO.setDirectors(movieEntityItem.getDirectors());
-//		if (!StringUtils.isEmpty(movieEntityItem.getUrlPoster())) {
-//			String title = movieEntityItem.getMovieTitle().replaceAll(" ", "%20");
-//			title = title.replace('?', '/');
-//			StringBuffer url = new StringBuffer();
-//			String urlCover = url.append("/mediatheque-webapp/movie/cover/").append(title).append(".do").toString();
-//			movieDTO.setPoster(urlCover);
-//		} else {
-//			movieDTO.setPoster("/mediatheque-webapp/images/mistery.png");
-//		}
-//		movieDTO.setCountries(movieEntityItem.getCountries());
-
+		movieDTO.setActors(movieEntityItem.getActors().stream().map(ActorsItem::getName).collect(Collectors.toList()));
+		movieDTO.setDirectors(movieEntityItem.getDirectors().stream().map(DirectorsItem::getName).collect(Collectors.toList()));
+//		movieDTO.setCountries(movieEntityItem.getCountries().stream().map(CountrItem::getName).collect(Collectors.toList()));
 		movieDTO.setGenres(movieEntityItem.getGenres().stream().map(KindItem::getName).collect(Collectors.toList()));
 //		movieDTO.setCreationDate(movieEntityItem.getTimestampCreationDate().getTime());
 		movieDTO.setUrlYoutube(movieEntityItem.getURLYoutube());

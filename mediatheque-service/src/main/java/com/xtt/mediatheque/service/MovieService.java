@@ -8,8 +8,8 @@ import org.springframework.data.domain.Pageable;
 import com.xtt.mediatheque.dto.CatalogItemDTO;
 import com.xtt.mediatheque.dto.ContentMovieDTO;
 import com.xtt.mediatheque.dto.SearchItemDTO;
-import com.xtt.mediatheque.exceptions.MessageException;
 import com.xtt.mediatheque.exceptions.MovieNotFoundException;
+import com.xtt.mediatheque.exceptions.TechnicalAccessException;
 import com.xtt.mediatheque.model.MovieSearchItem;
 
 /**
@@ -24,7 +24,7 @@ public interface MovieService {
 	 *
 	 * @return a DTO list which contains movies.
 	 */
-	Page<CatalogItemDTO> getAllMovies(Pageable pageable);
+	Page<CatalogItemDTO> movies(Pageable pageable);
 
 	/**
 	 * Gets metadata such as title, synopsis, actors, kind of movie for a given
@@ -35,7 +35,7 @@ public interface MovieService {
 	 * @throws MovieNotFoundException : This exception is thrown if no movie is
 	 *                                found for the given id.
 	 */
-	ContentMovieDTO getContentMovie(long movieId) throws MovieNotFoundException;
+	ContentMovieDTO movie(long movieId) throws MovieNotFoundException;
 
 	/**
 	 * Save current movie.
@@ -44,7 +44,7 @@ public interface MovieService {
 	 */
 	void saveMovie(MovieSearchItem movie);
 
-//	List<CatalogItemDTO> getMoviesByKind(String kind) throws TechnicalAccessException;
+	List<CatalogItemDTO> getMoviesByKind(String kind) throws TechnicalAccessException;
 
-	List<SearchItemDTO> searchMovieByName(String movieName) throws MessageException, MovieNotFoundException;
+	List<SearchItemDTO> searchMovieByName(String movieName) throws MovieNotFoundException;
 }

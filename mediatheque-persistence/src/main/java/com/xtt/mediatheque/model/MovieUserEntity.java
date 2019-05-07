@@ -1,5 +1,8 @@
 package com.xtt.mediatheque.model;
 
+import java.io.Serializable;
+import java.util.Date;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,12 +11,17 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
 import lombok.Data;
 
 @Entity
 @Table(name = MovieUserEntity.TABLE_NAME)
 @Data
-public class MovieUserEntity {
+public class MovieUserEntity implements Serializable {
+
+	private static final long serialVersionUID = 6879447352405633188L;
 
 	public static final String TABLE_NAME = "MovieUser";
 
@@ -28,8 +36,8 @@ public class MovieUserEntity {
 	@Column(name = "original_name")
 	private String originalName;
 
-//	@Temporal(TemporalType.DATE)
-//	private Date creationDate;
+	@Temporal(TemporalType.DATE)
+	private Date creationDate;
 
 	@OneToOne(mappedBy = "movieUser", cascade = CascadeType.ALL)
 	private MovieEntity movie;

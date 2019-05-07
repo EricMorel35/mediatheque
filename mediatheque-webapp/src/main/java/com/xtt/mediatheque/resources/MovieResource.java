@@ -30,8 +30,8 @@ public class MovieResource {
 	@Autowired
 	private MessageUtils messages;
 
-	@GetMapping("getContentMovie/{movieId}")
-	public ResponseEntity<ContentMovieDTO> getContentMovie(@PathVariable("movieId") final String movieId)
+	@GetMapping("movie/{movieId}")
+	public ResponseEntity<ContentMovieDTO> movie(@PathVariable("movieId") final String movieId)
 			throws MovieNotFoundException, FonctionnalException {
 		long movie = 0;
 		try {
@@ -39,12 +39,12 @@ public class MovieResource {
 		} catch (NumberFormatException e) {
 			throw new FonctionnalException(messages.getMessage(MediathequeConstants.MOVIE_NUMBER));
 		}
-		return new ResponseEntity<>(movieService.getContentMovie(movie), HttpStatus.OK);
+		return new ResponseEntity<>(movieService.movie(movie), HttpStatus.OK);
 	}
 
-	@GetMapping("getAllMovies")
-	public Page<CatalogItemDTO> getAllMovies(Pageable pageable) {
-		return movieService.getAllMovies(pageable);
+	@GetMapping("movies")
+	public Page<CatalogItemDTO> movies(Pageable pageable) {
+		return movieService.movies(pageable);
 	}
 
 	@GetMapping("searchMovie/{movieName}")
@@ -53,11 +53,10 @@ public class MovieResource {
 		return new ResponseEntity<>(movieService.searchMovieByName(movieName), HttpStatus.OK);
 	}
 
-	@GetMapping("getMoviesByKind/{kind}")
+	@GetMapping("moviesByKind/{kind}")
 	public List<CatalogItemDTO> getMoviesByKind(@PathVariable("kind") final String kind)
 			throws TechnicalAccessException {
-//		return movieService.getMoviesByKind(kind);
-		return null;
+		return movieService.getMoviesByKind(kind);
 	}
 
 }

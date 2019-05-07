@@ -15,7 +15,7 @@ public class KindDTOFactoryImpl implements KindDTOFactory {
 	@Override
 	public KindsDTO buildKindsDTO(MovieKindsEntity movieKindsEntity) {
 		KindsDTO dto = new KindsDTO();
-		dto.setName(movieKindsEntity.getPk().getKind());
+		dto.setName(movieKindsEntity.getKindPk().getKind());
 		return dto;
 	}
 
