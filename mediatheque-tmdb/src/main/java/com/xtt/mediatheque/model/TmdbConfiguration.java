@@ -195,7 +195,9 @@ public class TmdbConfiguration implements Serializable {
 		StringBuilder sb = new StringBuilder();
 		sb.append("Unknown property: '").append(key);
 		sb.append("' value: '").append(value).append("'");
-		LOG.trace(sb.toString());
+		if (LOG.isTraceEnabled()) {
+			LOG.trace(sb.toString());
+		}
 	}
 
 	@Override

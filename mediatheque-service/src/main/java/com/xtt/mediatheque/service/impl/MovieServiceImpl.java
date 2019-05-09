@@ -30,7 +30,6 @@ import com.xtt.mediatheque.model.MovieEntity;
 import com.xtt.mediatheque.model.MovieItem;
 import com.xtt.mediatheque.model.MovieSearchItem;
 import com.xtt.mediatheque.model.MovieUserEntity;
-import com.xtt.mediatheque.model.entity.MovieUserEntityItem;
 import com.xtt.mediatheque.service.MovieService;
 
 /**
