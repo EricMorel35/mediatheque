@@ -1,7 +1,7 @@
 package com.xtt.mediatheque.wrapped;
 
-import com.xtt.mediatheque.model.Genre;
 import com.xtt.mediatheque.model.KindItem;
+import com.xtt.mediatheque.tmdb.model.Genre;
 
 public class KindItemWrapped implements KindItem {
 

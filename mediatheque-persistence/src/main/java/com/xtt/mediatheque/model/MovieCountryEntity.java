@@ -1,7 +1,5 @@
 package com.xtt.mediatheque.model;
 
-import java.io.Serializable;
-
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.EmbeddedId;
@@ -16,14 +14,11 @@ import lombok.Data;
 @Table(name = MovieCountryEntity.TABLE_NAME)
 @Data
 public class MovieCountryEntity {
-	
+
 	public static final String TABLE_NAME = "MovieCountry";
 
 	@Embeddable
-	public static class CountryEmbeddableEntity implements Serializable {
-
-		/** Serial version UID. */
-		private static final long serialVersionUID = 1L;
+	public static class CountryEmbeddableEntity {
 
 		@Column(name = "country")
 		private String countryCode;

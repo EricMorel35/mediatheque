@@ -17,9 +17,11 @@
  *      along with TheMovieDB API.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package com.xtt.mediatheque.model;
+package com.xtt.mediatheque.tmdb.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,100 +33,70 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * 
  * @author Stuart
  */
-public class MovieList implements Serializable {
+public class CollectionInfo implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-
 	/*
 	 * Logger
 	 */
-	private static final Logger LOG = LoggerFactory.getLogger(MovieList.class);
+	private static final Logger LOG = LoggerFactory
+			.getLogger(CollectionInfo.class);
 	/*
 	 * Properties
 	 */
-	@JsonProperty("description")
-	private String description;
-	@JsonProperty("favorite_count")
-	private int favoriteCount;
 	@JsonProperty("id")
-	private String id;
-	@JsonProperty("item_count")
-	private int itemCount;
-	@JsonProperty("iso_639_1")
-	private String language;
+	private int id;
 	@JsonProperty("name")
 	private String name;
 	@JsonProperty("poster_path")
 	private String posterPath;
-	@JsonProperty("list_type")
-	private String listType;
+	@JsonProperty("backdrop_path")
+	private String backdropPath;
+	@JsonProperty("parts")
+	private List<Collection> parts = new ArrayList<Collection>();
 
 	// <editor-fold defaultstate="collapsed" desc="Getter methods">
-	public String getDescription() {
-		return description;
+	public String getBackdropPath() {
+		return backdropPath;
 	}
 
-	public int getFavoriteCount() {
-		return favoriteCount;
-	}
-
-	public String getId() {
+	public int getId() {
 		return id;
-	}
-
-	public int getItemCount() {
-		return itemCount;
-	}
-
-	public String getLanguage() {
-		return language;
 	}
 
 	public String getName() {
 		return name;
 	}
 
-	public String getPosterPath() {
-		return posterPath;
+	public List<Collection> getParts() {
+		return parts;
 	}
 
-	public String getListType() {
-		return listType;
+	public String getPosterPath() {
+		return posterPath;
 	}
 
 	// </editor-fold>
 
 	// <editor-fold defaultstate="collapsed" desc="Setter methods">
-	public void setDescription(final String description) {
-		this.description = description;
+	public void setBackdropPath(final String backdropPath) {
+		this.backdropPath = backdropPath;
 	}
 
-	public void setFavoriteCount(final int favoriteCount) {
-		this.favoriteCount = favoriteCount;
-	}
-
-	public void setId(final String id) {
+	public void setId(final int id) {
 		this.id = id;
-	}
-
-	public void setItemCount(final int itemCount) {
-		this.itemCount = itemCount;
-	}
-
-	public void setLanguage(final String language) {
-		this.language = language;
 	}
 
 	public void setName(final String name) {
 		this.name = name;
 	}
 
-	public void setPosterPath(final String posterPath) {
-		this.posterPath = posterPath;
+	public void setParts(final List<Collection> parts) {
+		this.parts = parts;
 	}
 
-	public void setListType(final String listType) {
-		this.listType = listType;
+	public void setPosterPath(final String posterPath) {
+		this.posterPath = posterPath;
 	}
 
 	// </editor-fold>
@@ -145,9 +117,13 @@ public class MovieList implements Serializable {
 
 	@Override
 	public String toString() {
-		return "MovieList{" + "description=" + description + ", favoriteCount="
-				+ favoriteCount + ", id=" + id + ", itemCount=" + itemCount
-				+ ", language=" + language + ", name=" + name + ", posterPath="
-				+ posterPath + '}';
+		StringBuilder sb = new StringBuilder("[CollectionInfo=");
+		sb.append("[id=").append(id);
+		sb.append("],[name=").append(name);
+		sb.append("],[posterPath=").append(posterPath);
+		sb.append("],[backdropPath=").append(backdropPath);
+		sb.append("],[# of parts=").append(parts.size());
+		sb.append("]]");
+		return sb.toString();
 	}
 }

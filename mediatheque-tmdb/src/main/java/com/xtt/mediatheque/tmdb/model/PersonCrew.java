@@ -17,7 +17,7 @@
  *      along with TheMovieDB API.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package com.xtt.mediatheque.model;
+package com.xtt.mediatheque.tmdb.model;
 
 import java.io.Serializable;
 
@@ -33,94 +33,73 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * @author Stuart
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class PersonCast implements Serializable {
+public class PersonCrew implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	/*
 	 * Logger
 	 */
-	private static final Logger LOG = LoggerFactory.getLogger(PersonCast.class);
+	private static final Logger LOG = LoggerFactory.getLogger(PersonCrew.class);
 	/*
 	 * Properties
 	 */
 	@JsonProperty("id")
 	private int id;
-	@JsonProperty("character")
-	private String character;
+	@JsonProperty("department")
+	private String department;
+	@JsonProperty("job")
+	private String job;
 	@JsonProperty("name")
 	private String name;
-	@JsonProperty("order")
-	private int order;
 	@JsonProperty("profile_path")
 	private String profile_path;
-	@JsonProperty("cast_id")
-	private int cast_id;
-	@JsonProperty("credit_id")
-	private String credit_id;
 
 	// <editor-fold defaultstate="collapsed" desc="Getter methods">
-	public String getCharacter() {
-		return character;
+	public String getDepartment() {
+		return department;
 	}
 
 	public int getId() {
 		return id;
 	}
 
-	public String getName() {
-		return name;
+	public String getJob() {
+		return job;
 	}
 
-	public int getOrder() {
-		return order;
+	public String getName() {
+		return name;
 	}
 
 	public String getProfile_path() {
 		return profile_path;
 	}
 
-	public int getCast_id() {
-		return cast_id;
-	}
-
 	// </editor-fold>
 
 	// <editor-fold defaultstate="collapsed" desc="Setter methods">
-	public void setCharacter(final String character) {
-		this.character = character;
+	public void setDepartment(final String department) {
+		this.department = department;
 	}
 
 	public void setId(final int id) {
 		this.id = id;
 	}
 
-	public void setName(final String name) {
-		this.name = name;
+	public void setJob(final String job) {
+		this.job = job;
 	}
 
-	public void setOrder(final int order) {
-		this.order = order;
+	public void setName(final String name) {
+		this.name = name;
 	}
 
 	public void setProfile_path(final String profilePath) {
 		this.profile_path = profilePath;
 	}
 
-	public void setCast_id(final int castId) {
-		this.cast_id = castId;
-	}
-
-	public String getCredit_id() {
-		return credit_id;
-	}
-
-	public void setCredit_id(String credit_id) {
-		this.credit_id = credit_id;
-	}	
-
 	// </editor-fold>
-
 
 	/**
 	 * Handle unknown properties and print a message
@@ -144,23 +123,20 @@ public class PersonCast implements Serializable {
 		if (getClass() != obj.getClass()) {
 			return false;
 		}
-		final PersonCast other = (PersonCast) obj;
+		final PersonCrew other = (PersonCrew) obj;
 		if (this.id != other.id) {
 			return false;
 		}
-		if ((this.character == null) ? (other.character != null)
-				: !this.character.equals(other.character)) {
+		if ((this.department == null) ? (other.department != null)
+				: !this.department.equals(other.department)) {
+			return false;
+		}
+		if ((this.job == null) ? (other.job != null) : !this.job
+				.equals(other.job)) {
 			return false;
 		}
 		if ((this.name == null) ? (other.name != null) : !this.name
 				.equals(other.name)) {
-			return false;
-		}
-		if (this.order != other.order) {
-			return false;
-		}
-		if ((this.profile_path == null) ? (other.profile_path != null)
-				: !this.profile_path.equals(other.profile_path)) {
 			return false;
 		}
 		return true;
@@ -169,12 +145,12 @@ public class PersonCast implements Serializable {
 	@Override
 	public int hashCode() {
 		int hash = 7;
-		hash = 41 * hash + this.id;
-		hash = 41 * hash
-				+ (this.character != null ? this.character.hashCode() : 0);
-		hash = 41 * hash + (this.name != null ? this.name.hashCode() : 0);
-		hash = 41 * hash + this.order;
-		hash = 41
+		hash = 59 * hash + this.id;
+		hash = 59 * hash
+				+ (this.department != null ? this.department.hashCode() : 0);
+		hash = 59 * hash + (this.job != null ? this.job.hashCode() : 0);
+		hash = 59 * hash + (this.name != null ? this.name.hashCode() : 0);
+		hash = 59
 				* hash
 				+ (this.profile_path != null ? this.profile_path.hashCode() : 0);
 		return hash;
@@ -182,11 +158,11 @@ public class PersonCast implements Serializable {
 
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder("[PersonCast=");
+		StringBuilder sb = new StringBuilder("[PersonCrew=");
 		sb.append("id=").append(id);
-		sb.append("],[character=").append(character);
+		sb.append("],[department=").append(department);
+		sb.append("],[job=").append(job);
 		sb.append("],[name=").append(name);
-		sb.append("],[order=").append(order);
 		sb.append("],[profilePath=").append(profile_path);
 		sb.append("]]");
 		return sb.toString();

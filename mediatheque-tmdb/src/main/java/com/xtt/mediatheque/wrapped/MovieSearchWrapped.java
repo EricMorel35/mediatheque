@@ -7,8 +7,8 @@ import java.util.Date;
 import java.util.List;
 
 import com.xtt.mediatheque.model.MovieSearchItem;
-import com.xtt.mediatheque.model.MoviesList;
-import com.xtt.mediatheque.model.ProductionCountry;
+import com.xtt.mediatheque.tmdb.model.MoviesList;
+import com.xtt.mediatheque.tmdb.model.ProductionCountry;
 
 public class MovieSearchWrapped implements MovieSearchItem {
 

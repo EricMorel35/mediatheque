@@ -1,12 +1,6 @@
 package com.xtt.mediatheque.model;
 
-import java.io.Serializable;
-
-//@Embeddable
-public class CountryEmbeddableEntity implements Serializable {
-
-	/** Serial Version UID. */
-	private static final long serialVersionUID = -4103133947273054335L;
+public class CountryEmbeddableEntity {
 
 	private String countryCode;
 

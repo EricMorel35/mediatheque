@@ -1,6 +1,5 @@
 package com.xtt.mediatheque.model;
 
-import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -17,9 +16,7 @@ import lombok.Data;
 @Entity
 @Table(name = MovieEntity.TABLE_NAME)
 @Data
-public class MovieEntity implements Serializable {
-
-	private static final long serialVersionUID = -5452769843167032131L;
+public class MovieEntity {
 
 	public static final String TABLE_NAME = "Movie";
 

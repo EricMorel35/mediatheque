@@ -8,24 +8,31 @@ import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import com.xtt.mediatheque.model.ActorsItem;
-import com.xtt.mediatheque.model.Cast;
 import com.xtt.mediatheque.model.DirectorsItem;
-import com.xtt.mediatheque.model.Genre;
 import com.xtt.mediatheque.model.KindItem;
-import com.xtt.mediatheque.model.Movie;
 import com.xtt.mediatheque.model.MovieItem;
-import com.xtt.mediatheque.model.PersonCast;
-import com.xtt.mediatheque.model.PersonCrew;
-import com.xtt.mediatheque.model.ProductionCountry;
 import com.xtt.mediatheque.model.ProductionCountryItem;
+import com.xtt.mediatheque.tmdb.model.Cast;
+import com.xtt.mediatheque.tmdb.model.Genre;
+import com.xtt.mediatheque.tmdb.model.Movie;
+import com.xtt.mediatheque.tmdb.model.PersonCast;
+import com.xtt.mediatheque.tmdb.model.PersonCrew;
+import com.xtt.mediatheque.tmdb.model.ProductionCountry;
 
+@Component
 public class MovieWrapped implements MovieItem {
 
 	private final Movie movie;
-	private final String URL_COVER = "http://cf2.imgobject.com/t/p/w500";
-	private final String URL_YOUTUBE = "http://www.youtube.com/v/";
+
+	@Value("urlYoutube")
+	private String urlYoutube;
+
+	@Value("urlCover")
+	private String urlCover;
 
 	public MovieWrapped(final Movie movie) {
 		this.movie = movie;
@@ -33,7 +40,7 @@ public class MovieWrapped implements MovieItem {
 
 	@Override
 	public List<ActorsItem> getActors() {
-		List<ActorsItem> actors = new ArrayList<ActorsItem>();
+		List<ActorsItem> actors = new ArrayList<>();
 		Cast cast = movie.getCasts();
 		for (PersonCast person : cast.getCast()) {
 			actors.add(new ActorsItemWrapped(person));
@@ -43,7 +50,7 @@ public class MovieWrapped implements MovieItem {
 
 	@Override
 	public List<ProductionCountryItem> getCountries() {
-		List<ProductionCountryItem> listCountries = new ArrayList<ProductionCountryItem>();
+		List<ProductionCountryItem> listCountries = new ArrayList<>();
 		List<ProductionCountry> countries = movie.getProduction_countries();
 		for (ProductionCountry country : countries) {
 			listCountries.add(new ProductionCountryItemWrapped(country));
@@ -53,7 +60,7 @@ public class MovieWrapped implements MovieItem {
 
 	@Override
 	public List<DirectorsItem> getDirectors() {
-		List<DirectorsItem> directors = new ArrayList<DirectorsItem>();
+		List<DirectorsItem> directors = new ArrayList<>();
 		Cast cast = movie.getCasts();
 		for (PersonCrew person : cast.getCrew()) {
 			if ("Director".equalsIgnoreCase(person.getJob())) {
@@ -65,7 +72,7 @@ public class MovieWrapped implements MovieItem {
 
 	@Override
 	public List<KindItem> getGenres() {
-		List<KindItem> listGenres = new ArrayList<KindItem>();
+		List<KindItem> listGenres = new ArrayList<>();
 		List<Genre> genres = movie.getGenres();
 		for (Genre genre : genres) {
 			listGenres.add(new KindItemWrapped(genre));
@@ -94,8 +101,7 @@ public class MovieWrapped implements MovieItem {
 		if (releaseDate != null) {
 			DateFormat dateFormat = new SimpleDateFormat("yyyy");
 			return dateFormat.format(releaseDate);
-		}
-		else {
+		} else {
 			return "";
 		}
 	}
@@ -113,9 +119,8 @@ public class MovieWrapped implements MovieItem {
 	@Override
 	public String getURLPoster() {
 		if (movie.getPoster_path() != null) {
-			return URL_COVER.concat(movie.getPoster_path());
-		}
-		else {
+			return urlCover.concat(movie.getPoster_path());
+		} else {
 			return "";
 		}
 	}
@@ -123,10 +128,8 @@ public class MovieWrapped implements MovieItem {
 	@Override
 	public String getURLYoutube() {
 		if (CollectionUtils.isNotEmpty(movie.getTrailers().getYoutube())
-				&& StringUtils.isNotBlank(movie.getTrailers().getYoutube()
-						.get(0).getSource())) {
-			return URL_YOUTUBE.concat(movie.getTrailers().getYoutube().get(0)
-					.getSource());
+				&& StringUtils.isNotBlank(movie.getTrailers().getYoutube().get(0).getSource())) {
+			return urlYoutube.concat(movie.getTrailers().getYoutube().get(0).getSource());
 		} else {
 			return StringUtils.EMPTY;
 		}

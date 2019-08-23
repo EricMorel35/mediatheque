@@ -1,7 +1,7 @@
 package com.xtt.mediatheque.wrapped;
 
 import com.xtt.mediatheque.model.ActorsItem;
-import com.xtt.mediatheque.model.PersonCast;
+import com.xtt.mediatheque.tmdb.model.PersonCast;
 
 public class ActorsItemWrapped implements ActorsItem {
 

@@ -17,7 +17,7 @@
  *      along with TheMovieDB API.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package com.xtt.mediatheque.model;
+package com.xtt.mediatheque.tmdb.model;
 
 import java.io.Serializable;
 
@@ -26,40 +26,46 @@ import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonRootName;
 
 /**
  * 
- * @author stuart.boston
+ * @author Stuart
  */
-@JsonRootName("spoken_language")
-public class Language implements Serializable {
+public class AlternativeTitle implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+
 	/*
 	 * Logger
 	 */
-	private static final Logger LOG = LoggerFactory.getLogger(Language.class);
+	private static final Logger LOG = LoggerFactory
+			.getLogger(AlternativeTitle.class);
 	/*
 	 * Properties
 	 */
-	@JsonProperty("iso_639_1")
-	private String iso_639_1;
-	@JsonProperty("name")
-	private String name;
+	@JsonProperty("iso_3166_1")
+	private String country;
+	@JsonProperty("title")
+	private String title;
 
 	// <editor-fold defaultstate="collapsed" desc="Getter methods">
+	public String getCountry() {
+		return country;
+	}
 
-	public String getName() {
-		return name;
+	public String getTitle() {
+		return title;
 	}
 
 	// </editor-fold>
 
 	// <editor-fold defaultstate="collapsed" desc="Setter methods">
+	public void setCountry(final String country) {
+		this.country = country;
+	}
 
-	public void setName(final String name) {
-		this.name = name;
+	public void setTitle(final String title) {
+		this.title = title;
 	}
 
 	// </editor-fold>
@@ -86,13 +92,13 @@ public class Language implements Serializable {
 		if (getClass() != obj.getClass()) {
 			return false;
 		}
-		final Language other = (Language) obj;
-		if ((this.iso_639_1 == null) ? (other.iso_639_1 != null)
-				: !this.iso_639_1.equals(other.iso_639_1)) {
+		final AlternativeTitle other = (AlternativeTitle) obj;
+		if ((this.country == null) ? (other.country != null) : !this.country
+				.equals(other.country)) {
 			return false;
 		}
-		if ((this.name == null) ? (other.name != null) : !this.name
-				.equals(other.name)) {
+		if ((this.title == null) ? (other.title != null) : !this.title
+				.equals(other.title)) {
 			return false;
 		}
 		return true;
@@ -101,26 +107,17 @@ public class Language implements Serializable {
 	@Override
 	public int hashCode() {
 		int hash = 7;
-		hash = 71 * hash
-				+ (this.iso_639_1 != null ? this.iso_639_1.hashCode() : 0);
-		hash = 71 * hash + (this.name != null ? this.name.hashCode() : 0);
+		hash = 89 * hash + (this.country != null ? this.country.hashCode() : 0);
+		hash = 89 * hash + (this.title != null ? this.title.hashCode() : 0);
 		return hash;
 	}
 
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder("[Language=");
-		sb.append("isoCode=").append(iso_639_1);
-		sb.append(", name=").append(name);
+		StringBuilder sb = new StringBuilder("[AlternativeTitle=");
+		sb.append("[country=").append(country);
+		sb.append("],[title=").append(title);
 		sb.append("]]");
 		return sb.toString();
-	}
-
-	public String getIso_639_1() {
-		return iso_639_1;
-	}
-
-	public void setIso_639_1(final String iso_639_1) {
-		this.iso_639_1 = iso_639_1;
 	}
 }

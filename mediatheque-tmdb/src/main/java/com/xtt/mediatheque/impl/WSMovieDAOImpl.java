@@ -14,17 +14,16 @@ import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import com.xtt.mediatheque.WSMovieDAO;
-import com.xtt.mediatheque.model.Movie;
 import com.xtt.mediatheque.model.MovieItem;
 import com.xtt.mediatheque.model.MovieSearchItem;
-import com.xtt.mediatheque.model.MoviesList;
+import com.xtt.mediatheque.tmdb.model.Movie;
+import com.xtt.mediatheque.tmdb.model.MoviesList;
 import com.xtt.mediatheque.wrapped.MovieSearchWrapped;
 import com.xtt.mediatheque.wrapped.MovieWrapped;
 
-
 @Repository
 public class WSMovieDAOImpl implements WSMovieDAO {
-	
+
 	private static final Logger LOG = LoggerFactory.getLogger(WSMovieDAOImpl.class);
 
 	@Autowired
@@ -68,8 +67,14 @@ public class WSMovieDAOImpl implements WSMovieDAO {
 		MoviesList movies = new MoviesList();
 		try {
 			movies = restTemplate.getForObject(searchUrl, MoviesList.class, uriParams);
+			try {
+				Thread.sleep(5000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		} catch (RestClientException e) {
-			LOG.error(new StringBuilder("[Error] - Error when call MovieDB API ").append(movieName).toString());
+			LOG.error(new StringBuilder("[Error] - Error when call MovieDB API ").append(movieName).toString(), e);
 		}
 
 		return movies;

@@ -17,7 +17,7 @@
  *      along with TheMovieDB API.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package com.xtt.mediatheque.model;
+package com.xtt.mediatheque.tmdb.model;
 
 import java.io.Serializable;
 import java.util.List;

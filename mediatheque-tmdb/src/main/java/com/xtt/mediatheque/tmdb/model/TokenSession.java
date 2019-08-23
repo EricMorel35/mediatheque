@@ -17,11 +17,7 @@
  *      along with TheMovieDB API.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package com.xtt.mediatheque.model;
-
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+package com.xtt.mediatheque.tmdb.model;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,74 +25,79 @@ import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * 
- * @author Stuart
- */
-public class CollectionInfo implements Serializable {
-
-	private static final long serialVersionUID = 1L;
+public class TokenSession {
 	/*
 	 * Logger
 	 */
+
 	private static final Logger LOG = LoggerFactory
-			.getLogger(CollectionInfo.class);
+			.getLogger(TokenSession.class);
 	/*
 	 * Properties
 	 */
-	@JsonProperty("id")
-	private int id;
-	@JsonProperty("name")
-	private String name;
-	@JsonProperty("poster_path")
-	private String posterPath;
-	@JsonProperty("backdrop_path")
-	private String backdropPath;
-	@JsonProperty("parts")
-	private List<Collection> parts = new ArrayList<Collection>();
+	@JsonProperty("session_id")
+	private String sessionId;
+	@JsonProperty("success")
+	private Boolean success;
+	@JsonProperty("status_code")
+	private String statusCode;
+	@JsonProperty("status_message")
+	private String statusMessage;
+	@JsonProperty("guest_session_id")
+	private String guestSessionId;
+	@JsonProperty("expires_at")
+	private String expiresAt;
 
 	// <editor-fold defaultstate="collapsed" desc="Getter methods">
-	public String getBackdropPath() {
-		return backdropPath;
+	public String getSessionId() {
+		return sessionId;
 	}
 
-	public int getId() {
-		return id;
+	public Boolean getSuccess() {
+		return success;
 	}
 
-	public String getName() {
-		return name;
+	public String getStatusCode() {
+		return statusCode;
 	}
 
-	public List<Collection> getParts() {
-		return parts;
+	public String getStatusMessage() {
+		return statusMessage;
 	}
 
-	public String getPosterPath() {
-		return posterPath;
+	public String getGuestSessionId() {
+		return guestSessionId;
+	}
+
+	public String getExpiresAt() {
+		return expiresAt;
 	}
 
 	// </editor-fold>
 
 	// <editor-fold defaultstate="collapsed" desc="Setter methods">
-	public void setBackdropPath(final String backdropPath) {
-		this.backdropPath = backdropPath;
+	public void setSessionId(final String sessionId) {
+		this.sessionId = sessionId;
 	}
 
-	public void setId(final int id) {
-		this.id = id;
+	public void setSuccess(final Boolean success) {
+		this.success = success;
 	}
 
-	public void setName(final String name) {
-		this.name = name;
+	public void setStatusCode(final String statusCode) {
+		this.statusCode = statusCode;
 	}
 
-	public void setParts(final List<Collection> parts) {
-		this.parts = parts;
+	public void setStatusMessage(final String statusMessage) {
+		this.statusMessage = statusMessage;
 	}
 
-	public void setPosterPath(final String posterPath) {
-		this.posterPath = posterPath;
+	public void setGuestSessionId(final String guestSessionId) {
+		this.guestSessionId = guestSessionId;
+	}
+
+	public void setExpiresAt(final String expiresAt) {
+		this.expiresAt = expiresAt;
 	}
 
 	// </editor-fold>
@@ -117,13 +118,9 @@ public class CollectionInfo implements Serializable {
 
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder("[CollectionInfo=");
-		sb.append("[id=").append(id);
-		sb.append("],[name=").append(name);
-		sb.append("],[posterPath=").append(posterPath);
-		sb.append("],[backdropPath=").append(backdropPath);
-		sb.append("],[# of parts=").append(parts.size());
-		sb.append("]]");
-		return sb.toString();
+		return "TokenSession{" + "sessionId=" + sessionId + ", success="
+				+ success + ", statusCode=" + statusCode + ", statusMessage="
+				+ statusMessage + ", guestSessionId=" + guestSessionId
+				+ ", expiresAt=" + expiresAt + '}';
 	}
 }

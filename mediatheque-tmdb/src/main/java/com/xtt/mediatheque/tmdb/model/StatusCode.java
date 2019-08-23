@@ -17,7 +17,7 @@
  *      along with TheMovieDB API.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package com.xtt.mediatheque.model;
+package com.xtt.mediatheque.tmdb.model;
 
 import java.io.Serializable;
 
@@ -26,48 +26,45 @@ import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonRootName;
 
 /**
  * 
- * @author stuart.boston
+ * @author Stuart
  */
-@JsonRootName("production_company")
-public class ProductionCompany implements Serializable {
+public class StatusCode implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	/*
 	 * Logger
 	 */
-	private static final Logger LOG = LoggerFactory
-			.getLogger(ProductionCompany.class);
+	private static final Logger LOG = LoggerFactory.getLogger(StatusCode.class);
 	/*
 	 * Properties
 	 */
-	@JsonProperty("id")
-	private int id;
-	@JsonProperty("name")
-	private String name;
+	@JsonProperty("status_code")
+	private int statusCode;
+	@JsonProperty("status_message")
+	private String statusMessage;
 
 	// <editor-fold defaultstate="collapsed" desc="Getter methods">
-	public int getId() {
-		return id;
+	public int getStatusCode() {
+		return statusCode;
 	}
 
-	public String getName() {
-		return name;
+	public void setStatusCode(final int statusCode) {
+		this.statusCode = statusCode;
 	}
 
 	// </editor-fold>
 
 	// <editor-fold defaultstate="collapsed" desc="Setter methods">
-	public void setId(final int id) {
-		this.id = id;
+	public String getStatusMessage() {
+		return statusMessage;
 	}
 
-	public void setName(final String name) {
-		this.name = name;
+	public void setStatusMessage(final String statusMessage) {
+		this.statusMessage = statusMessage;
 	}
 
 	// </editor-fold>
@@ -87,38 +84,10 @@ public class ProductionCompany implements Serializable {
 	}
 
 	@Override
-	public boolean equals(final Object obj) {
-		if (obj == null) {
-			return false;
-		}
-		if (getClass() != obj.getClass()) {
-			return false;
-		}
-		final ProductionCompany other = (ProductionCompany) obj;
-		if (this.id != other.id) {
-			return false;
-		}
-		if ((this.name == null) ? (other.name != null) : !this.name
-				.equals(other.name)) {
-			return false;
-		}
-		return true;
-	}
-
-	@Override
-	public int hashCode() {
-		int hash = 5;
-		hash = 37 * hash + this.id;
-		hash = 37 * hash + (this.name != null ? this.name.hashCode() : 0);
-		return hash;
-	}
-
-	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder("[ProductionCompany=");
-		sb.append("[id=").append(id);
-		sb.append("],[name=").append(name);
-		sb.append("]]");
+		StringBuilder sb = new StringBuilder();
+		sb.append("Status Code: ").append(statusCode);
+		sb.append(", Message: ").append(statusMessage);
 		return sb.toString();
 	}
 }

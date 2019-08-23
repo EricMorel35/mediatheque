@@ -17,7 +17,7 @@
  *      along with TheMovieDB API.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package com.xtt.mediatheque.model;
+package com.xtt.mediatheque.tmdb.model;
 
 import java.io.Serializable;
 
@@ -31,7 +31,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * 
  * @author Stuart
  */
-public class ReleaseInfo implements Serializable {
+public class Translation implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -39,43 +39,43 @@ public class ReleaseInfo implements Serializable {
 	 * Logger
 	 */
 	private static final Logger LOG = LoggerFactory
-			.getLogger(ReleaseInfo.class);
+			.getLogger(Translation.class);
 	/*
 	 * Properties
 	 */
-	@JsonProperty("iso_3166_1")
-	private String country;
-	@JsonProperty("certification")
-	private String certification;
-	@JsonProperty("release_date")
-	private String releaseDate;
+	@JsonProperty("english_name")
+	private String englishName;
+	@JsonProperty("iso_639_1")
+	private String isoCode;
+	@JsonProperty("name")
+	private String name;
 
 	// <editor-fold defaultstate="collapsed" desc="Getter methods">
-	public String getCertification() {
-		return certification;
+	public String getEnglishName() {
+		return englishName;
 	}
 
-	public String getCountry() {
-		return country;
+	public String getIsoCode() {
+		return isoCode;
 	}
 
-	public String getReleaseDate() {
-		return releaseDate;
+	public String getName() {
+		return name;
 	}
 
 	// </editor-fold>
 
 	// <editor-fold defaultstate="collapsed" desc="Setter methods">
-	public void setCertification(final String certification) {
-		this.certification = certification;
+	public void setEnglishName(final String englishName) {
+		this.englishName = englishName;
 	}
 
-	public void setCountry(final String country) {
-		this.country = country;
+	public void setIsoCode(final String isoCode) {
+		this.isoCode = isoCode;
 	}
 
-	public void setReleaseDate(final String releaseDate) {
-		this.releaseDate = releaseDate;
+	public void setName(final String name) {
+		this.name = name;
 	}
 
 	// </editor-fold>
@@ -102,17 +102,17 @@ public class ReleaseInfo implements Serializable {
 		if (getClass() != obj.getClass()) {
 			return false;
 		}
-		final ReleaseInfo other = (ReleaseInfo) obj;
-		if ((this.country == null) ? (other.country != null) : !this.country
-				.equals(other.country)) {
+		final Translation other = (Translation) obj;
+		if ((this.englishName == null) ? (other.englishName != null)
+				: !this.englishName.equals(other.englishName)) {
 			return false;
 		}
-		if ((this.certification == null) ? (other.certification != null)
-				: !this.certification.equals(other.certification)) {
+		if ((this.isoCode == null) ? (other.isoCode != null) : !this.isoCode
+				.equals(other.isoCode)) {
 			return false;
 		}
-		if ((this.releaseDate == null) ? (other.releaseDate != null)
-				: !this.releaseDate.equals(other.releaseDate)) {
+		if ((this.name == null) ? (other.name != null) : !this.name
+				.equals(other.name)) {
 			return false;
 		}
 		return true;
@@ -121,22 +121,19 @@ public class ReleaseInfo implements Serializable {
 	@Override
 	public int hashCode() {
 		int hash = 3;
-		hash = 89 * hash + (this.country != null ? this.country.hashCode() : 0);
-		hash = 89
-				* hash
-				+ (this.certification != null ? this.certification.hashCode()
-						: 0);
-		hash = 89 * hash
-				+ (this.releaseDate != null ? this.releaseDate.hashCode() : 0);
+		hash = 29 * hash
+				+ (this.englishName != null ? this.englishName.hashCode() : 0);
+		hash = 29 * hash + (this.isoCode != null ? this.isoCode.hashCode() : 0);
+		hash = 29 * hash + (this.name != null ? this.name.hashCode() : 0);
 		return hash;
 	}
 
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder("[ReleaseInfo=");
-		sb.append("[country=").append(country);
-		sb.append("],[certification=").append(certification);
-		sb.append("],[releaseDate=").append(releaseDate);
+		StringBuilder sb = new StringBuilder("[Translation=");
+		sb.append("[englishName=").append(englishName);
+		sb.append("],[isoCode=").append(isoCode);
+		sb.append("],[name=").append(name);
 		sb.append("]]");
 		return sb.toString();
 	}

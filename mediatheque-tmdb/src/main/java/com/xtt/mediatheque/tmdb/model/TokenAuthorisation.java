@@ -17,7 +17,7 @@
  *      along with TheMovieDB API.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package com.xtt.mediatheque.model;
+package com.xtt.mediatheque.tmdb.model;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,79 +25,48 @@ import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class TokenSession {
+public class TokenAuthorisation {
 	/*
 	 * Logger
 	 */
-
 	private static final Logger LOG = LoggerFactory
-			.getLogger(TokenSession.class);
+			.getLogger(TokenAuthorisation.class);
 	/*
 	 * Properties
 	 */
-	@JsonProperty("session_id")
-	private String sessionId;
+	@JsonProperty("expires_at")
+	private String expires;
+	@JsonProperty("request_token")
+	private String requestToken;
 	@JsonProperty("success")
 	private Boolean success;
-	@JsonProperty("status_code")
-	private String statusCode;
-	@JsonProperty("status_message")
-	private String statusMessage;
-	@JsonProperty("guest_session_id")
-	private String guestSessionId;
-	@JsonProperty("expires_at")
-	private String expiresAt;
 
 	// <editor-fold defaultstate="collapsed" desc="Getter methods">
-	public String getSessionId() {
-		return sessionId;
+	public String getExpires() {
+		return expires;
+	}
+
+	public String getRequestToken() {
+		return requestToken;
 	}
 
 	public Boolean getSuccess() {
 		return success;
 	}
 
-	public String getStatusCode() {
-		return statusCode;
-	}
-
-	public String getStatusMessage() {
-		return statusMessage;
-	}
-
-	public String getGuestSessionId() {
-		return guestSessionId;
-	}
-
-	public String getExpiresAt() {
-		return expiresAt;
-	}
-
 	// </editor-fold>
 
 	// <editor-fold defaultstate="collapsed" desc="Setter methods">
-	public void setSessionId(final String sessionId) {
-		this.sessionId = sessionId;
+	public void setExpires(final String expires) {
+		this.expires = expires;
+	}
+
+	public void setRequestToken(final String requestToken) {
+		this.requestToken = requestToken;
 	}
 
 	public void setSuccess(final Boolean success) {
 		this.success = success;
-	}
-
-	public void setStatusCode(final String statusCode) {
-		this.statusCode = statusCode;
-	}
-
-	public void setStatusMessage(final String statusMessage) {
-		this.statusMessage = statusMessage;
-	}
-
-	public void setGuestSessionId(final String guestSessionId) {
-		this.guestSessionId = guestSessionId;
-	}
-
-	public void setExpiresAt(final String expiresAt) {
-		this.expiresAt = expiresAt;
 	}
 
 	// </editor-fold>
@@ -118,9 +87,8 @@ public class TokenSession {
 
 	@Override
 	public String toString() {
-		return "TokenSession{" + "sessionId=" + sessionId + ", success="
-				+ success + ", statusCode=" + statusCode + ", statusMessage="
-				+ statusMessage + ", guestSessionId=" + guestSessionId
-				+ ", expiresAt=" + expiresAt + '}';
+		return "TokenAuthorisation{" + "expires=" + expires + ", requestToken="
+				+ requestToken + ", success=" + success + '}';
 	}
+
 }

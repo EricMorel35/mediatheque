@@ -17,7 +17,7 @@
  *      along with TheMovieDB API.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package com.xtt.mediatheque.model;
+package com.xtt.mediatheque.tmdb.model;
 
 import java.io.Serializable;
 
@@ -28,90 +28,103 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Company information
  * 
  * @author Stuart
  */
-public class Company implements Serializable {
+public class MovieList implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	// Logger
-	private static final Logger LOG = LoggerFactory.getLogger(Company.class);
-	private static final String DEFAULT_STRING = "";
-	// Properties
-	@JsonProperty("id")
-	private int companyId = 0;
-	@JsonProperty("name")
-	private String name = DEFAULT_STRING;
+
+	/*
+	 * Logger
+	 */
+	private static final Logger LOG = LoggerFactory.getLogger(MovieList.class);
+	/*
+	 * Properties
+	 */
 	@JsonProperty("description")
-	private String description = DEFAULT_STRING;
-	@JsonProperty("headquarters")
-	private String headquarters = DEFAULT_STRING;
-	@JsonProperty("homepage")
-	private String homepage = DEFAULT_STRING;
-	@JsonProperty("logo_path")
-	private String logoPath = DEFAULT_STRING;
-	@JsonProperty("parent_company")
-	private String parentCompany = DEFAULT_STRING;
+	private String description;
+	@JsonProperty("favorite_count")
+	private int favoriteCount;
+	@JsonProperty("id")
+	private String id;
+	@JsonProperty("item_count")
+	private int itemCount;
+	@JsonProperty("iso_639_1")
+	private String language;
+	@JsonProperty("name")
+	private String name;
+	@JsonProperty("poster_path")
+	private String posterPath;
+	@JsonProperty("list_type")
+	private String listType;
 
-	// <editor-fold defaultstate="collapsed" desc="Getter Methods">
-	public int getCompanyId() {
-		return companyId;
-	}
-
+	// <editor-fold defaultstate="collapsed" desc="Getter methods">
 	public String getDescription() {
 		return description;
 	}
 
-	public String getHeadquarters() {
-		return headquarters;
+	public int getFavoriteCount() {
+		return favoriteCount;
 	}
 
-	public String getHomepage() {
-		return homepage;
+	public String getId() {
+		return id;
 	}
 
-	public String getLogoPath() {
-		return logoPath;
+	public int getItemCount() {
+		return itemCount;
+	}
+
+	public String getLanguage() {
+		return language;
 	}
 
 	public String getName() {
 		return name;
 	}
 
-	public String getParentCompany() {
-		return parentCompany;
+	public String getPosterPath() {
+		return posterPath;
+	}
+
+	public String getListType() {
+		return listType;
 	}
 
 	// </editor-fold>
 
-	// <editor-fold defaultstate="collapsed" desc="Setter Methods">
-	public void setCompanyId(final int companyId) {
-		this.companyId = companyId;
-	}
-
+	// <editor-fold defaultstate="collapsed" desc="Setter methods">
 	public void setDescription(final String description) {
 		this.description = description;
 	}
 
-	public void setHeadquarters(final String headquarters) {
-		this.headquarters = headquarters;
+	public void setFavoriteCount(final int favoriteCount) {
+		this.favoriteCount = favoriteCount;
 	}
 
-	public void setHomepage(final String homepage) {
-		this.homepage = homepage;
+	public void setId(final String id) {
+		this.id = id;
 	}
 
-	public void setLogoPath(final String logoPath) {
-		this.logoPath = logoPath;
+	public void setItemCount(final int itemCount) {
+		this.itemCount = itemCount;
+	}
+
+	public void setLanguage(final String language) {
+		this.language = language;
 	}
 
 	public void setName(final String name) {
 		this.name = name;
 	}
 
-	public void setParentCompany(final String parentCompany) {
-		this.parentCompany = parentCompany;
+	public void setPosterPath(final String posterPath) {
+		this.posterPath = posterPath;
+	}
+
+	public void setListType(final String listType) {
+		this.listType = listType;
 	}
 
 	// </editor-fold>
@@ -132,9 +145,9 @@ public class Company implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Company{" + "companyId=" + companyId + ", name=" + name
-				+ ", description=" + description + ", headquarters="
-				+ headquarters + ", homepage=" + homepage + ", logoPath="
-				+ logoPath + ", parentCompany=" + parentCompany + '}';
+		return "MovieList{" + "description=" + description + ", favoriteCount="
+				+ favoriteCount + ", id=" + id + ", itemCount=" + itemCount
+				+ ", language=" + language + ", name=" + name + ", posterPath="
+				+ posterPath + '}';
 	}
 }

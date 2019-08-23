@@ -17,56 +17,57 @@
  *      along with TheMovieDB API.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package com.xtt.mediatheque.model;
+package com.xtt.mediatheque.tmdb.model;
+
+import java.io.Serializable;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonRootName;
 
-public class TokenAuthorisation {
+/**
+ * 
+ * @author stuart.boston
+ */
+@JsonRootName("production_country")
+public class ProductionCountry implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+
 	/*
 	 * Logger
 	 */
 	private static final Logger LOG = LoggerFactory
-			.getLogger(TokenAuthorisation.class);
+			.getLogger(ProductionCountry.class);
 	/*
 	 * Properties
 	 */
-	@JsonProperty("expires_at")
-	private String expires;
-	@JsonProperty("request_token")
-	private String requestToken;
-	@JsonProperty("success")
-	private Boolean success;
+	@JsonProperty("iso_3166_1")
+	private String iso_3166_1;
+	@JsonProperty("name")
+	private String name;
 
 	// <editor-fold defaultstate="collapsed" desc="Getter methods">
-	public String getExpires() {
-		return expires;
+	public String getIso_3166_1() {
+		return iso_3166_1;
 	}
 
-	public String getRequestToken() {
-		return requestToken;
-	}
-
-	public Boolean getSuccess() {
-		return success;
+	public String getName() {
+		return name;
 	}
 
 	// </editor-fold>
 
 	// <editor-fold defaultstate="collapsed" desc="Setter methods">
-	public void setExpires(final String expires) {
-		this.expires = expires;
+	public void setIso_3166_1(final String iso_3166_1) {
+		this.iso_3166_1 = iso_3166_1;
 	}
 
-	public void setRequestToken(final String requestToken) {
-		this.requestToken = requestToken;
-	}
-
-	public void setSuccess(final Boolean success) {
-		this.success = success;
+	public void setName(final String name) {
+		this.name = name;
 	}
 
 	// </editor-fold>
@@ -86,9 +87,41 @@ public class TokenAuthorisation {
 	}
 
 	@Override
+	public boolean equals(final Object obj) {
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		final ProductionCountry other = (ProductionCountry) obj;
+		if ((this.iso_3166_1 == null) ? (other.iso_3166_1 != null)
+				: !this.iso_3166_1.equals(other.iso_3166_1)) {
+			return false;
+		}
+		if ((this.name == null) ? (other.name != null) : !this.name
+				.equals(other.name)) {
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	public int hashCode() {
+		int hash = 7;
+		hash = 47 * hash
+				+ (this.iso_3166_1 != null ? this.iso_3166_1.hashCode() : 0);
+		hash = 47 * hash + (this.name != null ? this.name.hashCode() : 0);
+		return hash;
+	}
+
+	@Override
 	public String toString() {
-		return "TokenAuthorisation{" + "expires=" + expires + ", requestToken="
-				+ requestToken + ", success=" + success + '}';
+		StringBuilder sb = new StringBuilder("[ProductionCountry=");
+		sb.append("[isoCode=").append(iso_3166_1);
+		sb.append("],[name=").append(name);
+		sb.append("]]");
+		return sb.toString();
 	}
 
 }

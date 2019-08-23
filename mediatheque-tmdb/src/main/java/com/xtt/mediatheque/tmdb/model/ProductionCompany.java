@@ -17,7 +17,7 @@
  *      along with TheMovieDB API.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package com.xtt.mediatheque.model;
+package com.xtt.mediatheque.tmdb.model;
 
 import java.io.Serializable;
 
@@ -25,66 +25,49 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonRootName;
 
 /**
  * 
- * @author Stuart
+ * @author stuart.boston
  */
-public class Trailer implements Serializable {
+@JsonRootName("production_company")
+public class ProductionCompany implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	/*
 	 * Logger
 	 */
-	private static final Logger LOG = LoggerFactory.getLogger(Trailer.class);
-	/*
-	 * Website sources
-	 */
-	public static final String WEBSITE_YOUTUBE = "youtube";
-	public static final String WEBSITE_QUICKTIME = "quicktime";
+	private static final Logger LOG = LoggerFactory
+			.getLogger(ProductionCompany.class);
 	/*
 	 * Properties
 	 */
+	@JsonProperty("id")
+	private int id;
+	@JsonProperty("name")
 	private String name;
-	private String size;
-	private String source;
-	private String website; // The website of the trailer
 
 	// <editor-fold defaultstate="collapsed" desc="Getter methods">
+	public int getId() {
+		return id;
+	}
+
 	public String getName() {
 		return name;
-	}
-
-	public String getSize() {
-		return size;
-	}
-
-	public String getSource() {
-		return source;
-	}
-
-	public String getWebsite() {
-		return website;
 	}
 
 	// </editor-fold>
 
 	// <editor-fold defaultstate="collapsed" desc="Setter methods">
+	public void setId(final int id) {
+		this.id = id;
+	}
+
 	public void setName(final String name) {
 		this.name = name;
-	}
-
-	public void setSize(final String size) {
-		this.size = size;
-	}
-
-	public void setSource(final String source) {
-		this.source = source;
-	}
-
-	public void setWebsite(final String website) {
-		this.website = website;
 	}
 
 	// </editor-fold>
@@ -111,17 +94,12 @@ public class Trailer implements Serializable {
 		if (getClass() != obj.getClass()) {
 			return false;
 		}
-		final Trailer other = (Trailer) obj;
+		final ProductionCompany other = (ProductionCompany) obj;
+		if (this.id != other.id) {
+			return false;
+		}
 		if ((this.name == null) ? (other.name != null) : !this.name
 				.equals(other.name)) {
-			return false;
-		}
-		if ((this.size == null) ? (other.size != null) : !this.size
-				.equals(other.size)) {
-			return false;
-		}
-		if ((this.source == null) ? (other.source != null) : !this.source
-				.equals(other.source)) {
 			return false;
 		}
 		return true;
@@ -129,21 +107,17 @@ public class Trailer implements Serializable {
 
 	@Override
 	public int hashCode() {
-		int hash = 7;
-		hash = 61 * hash + (this.name != null ? this.name.hashCode() : 0);
-		hash = 61 * hash + (this.size != null ? this.size.hashCode() : 0);
-		hash = 61 * hash + (this.source != null ? this.source.hashCode() : 0);
-		hash = 61 * hash + (this.website != null ? this.website.hashCode() : 0);
+		int hash = 5;
+		hash = 37 * hash + this.id;
+		hash = 37 * hash + (this.name != null ? this.name.hashCode() : 0);
 		return hash;
 	}
 
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder("[Trailer=");
-		sb.append("name=").append(name);
-		sb.append("],[size=").append(size);
-		sb.append("],[source=").append(source);
-		sb.append("],[website=").append(website);
+		StringBuilder sb = new StringBuilder("[ProductionCompany=");
+		sb.append("[id=").append(id);
+		sb.append("],[name=").append(name);
 		sb.append("]]");
 		return sb.toString();
 	}

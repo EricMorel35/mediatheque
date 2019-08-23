@@ -1,7 +1,7 @@
 package com.xtt.mediatheque.wrapped;
 
 import com.xtt.mediatheque.model.DirectorsItem;
-import com.xtt.mediatheque.model.PersonCrew;
+import com.xtt.mediatheque.tmdb.model.PersonCrew;
 
 public class DirectorsItemWrapped implements DirectorsItem {
 

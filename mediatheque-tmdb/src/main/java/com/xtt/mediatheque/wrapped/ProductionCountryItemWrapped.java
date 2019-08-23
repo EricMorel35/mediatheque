@@ -1,7 +1,7 @@
 package com.xtt.mediatheque.wrapped;
 
-import com.xtt.mediatheque.model.ProductionCountry;
 import com.xtt.mediatheque.model.ProductionCountryItem;
+import com.xtt.mediatheque.tmdb.model.ProductionCountry;
 
 public class ProductionCountryItemWrapped implements ProductionCountryItem {
 

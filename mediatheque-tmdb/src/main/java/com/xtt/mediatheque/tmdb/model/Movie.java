@@ -1,4 +1,4 @@
-package com.xtt.mediatheque.model;
+package com.xtt.mediatheque.tmdb.model;
 
 import java.util.Date;
 import java.util.List;

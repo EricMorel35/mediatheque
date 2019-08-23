@@ -17,7 +17,7 @@
  *      along with TheMovieDB API.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package com.xtt.mediatheque.model;
+package com.xtt.mediatheque.tmdb.model;
 
 import java.io.Serializable;
 
@@ -26,47 +26,56 @@ import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonRootName;
 
 /**
  * 
- * @author stuart.boston
+ * @author Stuart
  */
-@JsonRootName("keyword")
-public class Keyword implements Serializable {
+public class ReleaseInfo implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	/*
 	 * Logger
 	 */
-	private static final Logger LOG = LoggerFactory.getLogger(Keyword.class);
+	private static final Logger LOG = LoggerFactory
+			.getLogger(ReleaseInfo.class);
 	/*
 	 * Properties
 	 */
-	@JsonProperty("id")
-	private int id;
-	@JsonProperty("name")
-	private String name;
+	@JsonProperty("iso_3166_1")
+	private String country;
+	@JsonProperty("certification")
+	private String certification;
+	@JsonProperty("release_date")
+	private String releaseDate;
 
 	// <editor-fold defaultstate="collapsed" desc="Getter methods">
-	public int getId() {
-		return id;
+	public String getCertification() {
+		return certification;
 	}
 
-	public String getName() {
-		return name;
+	public String getCountry() {
+		return country;
+	}
+
+	public String getReleaseDate() {
+		return releaseDate;
 	}
 
 	// </editor-fold>
 
 	// <editor-fold defaultstate="collapsed" desc="Setter methods">
-	public void setId(final int id) {
-		this.id = id;
+	public void setCertification(final String certification) {
+		this.certification = certification;
 	}
 
-	public void setName(final String name) {
-		this.name = name;
+	public void setCountry(final String country) {
+		this.country = country;
+	}
+
+	public void setReleaseDate(final String releaseDate) {
+		this.releaseDate = releaseDate;
 	}
 
 	// </editor-fold>
@@ -93,12 +102,17 @@ public class Keyword implements Serializable {
 		if (getClass() != obj.getClass()) {
 			return false;
 		}
-		final Keyword other = (Keyword) obj;
-		if (this.id != other.id) {
+		final ReleaseInfo other = (ReleaseInfo) obj;
+		if ((this.country == null) ? (other.country != null) : !this.country
+				.equals(other.country)) {
 			return false;
 		}
-		if ((this.name == null) ? (other.name != null) : !this.name
-				.equals(other.name)) {
+		if ((this.certification == null) ? (other.certification != null)
+				: !this.certification.equals(other.certification)) {
+			return false;
+		}
+		if ((this.releaseDate == null) ? (other.releaseDate != null)
+				: !this.releaseDate.equals(other.releaseDate)) {
 			return false;
 		}
 		return true;
@@ -107,16 +121,22 @@ public class Keyword implements Serializable {
 	@Override
 	public int hashCode() {
 		int hash = 3;
-		hash = 83 * hash + this.id;
-		hash = 83 * hash + (this.name != null ? this.name.hashCode() : 0);
+		hash = 89 * hash + (this.country != null ? this.country.hashCode() : 0);
+		hash = 89
+				* hash
+				+ (this.certification != null ? this.certification.hashCode()
+						: 0);
+		hash = 89 * hash
+				+ (this.releaseDate != null ? this.releaseDate.hashCode() : 0);
 		return hash;
 	}
 
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder("[Keyword=");
-		sb.append("[id=").append(id);
-		sb.append("],[name=").append(name);
+		StringBuilder sb = new StringBuilder("[ReleaseInfo=");
+		sb.append("[country=").append(country);
+		sb.append("],[certification=").append(certification);
+		sb.append("],[releaseDate=").append(releaseDate);
 		sb.append("]]");
 		return sb.toString();
 	}
