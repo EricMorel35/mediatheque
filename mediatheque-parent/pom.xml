@@ -26,7 +26,7 @@
 		<java.version>1.8</java.version>
 		<spring.version>4.3.5.RELEASE</spring.version>
 		<servlet.version>3.0.1</servlet.version>
-		<commons.collections.version>3.2.1</commons.collections.version>
+		<commons.collections.version>3.2.2</commons.collections.version>
 		<lombok.version>1.16.16</lombok.version>
 		<h2.version>1.4.197</h2.version>
 		<logback.version>1.2.3</logback.version>
