@@ -1,6 +1,6 @@
 package com.xtt.mediatheque.model;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -10,8 +10,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 
 import lombok.Data;
 
@@ -33,8 +31,7 @@ public class MovieUserEntity {
 	@Column(name = "original_name")
 	private String originalName;
 
-	@Temporal(TemporalType.DATE)
-	private Date creationDate;
+	private LocalDate creationDate;
 
 	@OneToOne(mappedBy = "movieUser", cascade = CascadeType.ALL)
 	private MovieEntity movie;
