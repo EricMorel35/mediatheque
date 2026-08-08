@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.0.3.RELEASE</version>
+		<version>4.1.0</version>
 	</parent>
 
 	<groupId>com.xtt.mediatheque</groupId>
@@ -40,14 +40,6 @@
 			<version>${plateforme.version}</version>
 		</dependency>
 
-		<!-- Force une version plus récente qu'1.8.13 : ce jar a un en-tête zip64
-			non conforme que les JDK récents (21+) refusent d'ouvrir. -->
-		<dependency>
-			<groupId>org.aspectj</groupId>
-			<artifactId>aspectjweaver</artifactId>
-			<version>1.9.22.1</version>
-		</dependency>
-
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
@@ -62,7 +54,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.13.0</version>
 			</plugin>
             <!-- Package as an executable jar/war -->
             <plugin>

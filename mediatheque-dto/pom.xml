@@ -8,7 +8,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.0.3.RELEASE</version>
+		<version>4.1.0</version>
 	</parent>
 
 	<groupId>com.xtt.mediatheque</groupId>
@@ -27,12 +27,9 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter</artifactId>
 		</dependency>
-		<!-- Version forcée : celle héritée de spring-boot-starter-parent (1.16.22)
-			ne sait pas générer de code sous JDK 21+. -->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
-			<version>1.18.46</version>
 		</dependency>
 	</dependencies>
 
@@ -41,16 +38,15 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.13.0</version>
 				<configuration>
 					<!-- Sous JDK 21+, javac ne découvre plus les annotation processors
 						depuis le classpath : il faut un processorpath explicite, sinon
-						Lombok ne génère rien, silencieusement. -->
+						Lombok ne génère rien, silencieusement. Version omise : gérée par
+						spring-boot-starter-parent. -->
 					<annotationProcessorPaths>
 						<path>
 							<groupId>org.projectlombok</groupId>
 							<artifactId>lombok</artifactId>
-							<version>1.18.46</version>
 						</path>
 					</annotationProcessorPaths>
 				</configuration>

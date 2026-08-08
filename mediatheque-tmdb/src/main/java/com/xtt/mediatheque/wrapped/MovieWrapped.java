@@ -9,7 +9,6 @@ import java.util.List;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 
 import com.xtt.mediatheque.model.ActorsItem;
 import com.xtt.mediatheque.model.DirectorsItem;
@@ -23,7 +22,6 @@ import com.xtt.mediatheque.tmdb.model.PersonCast;
 import com.xtt.mediatheque.tmdb.model.PersonCrew;
 import com.xtt.mediatheque.tmdb.model.ProductionCountry;
 
-@Component
 public class MovieWrapped implements MovieItem {
 
 	private final Movie movie;
