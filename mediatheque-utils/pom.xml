@@ -15,6 +15,10 @@
 	<name>mediatheque-utils</name>
 	<url>http://maven.apache.org</url>
 
+	<properties>
+		<java.version>21</java.version>
+	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

@@ -16,8 +16,12 @@
 
 	<name>mediatheque-model</name>
 	<url>http://maven.apache.org</url>
-	
-	<dependencies>		
+
+	<properties>
+		<java.version>21</java.version>
+	</properties>
+
+	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter</artifactId>

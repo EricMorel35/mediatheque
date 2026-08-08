@@ -18,14 +18,43 @@
 	<name>mediatheque-dto</name>
 	<url>http://maven.apache.org</url>
 
+	<properties>
+		<java.version>21</java.version>
+	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter</artifactId>
 		</dependency>
+		<!-- Version forcée : celle héritée de spring-boot-starter-parent (1.16.22)
+			ne sait pas générer de code sous JDK 21+. -->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
+			<version>1.18.46</version>
 		</dependency>
 	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.13.0</version>
+				<configuration>
+					<!-- Sous JDK 21+, javac ne découvre plus les annotation processors
+						depuis le classpath : il faut un processorpath explicite, sinon
+						Lombok ne génère rien, silencieusement. -->
+					<annotationProcessorPaths>
+						<path>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+							<version>1.18.46</version>
+						</path>
+					</annotationProcessorPaths>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>
