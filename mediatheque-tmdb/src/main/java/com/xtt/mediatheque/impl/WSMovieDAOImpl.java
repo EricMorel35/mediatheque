@@ -32,6 +32,8 @@ public class WSMovieDAOImpl implements WSMovieDAO {
 	private String searchUrl;
 	private String movieUrl;
 	private String apiKey;
+	private String urlCover;
+	private String urlYoutube;
 
 	public void setSearchUrl(String searchUrl) {
 		this.searchUrl = searchUrl;
@@ -45,6 +47,14 @@ public class WSMovieDAOImpl implements WSMovieDAO {
 		this.apiKey = apiKey;
 	}
 
+	public void setUrlCover(String urlCover) {
+		this.urlCover = urlCover;
+	}
+
+	public void setUrlYoutube(String urlYoutube) {
+		this.urlYoutube = urlYoutube;
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -55,7 +65,7 @@ public class WSMovieDAOImpl implements WSMovieDAO {
 		Map<String, String> uriParams = new HashMap<>();
 		uriParams.put("movie", String.valueOf(movieId));
 		ResponseEntity<Movie> movie = restTemplate.getForEntity(movieUrl, Movie.class, movieId);
-		return new MovieWrapped(movie.getBody());
+		return new MovieWrapped(movie.getBody(), urlCover, urlYoutube);
 	}
 
 	private MoviesList getMovieSearchResults(final String movieName) {
@@ -102,7 +112,7 @@ public class WSMovieDAOImpl implements WSMovieDAO {
 		List<MovieItem> items = new ArrayList<>();
 		MoviesList movies = getMovieSearchResults(movieName);
 		for (Movie movie : movies.getResults()) {
-			items.add(new MovieWrapped(movie));
+			items.add(new MovieWrapped(movie, urlCover, urlYoutube));
 		}
 
 		return items;

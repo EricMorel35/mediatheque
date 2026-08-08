@@ -56,7 +56,13 @@ public class MoviesScan {
 	 */
 	private void scanDirectory(final String path) {
 		File root = new File(path);
-		List<File> filesList = Arrays.asList(root.listFiles());
+		File[] files = root.listFiles();
+		// listFiles() returns null (not an empty array) if root isn't a
+		// directory or can't be read (bad path, permissions...).
+		if (files == null) {
+			return;
+		}
+		List<File> filesList = Arrays.asList(files);
 
 		if (!CollectionUtils.isEmpty(filesList)) {
 			for (File file : filesList) {

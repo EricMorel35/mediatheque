@@ -8,7 +8,6 @@ import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Value;
 
 import com.xtt.mediatheque.model.ActorsItem;
 import com.xtt.mediatheque.model.DirectorsItem;
@@ -25,15 +24,17 @@ import com.xtt.mediatheque.tmdb.model.ProductionCountry;
 public class MovieWrapped implements MovieItem {
 
 	private final Movie movie;
+	private final String urlCover;
+	private final String urlYoutube;
 
-	@Value("urlYoutube")
-	private String urlYoutube;
-
-	@Value("urlCover")
-	private String urlCover;
-
-	public MovieWrapped(final Movie movie) {
+	// MovieWrapped is always created by hand (new MovieWrapped(...)), never
+	// injected by Spring: @Value on its fields was never processed, and its
+	// syntax ("urlCover" instead of "${urlCover}") was wrong anyway. These
+	// values must be passed in explicitly by the caller instead.
+	public MovieWrapped(final Movie movie, final String urlCover, final String urlYoutube) {
 		this.movie = movie;
+		this.urlCover = urlCover;
+		this.urlYoutube = urlYoutube;
 	}
 
 	@Override

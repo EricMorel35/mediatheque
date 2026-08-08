@@ -104,8 +104,14 @@ public class MovieServiceImpl implements MovieService {
 		movieEntity.setMovieTitle(movie.getMovieName());
 		movieEntity.setMovieId(movie.getIdBackend());
 		movieEntity.setReleaseYear(Integer.valueOf(movie.getReleaseYear()));
-		movieEntity.setMovieUser(movieUserEntity);
 		movieEntity.setUrlCover(movie.getURLPoster());
+
+		// Link both sides of the bidirectional relation: MovieEntity is the
+		// owning side (holds the FK), MovieUserEntity.movie carries
+		// cascade=ALL. Without setting movieUserEntity.movie, the cascade has
+		// nothing to persist and movieEntity was silently never saved.
+		movieUserEntity.setMovie(movieEntity);
+		movieEntity.setMovieUser(movieUserEntity);
 
 		movieUserDAO.save(movieUserEntity);
 	}

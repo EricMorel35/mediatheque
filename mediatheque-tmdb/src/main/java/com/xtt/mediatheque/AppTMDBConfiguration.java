@@ -27,6 +27,8 @@ public class AppTMDBConfiguration {
 		ws.setMovieUrl(environment.getProperty("tmdb.movie.query"));
 		ws.setSearchUrl(environment.getProperty("tmdb.search.query"));
 		ws.setApiKey(environment.getProperty("tmdb.api_key"));
+		ws.setUrlCover(environment.getProperty("urlCover"));
+		ws.setUrlYoutube(environment.getProperty("urlYoutube"));
 		return ws;
 	}
 
