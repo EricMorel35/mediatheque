@@ -69,10 +69,10 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
-					<!-- Sous JDK 21+, javac ne découvre plus les annotation processors
-						depuis le classpath : il faut un processorpath explicite, sinon
-						Lombok ne génère rien, silencieusement. Version omise : gérée par
-						spring-boot-starter-parent. -->
+					<!-- Under JDK 21+, javac no longer discovers annotation processors
+						from the classpath alone: an explicit processorpath is required,
+						otherwise Lombok silently generates nothing. Version omitted:
+						managed by spring-boot-starter-parent. -->
 					<annotationProcessorPaths>
 						<path>
 							<groupId>org.projectlombok</groupId>
