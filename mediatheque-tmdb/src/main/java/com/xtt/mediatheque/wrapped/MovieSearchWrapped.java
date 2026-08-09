@@ -13,9 +13,14 @@ import com.xtt.mediatheque.tmdb.model.ProductionCountry;
 public class MovieSearchWrapped implements MovieSearchItem {
 
 	private final MoviesList moviesList;
+	private final String urlCover;
 
-	public MovieSearchWrapped(final MoviesList moviesList) {
+	// Always constructed by hand (new MovieSearchWrapped(...)), never
+	// injected by Spring -- urlCover must be passed in explicitly by the
+	// caller (same pattern as MovieWrapped).
+	public MovieSearchWrapped(final MoviesList moviesList, final String urlCover) {
 		this.moviesList = moviesList;
+		this.urlCover = urlCover;
 	}
 
 	@Override
@@ -46,7 +51,8 @@ public class MovieSearchWrapped implements MovieSearchItem {
 
 	@Override
 	public String getURLPoster() {
-		return moviesList.getResults().get(0).getPoster_path();
+		String posterPath = moviesList.getResults().get(0).getPoster_path();
+		return posterPath != null ? urlCover.concat(posterPath) : "";
 	}
 
 	@Override

@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
@@ -26,7 +27,6 @@ public class AppTMDBConfiguration {
 		WSMovieDAOImpl ws = new WSMovieDAOImpl();
 		ws.setMovieUrl(environment.getProperty("tmdb.movie.query"));
 		ws.setSearchUrl(environment.getProperty("tmdb.search.query"));
-		ws.setApiKey(environment.getProperty("tmdb.api_key"));
 		ws.setUrlCover(environment.getProperty("urlCover"));
 		ws.setUrlYoutube(environment.getProperty("urlYoutube"));
 		return ws;
@@ -36,6 +36,14 @@ public class AppTMDBConfiguration {
 	public RestTemplate restTemplate() {
 		RestTemplate restTemplate = new RestTemplate();
 		restTemplate.setMessageConverters(getMessageConverters());
+		// TMDB v4 Read Access Token, sent as a Bearer header on every
+		// request instead of the older v3 api_key query parameter (see
+		// tmdb.properties).
+		String token = environment.getProperty("tmdb.api_key");
+		restTemplate.getInterceptors().add((request, body, execution) -> {
+			request.getHeaders().add(HttpHeaders.AUTHORIZATION, "Bearer " + token);
+			return execution.execute(request, body);
+		});
 		return restTemplate;
 	}
 

@@ -48,7 +48,6 @@ class WSMovieDAOImplTest {
 		ReflectionTestUtils.setField(wsMovieDAO, "restTemplate", restTemplate);
 		wsMovieDAO.setMovieUrl(MOVIE_URL);
 		wsMovieDAO.setSearchUrl(SEARCH_URL);
-		wsMovieDAO.setApiKey("test-api-key");
 		wsMovieDAO.setUrlCover("https://image.tmdb.org/cover/");
 		wsMovieDAO.setUrlYoutube("https://youtube.com/watch?v=");
 	}
