@@ -43,7 +43,10 @@ public class MovieManager {
 		optMovie.ifPresent(movie -> {
 			movie.setUrlYoutube(movieItem.getURLYoutube());
 			movie.setUrlCover(movieItem.getURLPoster());
-			movie.setSynopsis(movieItem.getSynopsis().substring(0, 255));
+			// substring(0, 255) used to throw for any synopsis under 255
+			// chars; only truncate when it's actually longer than that.
+			String synopsis = movieItem.getSynopsis();
+			movie.setSynopsis(synopsis != null && synopsis.length() > 255 ? synopsis.substring(0, 255) : synopsis);
 			movieItem.getGenres().forEach(genre -> {
 				MovieKindsEntity mke = new MovieKindsEntity();
 				KindsEmbeddableEntity pk = new KindsEmbeddableEntity();

@@ -74,7 +74,7 @@ public class WSMovieDAOImpl implements WSMovieDAO {
 		uriParams.put("query", movieName);
 		uriParams.put("language", "fr");
 
-		MoviesList movies = new MoviesList();
+		MoviesList movies = null;
 		try {
 			movies = restTemplate.getForObject(searchUrl, MoviesList.class, uriParams);
 			try {
@@ -85,6 +85,16 @@ public class WSMovieDAOImpl implements WSMovieDAO {
 			}
 		} catch (RestClientException e) {
 			LOG.error(new StringBuilder("[Error] - Error when call MovieDB API ").append(movieName).toString(), e);
+		}
+
+		// A failed call (caught above) or a null response body both used to
+		// leave callers iterating over a null results list. Guarantee a
+		// non-null MoviesList with a non-null (possibly empty) results list.
+		if (movies == null) {
+			movies = new MoviesList();
+		}
+		if (movies.getResults() == null) {
+			movies.setResults(new ArrayList<>());
 		}
 
 		return movies;

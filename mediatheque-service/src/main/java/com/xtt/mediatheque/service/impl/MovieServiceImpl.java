@@ -81,13 +81,19 @@ public class MovieServiceImpl implements MovieService {
 	@Override
 	public ContentMovieDTO movie(long movieId) throws MovieNotFoundException {
 		Optional<MovieEntity> optMovie = movieDAO.findById(movieId);
-		MovieItem movieItem = optMovie
-				.filter(movie -> StringUtils.isEmpty(movie.getReleaseYear())
-						|| StringUtils.isEmpty(movie.getSynopsis()))
-				.map(movie -> wsMovieDAO.getContentMovie(movieId))
-				.orElseThrow(() -> new MovieNotFoundException(messages.getMessageWithParameters(
-						MediathequeConstants.MOVIE_NOT_FOUND, new String[] { String.valueOf(movieId) })));
-		movieManager.updateFullDatas(optMovie, movieItem);
+		MovieEntity movie = optMovie.orElseThrow(() -> new MovieNotFoundException(messages.getMessageWithParameters(
+				MediathequeConstants.MOVIE_NOT_FOUND, new String[] { String.valueOf(movieId) })));
+
+		// Actors/directors/genres are never persisted for reading back, so
+		// TMDB is always queried for the full DTO. Local storage is only
+		// (re)enriched -- via MovieManager -- the first time, when
+		// releaseYear/synopsis are still missing; a movie already fully
+		// cached is not re-persisted on every view.
+		MovieItem movieItem = wsMovieDAO.getContentMovie(movieId);
+		if (StringUtils.isEmpty(movie.getReleaseYear()) || StringUtils.isEmpty(movie.getSynopsis())) {
+			movieManager.updateFullDatas(optMovie, movieItem);
+		}
+
 		return dtoFactory.buildFullMovieDTO(movieItem);
 	}
 
