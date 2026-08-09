@@ -1,0 +1,46 @@
+# Local dev database for mediatheque. Replaces the file-based H2 database.
+#
+# Usage:
+#   docker compose up -d
+#
+# MySQL data persists in the "mediatheque-mysql-data" named volume across
+# container restarts/recreations. To reset the schema from scratch:
+#   docker compose down -v
+#
+# Credentials below are local-dev-only defaults (same spirit as the hardcoded
+# TMDB API key in mediatheque-tmdb/src/main/resources/tmdb.properties) --
+# not meant to be reused outside a developer machine.
+services:
+  mysql:
+    image: mysql:latest
+    container_name: mediatheque-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: mediatheque
+      MYSQL_USER: mediatheque
+      MYSQL_PASSWORD: mediatheque
+      MYSQL_ROOT_PASSWORD: mediatheque-root
+    ports:
+      - "3306:3306"
+    volumes:
+      - mediatheque-mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p$$MYSQL_ROOT_PASSWORD"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  # Web-based DB browser, replaces the H2 console that was reachable at
+  # /console on the webapp itself. MySQL has no Spring-provided equivalent.
+  adminer:
+    image: adminer:latest
+    container_name: mediatheque-adminer
+    restart: unless-stopped
+    ports:
+      - "8081:8080"
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+volumes:
+  mediatheque-mysql-data:
