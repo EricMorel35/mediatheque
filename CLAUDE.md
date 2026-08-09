@@ -19,7 +19,7 @@ mediatheque-scan        (jar exécutable "MoviesSearch" : scan CLI vers TMDB)
 mediatheque-webapp      (jar exécutable : API REST + Tomcat embarqué)
 ```
 
-Versions actuelles : **Java 21**, **Spring Boot 4.1.0**.
+Versions actuelles : **Java 25**, **Spring Boot 4.1.0**.
 
 ## Environnement de build (spécifique à cette machine)
 
@@ -82,3 +82,4 @@ Observé dans le code existant — à respecter pour rester cohérent :
 
 - Migration Java 1.8 → 21 puis Spring Boot 2.0.3.RELEASE (2018) → 4.1.0, faite par paliers (2.7.18 → 3.1.12 → 3.5.16 → 4.0.0 → 4.1.0) pour respecter la règle Spring de ne jamais sauter une frontière majeure. Détails dans l'historique git (commits "Migration Spring Boot...", "Met à jour la version de Java...").
 - Bascule `javax.*` → `jakarta.*` faite au passage à Spring Boot 3.x.
+- Montée Java 21 → 25 (LTS) : simple bump de la propriété `java.version` dans les 9 poms (`mediatheque-parent` inclus, même si non hérité — gardé cohérent). Aucun changement de code nécessaire ; build et démarrage webapp vérifiés sur JDK 25.0.4 (Temurin), pas de régression sur le format de fichier H2.

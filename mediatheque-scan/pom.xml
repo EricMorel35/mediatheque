@@ -19,7 +19,7 @@
 		<commons.version>3.1</commons.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<plateforme.version>1.0.0-SNAPSHOT</plateforme.version>
-		<java.version>21</java.version>
+		<java.version>25</java.version>
 	</properties>
 
 	<dependencies>
