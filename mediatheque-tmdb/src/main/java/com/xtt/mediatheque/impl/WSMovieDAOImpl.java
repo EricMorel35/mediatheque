@@ -31,7 +31,6 @@ public class WSMovieDAOImpl implements WSMovieDAO {
 
 	private String searchUrl;
 	private String movieUrl;
-	private String apiKey;
 	private String urlCover;
 	private String urlYoutube;
 
@@ -41,10 +40,6 @@ public class WSMovieDAOImpl implements WSMovieDAO {
 
 	public void setMovieUrl(String movieUrl) {
 		this.movieUrl = movieUrl;
-	}
-
-	public void setApiKey(String apiKey) {
-		this.apiKey = apiKey;
 	}
 
 	public void setUrlCover(String urlCover) {
@@ -70,7 +65,6 @@ public class WSMovieDAOImpl implements WSMovieDAO {
 
 	private MoviesList getMovieSearchResults(final String movieName) {
 		Map<String, String> uriParams = new HashMap<>();
-		uriParams.put("key", apiKey);
 		uriParams.put("query", movieName);
 		uriParams.put("language", "fr");
 
@@ -108,7 +102,7 @@ public class WSMovieDAOImpl implements WSMovieDAO {
 	@Override
 	public MovieSearchItem getSearchResultsMovie(final String movieName) {
 		MoviesList movie = getMovieSearchResults(movieName);
-		return new MovieSearchWrapped(movie);
+		return new MovieSearchWrapped(movie, urlCover);
 	}
 
 	/*

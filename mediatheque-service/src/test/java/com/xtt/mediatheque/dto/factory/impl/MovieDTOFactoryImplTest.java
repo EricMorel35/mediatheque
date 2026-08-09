@@ -48,6 +48,7 @@ class MovieDTOFactoryImplTest {
 		when(movieItem.getReleaseYear()).thenReturn("2014");
 		when(movieItem.getSynopsis()).thenReturn("A team of explorers...");
 		when(movieItem.getURLYoutube()).thenReturn("https://youtube.com/watch?v=zSWdZVtXT7E");
+		when(movieItem.getURLPoster()).thenReturn("https://image.tmdb.org/interstellar.jpg");
 
 		ActorsItem actor = mock(ActorsItem.class);
 		when(actor.getName()).thenReturn("Matthew McConaughey");
@@ -69,6 +70,7 @@ class MovieDTOFactoryImplTest {
 		assertThat(dto.getDirectors()).containsExactly("Christopher Nolan");
 		assertThat(dto.getGenres()).containsExactly("Sci-Fi");
 		assertThat(dto.getUrlYoutube()).isEqualTo("https://youtube.com/watch?v=zSWdZVtXT7E");
+		assertThat(dto.getCover()).isEqualTo("https://image.tmdb.org/interstellar.jpg");
 	}
 
 	@Test

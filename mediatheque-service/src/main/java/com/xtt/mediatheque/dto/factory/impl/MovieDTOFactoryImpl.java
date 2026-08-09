@@ -47,6 +47,7 @@ public class MovieDTOFactoryImpl implements MovieDTOFactory {
 		movieDTO.setGenres(movieEntityItem.getGenres().stream().map(KindItem::getName).collect(Collectors.toList()));
 //		movieDTO.setCreationDate(movieEntityItem.getTimestampCreationDate().getTime());
 		movieDTO.setUrlYoutube(movieEntityItem.getURLYoutube());
+		movieDTO.setCover(movieEntityItem.getURLPoster());
 		return movieDTO;
 	}
 
