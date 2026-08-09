@@ -10,7 +10,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -115,16 +114,34 @@ class MovieManagerTest {
 	}
 
 	@Test
-	void updateFullDatas_whenSynopsisShorterThan255Chars_throwsIndexOutOfBounds() {
-		// Documents an existing edge case: synopsis.substring(0, 255) blows
-		// up for any synopsis under 255 characters instead of just taking
-		// what's available.
+	void updateFullDatas_whenSynopsisShorterThan255Chars_keepsItUntruncated() {
 		MovieEntity movie = new MovieEntity();
 		MovieItem movieItem = mock(MovieItem.class);
 		when(movieItem.getSynopsis()).thenReturn("Too short");
+		when(movieItem.getGenres()).thenReturn(List.of());
+		when(movieItem.getActors()).thenReturn(List.of());
+		when(movieItem.getDirectors()).thenReturn(List.of());
+		when(movieItem.getCountries()).thenReturn(List.of());
 
-		assertThatThrownBy(() -> movieManager.updateFullDatas(Optional.of(movie), movieItem))
-				.isInstanceOf(StringIndexOutOfBoundsException.class);
+		movieManager.updateFullDatas(Optional.of(movie), movieItem);
+
+		assertThat(movie.getSynopsis()).isEqualTo("Too short");
+	}
+
+	@Test
+	void updateFullDatas_whenSynopsisExactly255Chars_keepsItUntruncated() {
+		MovieEntity movie = new MovieEntity();
+		String exactly255 = "a".repeat(255);
+		MovieItem movieItem = mock(MovieItem.class);
+		when(movieItem.getSynopsis()).thenReturn(exactly255);
+		when(movieItem.getGenres()).thenReturn(List.of());
+		when(movieItem.getActors()).thenReturn(List.of());
+		when(movieItem.getDirectors()).thenReturn(List.of());
+		when(movieItem.getCountries()).thenReturn(List.of());
+
+		movieManager.updateFullDatas(Optional.of(movie), movieItem);
+
+		assertThat(movie.getSynopsis()).isEqualTo(exactly255);
 	}
 
 }

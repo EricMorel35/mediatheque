@@ -106,30 +106,30 @@ class WSMovieDAOImplTest {
 	}
 
 	@Test
-	void getSearchAllResultsMovie_whenTmdbCallFails_throwsNullPointerException() {
-		// Documents an existing edge case: on RestClientException the
-		// exception is swallowed and a bare `new MoviesList()` is returned
-		// (results == null), so the caller's iteration over getResults()
-		// blows up with an NPE instead of getting an empty list back.
+	void getSearchAllResultsMovie_whenTmdbCallFails_returnsEmptyList() {
 		when(restTemplate.getForObject(eq(SEARCH_URL), eq(MoviesList.class), any(Map.class)))
 				.thenThrow(new RestClientException("TMDB is down"));
 
-		assertThatThrownBy(() -> wsMovieDAO.getSearchAllResultsMovie("Matrix"))
-				.isInstanceOf(NullPointerException.class);
+		List<MovieItem> result = wsMovieDAO.getSearchAllResultsMovie("Matrix");
+
+		assertThat(result).isEmpty();
 	}
 
 	@Test
-	void getSearchResultsMovie_whenTmdbCallFails_returnsWrapperThatThrowsOnFirstAccess() {
-		// Same underlying issue as above: the DAO call itself doesn't throw,
-		// but the MovieSearchWrapped it returns blows up as soon as any of
-		// its getters are used, since it wraps a MoviesList with no results.
+	void getSearchResultsMovie_whenTmdbCallFails_returnsWrapperOverEmptyResults() {
+		// getMovieSearchResults() now always returns a non-null results
+		// list, so the NPE that used to happen here is gone. Accessing the
+		// wrapper's getters still blows up (IndexOutOfBoundsException, from
+		// MovieSearchWrapped.getMovieName() indexing getResults().get(0))
+		// since there is no movie to describe -- a separate, narrower issue
+		// than the null-results one that was fixed, left as-is here.
 		when(restTemplate.getForObject(eq(SEARCH_URL), eq(MoviesList.class), any(Map.class)))
 				.thenThrow(new RestClientException("TMDB is down"));
 
 		MovieSearchItem result = wsMovieDAO.getSearchResultsMovie("Matrix");
 
 		assertThat(result).isNotNull();
-		assertThatThrownBy(result::getMovieName).isInstanceOf(NullPointerException.class);
+		assertThatThrownBy(result::getMovieName).isInstanceOf(IndexOutOfBoundsException.class);
 	}
 
 }

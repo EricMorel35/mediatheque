@@ -17,7 +17,6 @@ import org.springframework.data.domain.Pageable;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
@@ -130,22 +129,26 @@ class MovieServiceImplTest {
 	}
 
 	@Test
-	void movie_whenMovieDataAlreadyComplete_throwsMovieNotFoundException() {
-		// Documents current behavior: Optional.filter() keeps the movie only
-		// when data is INCOMPLETE (see MovieServiceImpl.movie javadoc vs
-		// implementation) -- a movie whose releaseYear and synopsis are both
-		// already populated fails the filter and falls through to
-		// orElseThrow, even though it was found in the database. This looks
-		// like an inverted condition rather than intended behavior.
+	void movie_whenMovieDataAlreadyComplete_stillReturnsDtoButSkipsPersisting() throws MovieNotFoundException {
+		// A movie already fully cached (releaseYear and synopsis both set)
+		// must still be viewable -- it should not be reported as "not
+		// found". TMDB is still queried (actors/directors/genres are never
+		// persisted for reading back), but MovieManager is not invoked again
+		// since there is nothing new to persist.
 		MovieEntity storedMovie = new MovieEntity();
 		storedMovie.setReleaseYear(2020);
 		storedMovie.setSynopsis("Complete synopsis");
 		when(movieDAO.findById(42L)).thenReturn(Optional.of(storedMovie));
-		when(messages.getMessageWithParameters(anyString(), any())).thenReturn("Movie not found");
 
-		assertThatThrownBy(() -> movieService.movie(42L)).isInstanceOf(MovieNotFoundException.class);
+		MovieItem tmdbItem = mock(MovieItem.class);
+		when(wsMovieDAO.getContentMovie(42L)).thenReturn(tmdbItem);
+		ContentMovieDTO expectedDto = new ContentMovieDTO();
+		when(dtoFactory.buildFullMovieDTO(tmdbItem)).thenReturn(expectedDto);
 
-		verify(wsMovieDAO, never()).getContentMovie(anyLong());
+		ContentMovieDTO result = movieService.movie(42L);
+
+		assertThat(result).isSameAs(expectedDto);
+		verify(movieManager, never()).updateFullDatas(any(), any());
 	}
 
 	@Test
