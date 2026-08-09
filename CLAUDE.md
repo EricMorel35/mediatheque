@@ -1,6 +1,6 @@
 # mediatheque
 
-Application de gestion de médiathèque personnelle (films) : scan/import depuis TheMovieDB (TMDB), stockage en base H2, consultation via une webapp Spring Boot.
+Application de gestion de médiathèque personnelle (films) : scan/import depuis TheMovieDB (TMDB), stockage en base MySQL (via Docker Compose), consultation via une webapp Spring Boot.
 
 ## Structure du projet
 
@@ -43,20 +43,27 @@ mvn clean install
 
 ## Lancer l'application
 
+Démarrer la base avant tout (voir "Base de données" ci-dessous) :
+
 ```powershell
+docker compose up -d
 java -jar mediatheque-webapp/target/mediatheque-webapp-1.0.0-SNAPSHOT.jar
 java -jar mediatheque-scan/target/MoviesSearch.jar <nom-de-film>
 ```
 
 - Webapp : Tomcat embarqué sur le port 8080. Endpoints : `/movies`, `/getKinds`, `/movie/{id}`, `/searchMovie/{name}`, `/moviesByKind/{kind}`.
-- Console H2 : `http://localhost:8080/console` (nécessite la dépendance `spring-boot-h2console`, voir plus bas).
 - `mediatheque-scan` appelle l'API TMDB réelle avec une clé API en dur (`mediatheque-tmdb/src/main/resources/tmdb.properties`) et écrit dans la vraie base — ne pas lancer sans le vouloir vraiment.
 
 ## Base de données
 
-H2 en fichier, chemin fixe : `~/mediatheque.mv.db` (donc `C:\Users\<user>\mediatheque.mv.db` sous Windows). Configuré dans `mediatheque-webapp/src/main/resources/application.properties` et `mediatheque-scan/src/main/resources/application.properties`. `spring.jpa.hibernate.ddl-auto=update`.
+MySQL (image `mysql:latest`), démarré via `docker-compose.yml` à la racine du repo : `docker compose up -d`. Configuré dans `mediatheque-webapp/src/main/resources/application.properties` et `mediatheque-scan/src/main/resources/application.properties`. `spring.jpa.hibernate.ddl-auto=update`.
 
-**Le format de fichier H2 change entre versions majeures de H2** (rencontré à plusieurs reprises lors de la migration Spring Boot : `Unsupported database file version`). Si le démarrage échoue avec une erreur de ce type après une montée de version de dépendances, c'est presque toujours ça — pas une vraie régression. Sur une base de test jetable (pas de données réelles à préserver), supprimer `~/mediatheque.mv.db` et `~/mediatheque.trace.db` et relancer suffit à recréer le schéma à neuf.
+- **Sur cette machine, pas de Docker Desktop** : Docker Engine + Compose tournent dans la distro WSL2 `Ubuntu-22.04` (déjà installés, service systemd `docker` activé). Lancer les commandes `docker compose` depuis un shell WSL (`wsl -d Ubuntu-22.04`, projet monté sous `/mnt/c/...`), pas depuis PowerShell. Le port 3306 est forwardé vers `localhost` côté Windows automatiquement — voir le piège WSL2 dans l'historique récent si la connexion échoue.
+
+- Connexion : `jdbc:mysql://localhost:3306/mediatheque`, utilisateur/mot de passe `mediatheque`/`mediatheque` (identifiants de dev locaux en dur dans `docker-compose.yml` et les `application.properties`, même logique que la clé API TMDB — pas prévus pour être réutilisés ailleurs).
+- Les données persistent dans le volume nommé `mediatheque-mysql-data` entre redémarrages. Pour repartir d'un schéma vide : `docker compose down -v`.
+- Interface web de consultation (remplace l'ancienne console H2) : Adminer sur `http://localhost:8081` (service `adminer` du compose), serveur `mysql`, utilisateur/mot de passe comme ci-dessus.
+- Migration depuis H2 (commit "Remplace H2 par MySQL...") : `mediatheque.mv.db`/`mediatheque.trace.db` ne sont plus utilisés et peuvent être supprimés ; aucune donnée n'a été migrée automatiquement, le schéma MySQL est recréé à neuf par `ddl-auto=update` au premier démarrage.
 
 ## Pièges connus (JDK 21+)
 
@@ -84,3 +91,5 @@ Observé dans le code existant — à respecter pour rester cohérent :
 - Bascule `javax.*` → `jakarta.*` faite au passage à Spring Boot 3.x.
 - Montée Java 21 → 25 (LTS) : simple bump de la propriété `java.version` dans les 9 poms (`mediatheque-parent` inclus, même si non hérité — gardé cohérent). Aucun changement de code nécessaire ; build et démarrage webapp vérifiés sur JDK 25.0.4 (Temurin), pas de régression sur le format de fichier H2.
 - `commons-collections` 3.2.1 → 3.2.2 (`mediatheque-tmdb`, `mediatheque-persistence`) : corrige 4 alertes Dependabot (2 critical, 2 high — GHSA-fjq5-5j5f-mvxh et GHSA-6hgm-866r-3cjv, désérialisation via `InvokerTransformer`). Version épinglée en dur car non gérée par le BOM Spring Boot ; API `CollectionUtils` inchangée entre les deux versions, aucun changement de code nécessaire.
+- Remplacement de H2 par MySQL (`mediatheque-webapp`, `mediatheque-scan`) : dépendance `com.h2database:h2` → `com.mysql:mysql-connector-j` (version gérée par le BOM Spring Boot, comme H2 avant elle), `spring-boot-h2console` supprimée. Base démarrée via `docker-compose.yml` (nouveau fichier à la racine) au lieu d'un fichier `~/mediatheque.mv.db`. Docker Desktop absent de la machine ; Docker Engine + Compose (déjà installés, gérés par systemd) utilisés depuis la distro WSL2 `Ubuntu-22.04` à la place. Démarrage réel de la webapp contre un conteneur MySQL vérifié avec succès (schéma créé par `ddl-auto=update`, dialecte `MySQLDialect` auto-détecté) ; pagination `/movies` testée avec 100 films de test insérés directement en base (page pleine et page partielle correctes).
+  - **Piège WSL2** : par défaut, la VM WSL2 s'éteint après quelques secondes d'inactivité (pas de session WSL active), ce qui coupe le daemon Docker et le port forwarding vers Windows — `localhost:3306` devient alors injoignable depuis la webapp (tourne côté Windows), même si `docker compose up -d` a réussi. `vmIdleTimeout=-1` dans `%USERPROFILE%\.wslconfig` (`[wsl2]`) ne suffit pas toujours à lui seul dans cet environnement ; garder une session WSL active (ex. `wsl -d Ubuntu-22.04` ouvert, ou un process qui s'y maintient) pendant le développement est la solution fiable.
