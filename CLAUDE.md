@@ -65,6 +65,39 @@ MySQL (image `mysql:latest`), démarré via `docker-compose.yml` à la racine du
 - Interface web de consultation (remplace l'ancienne console H2) : Adminer sur `http://localhost:8081` (service `adminer` du compose), serveur `mysql`, utilisateur/mot de passe comme ci-dessus.
 - Migration depuis H2 (commit "Remplace H2 par MySQL...") : `mediatheque.mv.db`/`mediatheque.trace.db` ne sont plus utilisés et peuvent être supprimés ; aucune donnée n'a été migrée automatiquement, le schéma MySQL est recréé à neuf par `ddl-auto=update` au premier démarrage.
 
+## Tests
+
+- `mediatheque-webapp` a un test d'intégration (`MoviePaginationIntegrationTest`) qui valide `GET /movies` (page pleine, page partielle, page hors limites, taille par défaut de Spring Data) contre un **vrai conteneur MySQL** via Testcontainers (`@ServiceConnection` + `MySQLContainer`), pas contre H2 ni des mocks — l'objectif est de couvrir les particularités de pagination propres au dialecte MySQL réellement utilisé en prod.
+- Aucun autre module n'a de tests pour l'instant.
+
+### Lancer les tests (spécifique à cette machine : Docker via WSL2, pas Docker Desktop)
+
+Testcontainers doit parler au daemon Docker, qui tourne dans la distro WSL2 `Ubuntu-22.04` (voir "Base de données"). Le daemon a été exposé en TCP en plus du socket Unix, via un override systemd **hors du repo** (à refaire si la distro WSL est recréée) :
+
+```bash
+# Dans wsl -d Ubuntu-22.04, une seule fois :
+sudo mkdir -p /etc/systemd/system/docker.service.d
+cat <<'EOF' | sudo tee /etc/systemd/system/docker.service.d/override.conf
+[Service]
+ExecStart=
+ExecStart=/usr/bin/dockerd -H fd:// -H tcp://0.0.0.0:2375 --containerd=/run/containerd/containerd.sock
+EOF
+sudo systemctl daemon-reload
+sudo systemctl restart docker
+```
+
+Puis, côté Windows, avant `mvn test` / `mvn clean install` :
+
+```powershell
+$wslIp = (wsl -d Ubuntu-22.04 -- hostname -I).Trim().Split(" ")[0]
+$env:DOCKER_HOST = "tcp://${wslIp}:2375"
+```
+
+- **Utiliser l'IP directe de la VM WSL (`hostname -I`), pas `localhost`** : le forwarding `localhost` de WSL2 s'est montré peu fiable pour une connexion Java fraîche vers le daemon Docker (`Connection refused` intermittent constaté en pratique, alors que `Test-NetConnection localhost -Port 2375` réussissait juste avant/après depuis PowerShell). L'IP directe de la VM contourne le relais NAT et a été fiable à chaque essai.
+- Cette IP change à chaque redémarrage de la VM WSL — la recalculer à chaque session, ne pas la coder en dur dans un `.env`.
+- Garder une session WSL active pendant les tests (même piège que pour `docker compose`, voir "Base de données") : `wsl -d Ubuntu-22.04 -- sleep 3600` lancé en tâche de fond évite que la VM et le daemon s'éteignent en cours de build.
+- **Sécurité** : `-H tcp://0.0.0.0:2375` expose l'API Docker (root-équivalent) sans authentification. Sur WSL2, ce port n'est normalement joignable que depuis cette machine Windows (pas depuis le réseau local), donc le risque reste contenu à cette machine — mais ne pas reproduire cette config sur un serveur exposé.
+
 ## Pièges connus (JDK 21+)
 
 - **Lombok** : depuis JDK 21+, `javac` ne découvre plus les annotation processors depuis le simple classpath — il faut un `-processorpath` explicite. Sans `<annotationProcessorPaths>` dans la config de `maven-compiler-plugin`, Lombok ne génère **aucun code, sans la moindre erreur ni warning** (silencieux). Cette config est en place dans `mediatheque-dto`, `mediatheque-persistence`, `mediatheque-service` — ne pas la retirer même si la version de Lombok change.
@@ -93,3 +126,4 @@ Observé dans le code existant — à respecter pour rester cohérent :
 - `commons-collections` 3.2.1 → 3.2.2 (`mediatheque-tmdb`, `mediatheque-persistence`) : corrige 4 alertes Dependabot (2 critical, 2 high — GHSA-fjq5-5j5f-mvxh et GHSA-6hgm-866r-3cjv, désérialisation via `InvokerTransformer`). Version épinglée en dur car non gérée par le BOM Spring Boot ; API `CollectionUtils` inchangée entre les deux versions, aucun changement de code nécessaire.
 - Remplacement de H2 par MySQL (`mediatheque-webapp`, `mediatheque-scan`) : dépendance `com.h2database:h2` → `com.mysql:mysql-connector-j` (version gérée par le BOM Spring Boot, comme H2 avant elle), `spring-boot-h2console` supprimée. Base démarrée via `docker-compose.yml` (nouveau fichier à la racine) au lieu d'un fichier `~/mediatheque.mv.db`. Docker Desktop absent de la machine ; Docker Engine + Compose (déjà installés, gérés par systemd) utilisés depuis la distro WSL2 `Ubuntu-22.04` à la place. Démarrage réel de la webapp contre un conteneur MySQL vérifié avec succès (schéma créé par `ddl-auto=update`, dialecte `MySQLDialect` auto-détecté) ; pagination `/movies` testée avec 100 films de test insérés directement en base (page pleine et page partielle correctes).
   - **Piège WSL2** : par défaut, la VM WSL2 s'éteint après quelques secondes d'inactivité (pas de session WSL active), ce qui coupe le daemon Docker et le port forwarding vers Windows — `localhost:3306` devient alors injoignable depuis la webapp (tourne côté Windows), même si `docker compose up -d` a réussi. `vmIdleTimeout=-1` dans `%USERPROFILE%\.wslconfig` (`[wsl2]`) ne suffit pas toujours à lui seul dans cet environnement ; garder une session WSL active (ex. `wsl -d Ubuntu-22.04` ouvert, ou un process qui s'y maintient) pendant le développement est la solution fiable.
+- Ajout d'un test d'intégration (`MoviePaginationIntegrationTest`, `mediatheque-webapp`) pour `GET /movies`, via Testcontainers + vrai MySQL plutôt que H2/mocks. A nécessité d'exposer le daemon Docker de la distro WSL2 en TCP (override systemd, hors repo, voir section "Tests") car Docker Desktop est absent de cette machine. Dépendances ajoutées : `spring-boot-starter-test`, `spring-boot-webmvc-test` (Spring Boot 4 a déplacé `@AutoConfigureMockMvc` hors de `spring-boot-test-autoconfigure` vers ce module dédié), `spring-boot-testcontainers`, `org.testcontainers:testcontainers-junit-jupiter`/`testcontainers-mysql` (Testcontainers 2.x a renommé ces artefacts, préfixés `testcontainers-`, géré par le BOM Spring Boot). 4 tests, tous verts, build complet vérifié.
